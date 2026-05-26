@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0a1628;
+  --color-steel: #1e4d8c;
+  --color-accent: #4a90d9;
+  --color-earth: #6b4226;
+  --color-sand: #a0714f;
+  --color-cream: #f5f0ea;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a1628;
+  color: #f5f0ea;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Grain texture overlay ─────────────────────────────── */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Diagonal stripe pattern ───────────────────────────── */
+.diagonal-bg {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.025) 0px,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+
+/* ── Ticker scroll animation ───────────────────────────── */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker 30s linear infinite;
+  will-change: transform;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Custom scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0a1628; }
+::-webkit-scrollbar-thumb { background: #1e4d8c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4a90d9; }
+
+/* ── Selection ─────────────────────────────────────────── */
+::selection { background-color: #4a90d9; color: #fff; }
+
+/* ── Focus visible ─────────────────────────────────────── */
+:focus-visible { outline: 2px solid #4a90d9; outline-offset: 3px; }
