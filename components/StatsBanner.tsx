@@ -23,7 +23,7 @@ export default function StatsBanner() {
           className="font-extrabold leading-none tracking-tighter text-white"
           style={{ fontSize: "clamp(100px,22vw,320px)", opacity: 0.025 }}
         >
-          20+
+          3+
         </span>
       </div>
 

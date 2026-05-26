@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | ABQ ALSYF",
   },
   description:
-    "ABQ ALSYF Project Management Services — Dubai's premier excavation, earthwork, and material transport company. 500+ projects, 20+ years experience, 1M+ tons moved.",
+    "ABQ ALSYF Project Management Services — Dubai's premier excavation, earthwork, and material transport company. 500+ projects, 3+ years experience, 1M+ tons moved.",
   keywords: [
     "excavation",
     "earthwork",

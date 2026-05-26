@@ -30,7 +30,7 @@ function TimelineSection() {
           className="font-extrabold text-white tracking-tight mb-16"
           style={{ fontSize: "clamp(32px,5vw,64px)" }}
         >
-          TWO DECADES OF<br />MOVING FORWARD.
+          THREE YEARS OF<br />MOVING FORWARD.
         </h2>
 
         <div className="relative">
@@ -270,7 +270,7 @@ export default function AboutPage() {
             className="mt-8 text-xl max-w-xl font-medium"
             style={{ color: "rgba(245,240,234,0.5)" }}
           >
-            Founded in Dubai in 2004. Built on precision, trust, and the kind of
+            Founded in Dubai in 2023. Built on precision, trust, and the kind of
             work ethic that makes the earth move.
           </motion.p>
         </div>

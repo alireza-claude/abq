@@ -157,7 +157,7 @@ export default function Hero() {
           >
             <span className="h-px w-12 bg-accent" />
             <span className="text-accent text-[11px] font-semibold tracking-[0.28em] uppercase">
-              Dubai, UAE · Est. 2004
+              Dubai, UAE · Est. 2023
             </span>
           </motion.div>
 
@@ -205,7 +205,7 @@ export default function Hero() {
             className="text-lg md:text-xl max-w-lg leading-relaxed mb-12"
             style={{ color: "rgba(245,240,234,0.52)" }}
           >
-            Premier excavation, earthwork &amp; material transport serving Dubai and the UAE for over two decades.
+            Premier excavation, earthwork &amp; material transport serving Dubai and the UAE for over 3 years.
             Precision. Scale. Reliability.
           </motion.p>
 

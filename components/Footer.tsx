@@ -54,7 +54,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-white/45 text-sm leading-relaxed max-w-xs">
-              ABQ ALSYF Project Management Services — Dubai&apos;s premier excavation, earthwork, and material transport company. Two decades of moving the earth.
+              ABQ ALSYF Project Management Services — Dubai&apos;s premier excavation, earthwork, and material transport company. 3 years of moving the earth.
             </p>
             <div className="flex items-center gap-3 mt-6" aria-label="Social media links">
               {socialLinks.map((s) => (

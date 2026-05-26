@@ -7,7 +7,7 @@ const differentiators = [
   "GPS-guided precision on every excavation and grade",
   "OSHA-certified operators & rigorous safety protocols",
   "Modern fleet of 50+ machines, maintained to spec",
-  "99% on-time project completion over 20 years",
+  "99% on-time project completion over 3 years",
   "Licensed, bonded & insured in the UAE",
 ];
 
@@ -49,7 +49,7 @@ export default function WhyChooseUs() {
             </h2>
 
             <p className="text-navy/60 text-lg leading-relaxed max-w-sm">
-              Two decades of moving earth means two decades of solving problems, meeting deadlines,
+              3 years of moving earth means 3 years of solving problems, meeting deadlines,
               and exceeding expectations. We don&apos;t just complete projects — we build legacies.
             </p>
 

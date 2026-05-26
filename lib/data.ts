@@ -58,7 +58,7 @@ export const navLinks = [
 // ── Stats ───────────────────────────────────────────────
 export const stats: Stat[] = [
   { id: 1, value: 500, suffix: "+", label: "Projects Completed" },
-  { id: 2, value: 20, suffix: "+", label: "Years Experience" },
+  { id: 2, value: 3, suffix: "+", label: "Years Experience" },
   { id: 3, value: 1, suffix: "M+ Tons", label: "Material Moved" },
   { id: 4, value: 50, suffix: "+", label: "Machines in Fleet" },
 ];
@@ -222,7 +222,7 @@ export const team: TeamMember[] = [
 export const timeline: TimelineEvent[] = [
   {
     id: 1,
-    year: "2004",
+    year: "2023",
     title: "Founded in Dubai",
     description:
       "Robert Castillo founded ABQ ALSYF Project Management Services with two machines and an uncompromising commitment to quality.",
@@ -260,7 +260,7 @@ export const timeline: TimelineEvent[] = [
     year: "2024",
     title: "500+ Projects Milestone",
     description:
-      "Celebrating two decades of moving earth and building the UAE's future.",
+      "Celebrating 3 years of moving earth and building the UAE's future.",
   },
 ];
 
@@ -282,6 +282,6 @@ export const values: Value[] = [
     id: 3,
     title: "Reliability You Can Build On",
     description:
-      "99% on-time project completion over two decades. When we commit to a schedule and a budget, we keep it.",
+      "99% on-time project completion over 3 years. When we commit to a schedule and a budget, we keep it.",
   },
 ];

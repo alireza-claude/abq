@@ -261,7 +261,7 @@ export default function ServicesPage() {
             className="mt-8 text-lg max-w-xl"
             style={{ color: "rgba(245,240,234,0.52)" }}
           >
-            Three core disciplines. One unstoppable team. Serving Dubai &amp; the UAE since 2004.
+            Three core disciplines. One unstoppable team. Serving Dubai &amp; the UAE since 2023.
           </motion.p>
         </div>
       </section>
