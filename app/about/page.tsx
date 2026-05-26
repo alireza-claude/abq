@@ -255,7 +255,7 @@ export default function AboutPage() {
             style={{ fontSize: "clamp(44px,9vw,120px)", lineHeight: 0.9 }}
           >
             ABQ<br />
-            <span className="text-accent">EXCAVATION</span>
+            <span className="text-accent">ALSYF</span>
           </motion.h1>
           <motion.div
             initial={{ scaleX: 0 }}
@@ -270,7 +270,7 @@ export default function AboutPage() {
             className="mt-8 text-xl max-w-xl font-medium"
             style={{ color: "rgba(245,240,234,0.5)" }}
           >
-            Founded in Albuquerque in 2004. Built on precision, trust, and the kind of
+            Founded in Dubai in 2004. Built on precision, trust, and the kind of
             work ethic that makes the earth move.
           </motion.p>
         </div>

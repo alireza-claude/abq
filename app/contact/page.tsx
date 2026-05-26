@@ -194,8 +194,8 @@ export default function ContactPage() {
                       </svg>
                     ),
                     label: "Phone",
-                    value: "(505) 555-0100",
-                    href: "tel:+15055550100",
+                    value: "+971 58 225 0785",
+                    href: "tel:+971582250785",
                   },
                   {
                     icon: (
@@ -205,8 +205,8 @@ export default function ContactPage() {
                       </svg>
                     ),
                     label: "Email",
-                    value: "info@abqexcavation.com",
-                    href: "mailto:info@abqexcavation.com",
+                    value: "info@abqalsyf.ae",
+                    href: "mailto:info@abqalsyf.ae",
                   },
                   {
                     icon: (
@@ -216,7 +216,7 @@ export default function ContactPage() {
                       </svg>
                     ),
                     label: "Address",
-                    value: "4721 San Mateo Blvd NE\nAlbuquerque, NM 87109",
+                    value: "Dubai,\nUnited Arab Emirates",
                     href: "https://maps.google.com",
                   },
                 ].map((item) => (
@@ -271,7 +271,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <span className="text-[13px]" style={{ color: "rgba(255,255,255,0.4)" }}>
-                    Albuquerque, NM
+                    Dubai, UAE
                   </span>
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function ContactPage() {
                             autoComplete="tel"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="(505) 555-0100"
+                            placeholder="+971 58 225 0785"
                             className={inputNormal}
                           />
                         </div>

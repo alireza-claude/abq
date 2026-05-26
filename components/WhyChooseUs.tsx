@@ -8,7 +8,7 @@ const differentiators = [
   "OSHA-certified operators & rigorous safety protocols",
   "Modern fleet of 50+ machines, maintained to spec",
   "99% on-time project completion over 20 years",
-  "Licensed, bonded & insured in New Mexico",
+  "Licensed, bonded & insured in the UAE",
 ];
 
 export default function WhyChooseUs() {

@@ -12,7 +12,7 @@ const services = [
     title: "Excavation",
     subtitle: "Precision cuts. Any depth. Any scale.",
     description:
-      "Our excavation division operates one of the most capable heavy equipment fleets in New Mexico. From residential foundation digs to multi-million-dollar commercial earthmoving, we bring decades of operator expertise and modern GPS-equipped machinery to every cut.",
+      "Our excavation division operates one of the most capable heavy equipment fleets in the UAE. From residential foundation digs to multi-million-dollar commercial earthmoving, we bring decades of operator expertise and modern GPS-equipped machinery to every cut.",
     capabilities: [
       "Bulk excavation & mass earthmoving",
       "Foundation & basement excavation",
@@ -48,7 +48,7 @@ const services = [
     title: "Material Transport",
     subtitle: "The right material. The right place. On time.",
     description:
-      "Our transport fleet of 30+ dump trucks and articulated haulers keeps materials flowing so your project never stops. We handle aggregate delivery, topsoil supply, debris removal, and specialized logistics for projects of any scale across New Mexico.",
+      "Our transport fleet of 30+ dump trucks and articulated haulers keeps materials flowing so your project never stops. We handle aggregate delivery, topsoil supply, debris removal, and specialized logistics for projects of any scale across Dubai and the UAE.",
     capabilities: [
       "Aggregate, gravel & base material delivery",
       "Topsoil, fill, and engineered soil supply",
@@ -261,7 +261,7 @@ export default function ServicesPage() {
             className="mt-8 text-lg max-w-xl"
             style={{ color: "rgba(245,240,234,0.52)" }}
           >
-            Three core disciplines. One unstoppable team. Serving New Mexico since 2004.
+            Three core disciplines. One unstoppable team. Serving Dubai &amp; the UAE since 2004.
           </motion.p>
         </div>
       </section>

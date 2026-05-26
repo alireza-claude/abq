@@ -69,7 +69,7 @@ export const projects: Project[] = [
     id: 1,
     title: "Downtown Civic Center Foundation",
     category: "Excavation",
-    location: "Albuquerque, NM",
+    location: "Dubai, UAE",
     year: 2024,
     image: "https://picsum.photos/seed/proj1/900/700",
     description:
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     id: 2,
     title: "Rio Grande Industrial Park",
     category: "Earthwork",
-    location: "Bernalillo County, NM",
+    location: "Dubai Industrial City, UAE",
     year: 2024,
     image: "https://picsum.photos/seed/proj2/900/700",
     description:
@@ -91,7 +91,7 @@ export const projects: Project[] = [
     id: 3,
     title: "Mesa Vista Highway Expansion",
     category: "Transport",
-    location: "Santa Fe, NM",
+    location: "Abu Dhabi, UAE",
     year: 2023,
     image: "https://picsum.photos/seed/proj3/900/700",
     description:
@@ -102,7 +102,7 @@ export const projects: Project[] = [
     id: 4,
     title: "Bosque Ridge Residential Development",
     category: "Earthwork",
-    location: "Rio Rancho, NM",
+    location: "Sharjah, UAE",
     year: 2023,
     image: "https://picsum.photos/seed/proj4/900/700",
     description:
@@ -113,7 +113,7 @@ export const projects: Project[] = [
     id: 5,
     title: "Sandia Mines Overburden Removal",
     category: "Excavation",
-    location: "Bernalillo, NM",
+    location: "Ras Al Khaimah, UAE",
     year: 2023,
     image: "https://picsum.photos/seed/proj5/900/700",
     description:
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     id: 6,
     title: "I-40 Rest Stop Reconstruction",
     category: "Earthwork",
-    location: "Moriarty, NM",
+    location: "Ajman, UAE",
     year: 2022,
     image: "https://picsum.photos/seed/proj6/900/700",
     description:
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     id: 7,
     title: "Cottonwood Mall Parking Structure",
     category: "Excavation",
-    location: "Albuquerque, NM",
+    location: "Dubai, UAE",
     year: 2022,
     image: "https://picsum.photos/seed/proj7/900/700",
     description:
@@ -146,7 +146,7 @@ export const projects: Project[] = [
     id: 8,
     title: "Southern NM Solar Farm",
     category: "Transport",
-    location: "Doña Ana County, NM",
+    location: "Dubai South, UAE",
     year: 2022,
     image: "https://picsum.photos/seed/proj8/900/700",
     description:
@@ -160,7 +160,7 @@ export const testimonials: Testimonial[] = [
   {
     id: 1,
     quote:
-      "ABQ Excavation delivered exceptional results on our downtown project. Their precision and professionalism set them apart from every contractor we've worked with.",
+      "ABQ ALSYF Project Management Services delivered exceptional results on our downtown project. Their precision and professionalism set them apart from every contractor we've worked with.",
     author: "Marcus Rivera",
     role: "Project Manager",
     company: "Sunstone Developers",
@@ -172,7 +172,7 @@ export const testimonials: Testimonial[] = [
       "When we needed 40,000 tons of aggregate on a tight timeline, ABQ's transport team came through without a single delay. Truly world-class logistics.",
     author: "Sarah Chen",
     role: "Senior Engineer",
-    company: "New Mexico DOT",
+    company: "UAE Roads Authority",
     stars: 5,
   },
   {
@@ -223,9 +223,9 @@ export const timeline: TimelineEvent[] = [
   {
     id: 1,
     year: "2004",
-    title: "Founded in Albuquerque",
+    title: "Founded in Dubai",
     description:
-      "Robert Castillo founded ABQ Excavation with two machines and an uncompromising commitment to quality.",
+      "Robert Castillo founded ABQ ALSYF Project Management Services with two machines and an uncompromising commitment to quality.",
   },
   {
     id: 2,
@@ -239,7 +239,7 @@ export const timeline: TimelineEvent[] = [
     year: "2012",
     title: "GPS Technology Integration",
     description:
-      "Became one of the first contractors in New Mexico to adopt GPS-guided grading across the entire fleet.",
+      "Became one of the first contractors in the UAE to adopt GPS-guided grading across the entire fleet.",
   },
   {
     id: 4,
@@ -253,14 +253,14 @@ export const timeline: TimelineEvent[] = [
     year: "2020",
     title: "50-Machine Fleet",
     description:
-      "Grew to 50+ machines, making us the largest independent excavation contractor in New Mexico.",
+      "Grew to 50+ machines, making us the largest independent project management contractor in the UAE.",
   },
   {
     id: 6,
     year: "2024",
     title: "500+ Projects Milestone",
     description:
-      "Celebrating two decades of moving earth and building New Mexico's future.",
+      "Celebrating two decades of moving earth and building the UAE's future.",
   },
 ];
 

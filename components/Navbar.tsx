@@ -36,7 +36,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-20">
 
             {/* ── Logo ── */}
-            <Link href="/" className="flex items-center gap-3 group" aria-label="ABQ Excavation home">
+            <Link href="/" className="flex items-center gap-3 group" aria-label="ABQ ALSYF Project Management Services home">
               <div className="w-9 h-9 bg-accent flex items-center justify-center flex-shrink-0">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M2 20L7 6L13 14L19 3L22 20H2Z" fill="white" />

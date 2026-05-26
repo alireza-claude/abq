@@ -43,7 +43,7 @@ export default function Footer() {
 
           {/* ── Brand ── */}
           <div className="md:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-3 mb-6" aria-label="ABQ Excavation home">
+            <Link href="/" className="inline-flex items-center gap-3 mb-6" aria-label="ABQ ALSYF Project Management Services home">
               <div className="w-9 h-9 bg-accent flex items-center justify-center flex-shrink-0">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M2 20L7 6L13 14L19 3L22 20H2Z" fill="white" />
@@ -54,7 +54,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-white/45 text-sm leading-relaxed max-w-xs">
-              Albuquerque&apos;s premier excavation, earthwork, and material transport contractor. Two decades of moving the earth.
+              ABQ ALSYF Project Management Services — Dubai&apos;s premier excavation, earthwork, and material transport company. Two decades of moving the earth.
             </p>
             <div className="flex items-center gap-3 mt-6" aria-label="Social media links">
               {socialLinks.map((s) => (
@@ -96,19 +96,19 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="tel:+15055550100" className="text-white/45 hover:text-white transition-colors">
-                  (505) 555-0100
+                <a href="tel:+971582250785" className="text-white/45 hover:text-white transition-colors">
+                  +971 58 225 0785
                 </a>
               </li>
               <li>
-                <a href="mailto:info@abqexcavation.com" className="text-white/45 hover:text-white transition-colors">
-                  info@abqexcavation.com
+                <a href="mailto:info@abqalsyf.ae" className="text-white/45 hover:text-white transition-colors">
+                  info@abqalsyf.ae
                 </a>
               </li>
               <li>
                 <address className="not-italic text-white/45 leading-relaxed">
-                  4721 San Mateo Blvd NE<br />
-                  Albuquerque, NM 87109
+                  Dubai,<br />
+                  United Arab Emirates
                 </address>
               </li>
             </ul>
@@ -118,10 +118,10 @@ export default function Footer() {
         {/* ── Bottom bar ── */}
         <div className="border-t border-white/[0.05] pt-8 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-[11px] text-white/20">
-            © {new Date().getFullYear()} ABQ Excavation &amp; Transport, LLC. All rights reserved.
+            © {new Date().getFullYear()} ABQ ALSYF Project Management Services. All rights reserved.
           </p>
           <p className="text-[11px] text-white/20">
-            Licensed · Bonded · Insured · NM Contractor #CON-98420
+            Licensed · Bonded · Insured · UAE Registered
           </p>
         </div>
       </div>

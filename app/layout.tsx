@@ -12,19 +12,20 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "ABQ Excavation — We Move The Earth",
-    template: "%s | ABQ Excavation",
+    default: "ABQ ALSYF Project Management Services — We Move The Earth",
+    template: "%s | ABQ ALSYF",
   },
   description:
-    "Albuquerque's premier excavation, earthwork, and material transport contractor. 500+ projects, 20+ years experience, 1M+ tons moved.",
+    "ABQ ALSYF Project Management Services — Dubai's premier excavation, earthwork, and material transport company. 500+ projects, 20+ years experience, 1M+ tons moved.",
   keywords: [
     "excavation",
     "earthwork",
     "grading",
     "material transport",
     "land clearing",
-    "Albuquerque",
-    "New Mexico",
+    "Dubai",
+    "UAE",
+    "United Arab Emirates",
   ],
 };
 

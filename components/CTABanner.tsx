@@ -67,7 +67,7 @@ export default function CTABanner() {
             Request a Free Quote →
           </Link>
           <a
-            href="tel:+15055550100"
+            href="tel:+971582250785"
             className="inline-flex items-center gap-2 px-8 py-4 border-2 text-white font-semibold text-sm tracking-wide hover:bg-white hover:text-navy transition-all duration-300"
             style={{ borderColor: "rgba(255,255,255,0.25)" }}
           >
@@ -84,7 +84,7 @@ export default function CTABanner() {
             >
               <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-.64a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
             </svg>
-            (505) 555-0100
+            +971 58 225 0785
           </a>
         </motion.div>
       </div>

@@ -123,7 +123,7 @@ export default function ProjectsPage() {
             className="mt-8 text-lg max-w-xl"
             style={{ color: "rgba(245,240,234,0.5)" }}
           >
-            500+ completed projects across New Mexico. Every one built on precision and trust.
+            500+ completed projects across Dubai and the UAE. Every one built on precision and trust.
           </motion.p>
         </div>
       </section>
