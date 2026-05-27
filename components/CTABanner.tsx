@@ -61,8 +61,8 @@ export default function CTABanner() {
         >
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-white font-bold text-sm tracking-wide hover:bg-[#3a7fc9] active:scale-95 transition-all duration-200"
-            style={{ boxShadow: "0 12px 40px rgba(74,144,217,0.3)" }}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-navy font-bold text-sm tracking-wide hover:bg-yellow-300 active:scale-95 transition-all duration-200"
+            style={{ boxShadow: "0 12px 40px rgba(250,204,21,0.35)" }}
           >
             Request a Free Quote →
           </Link>

@@ -74,7 +74,7 @@ export default function Navbar() {
             <div className="hidden md:block">
               <Link
                 href="/contact"
-                className="px-5 py-2.5 bg-accent text-white text-sm font-semibold hover:bg-[#3a7fc9] transition-colors duration-200 active:scale-95"
+                className="px-5 py-2.5 bg-yellow-400 text-navy text-sm font-semibold hover:bg-yellow-300 transition-colors duration-200 active:scale-95"
               >
                 Get a Quote
               </Link>
@@ -147,7 +147,7 @@ export default function Navbar() {
               >
                 <Link
                   href="/contact"
-                  className="block w-full text-center py-4 bg-accent text-white text-lg font-bold hover:bg-[#3a7fc9] transition-colors"
+                  className="block w-full text-center py-4 bg-yellow-400 text-navy text-lg font-bold hover:bg-yellow-300 transition-colors"
                 >
                   Get a Free Quote
                 </Link>

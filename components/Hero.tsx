@@ -225,8 +225,8 @@ export default function Hero() {
             </Link>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 px-7 py-4 bg-accent text-white text-sm font-semibold tracking-wide hover:bg-[#3a7fc9] transition-all duration-300"
-              style={{ boxShadow: "0 8px 30px rgba(74,144,217,0.25)" }}
+              className="inline-flex items-center gap-2 px-7 py-4 bg-yellow-400 text-navy text-sm font-semibold tracking-wide hover:bg-yellow-300 transition-all duration-300"
+              style={{ boxShadow: "0 8px 30px rgba(250,204,21,0.35)" }}
             >
               View Projects
               <span className="text-base transition-transform duration-300 group-hover:translate-x-1">
