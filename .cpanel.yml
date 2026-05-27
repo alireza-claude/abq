@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/abqalsyf/abq
-    - /bin/bash -c "source /home/abqalsyf/nodevenv/abq/18/bin/activate && cd $DEPLOYPATH && npm install && npm run build"
+    - export DEPLOYPATH=/home/abqalsyf/public_html
+    - /bin/cp -rf out/. $DEPLOYPATH/
