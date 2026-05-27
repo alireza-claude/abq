@@ -37,7 +37,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-navy border-t border-white/[0.05]" role="contentinfo">
+    <footer className="bg-yellow-400 border-t border-black/[0.08]" role="contentinfo">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
 
@@ -49,11 +49,11 @@ export default function Footer() {
                   <path d="M2 20L7 6L13 14L19 3L22 20H2Z" fill="white" />
                 </svg>
               </div>
-              <span className="font-bold text-[19px] tracking-tight text-white">
+              <span className="font-bold text-[19px] tracking-tight text-navy">
                 ABQ<span className="text-accent">.</span>
               </span>
             </Link>
-            <p className="text-white/45 text-sm leading-relaxed max-w-xs">
+            <p className="text-navy/70 text-sm leading-relaxed max-w-xs">
               ABQ ALSYF Project Management Services — Dubai&apos;s premier excavation, earthwork, and material transport company. 3 years of moving the earth.
             </p>
             <div className="flex items-center gap-3 mt-6" aria-label="Social media links">
@@ -62,7 +62,7 @@ export default function Footer() {
                   key={s.name}
                   href={s.href}
                   aria-label={s.name}
-                  className="w-9 h-9 bg-white/[0.05] hover:bg-accent text-white/40 hover:text-white flex items-center justify-center transition-all duration-200"
+                  className="w-9 h-9 bg-black/[0.08] hover:bg-accent text-navy/50 hover:text-white flex items-center justify-center transition-all duration-200"
                 >
                   {s.icon}
                 </a>
@@ -72,7 +72,7 @@ export default function Footer() {
 
           {/* ── Nav links ── */}
           <div>
-            <h3 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/25 mb-5">
+            <h3 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-navy/40 mb-5">
               Navigation
             </h3>
             <ul className="space-y-3">
@@ -80,7 +80,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/45 hover:text-white transition-colors duration-200"
+                    className="text-sm text-navy/70 hover:text-navy transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -91,22 +91,22 @@ export default function Footer() {
 
           {/* ── Contact ── */}
           <div>
-            <h3 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-white/25 mb-5">
+            <h3 className="text-[10px] font-semibold tracking-[0.2em] uppercase text-navy/40 mb-5">
               Contact
             </h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="tel:+971582250785" className="text-white/45 hover:text-white transition-colors">
+                <a href="tel:+971582250785" className="text-navy/70 hover:text-navy transition-colors">
                   +971 58 225 0785
                 </a>
               </li>
               <li>
-                <a href="mailto:info@abqalsyf.ae" className="text-white/45 hover:text-white transition-colors">
+                <a href="mailto:info@abqalsyf.ae" className="text-navy/70 hover:text-navy transition-colors">
                   info@abqalsyf.ae
                 </a>
               </li>
               <li>
-                <address className="not-italic text-white/45 leading-relaxed">
+                <address className="not-italic text-navy/70 leading-relaxed">
                   Dubai,<br />
                   United Arab Emirates
                 </address>
@@ -116,11 +116,11 @@ export default function Footer() {
         </div>
 
         {/* ── Bottom bar ── */}
-        <div className="border-t border-white/[0.05] pt-8 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-[11px] text-white/20">
+        <div className="border-t border-black/[0.08] pt-8 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-[11px] text-navy/40">
             © {new Date().getFullYear()} ABQ ALSYF Project Management Services. All rights reserved.
           </p>
-          <p className="text-[11px] text-white/20">
+          <p className="text-[11px] text-navy/40">
             Licensed · Bonded · Insured · UAE Registered
           </p>
         </div>
