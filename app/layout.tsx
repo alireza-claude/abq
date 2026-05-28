@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import DevInspector from "@/components/DevInspector";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.className}>
       <body suppressHydrationWarning>
+        <DevInspector />
         <Navbar />
         {children}
         <Footer />

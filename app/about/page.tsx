@@ -122,26 +122,46 @@ function TeamSection() {
               className="group"
             >
               <div className="relative h-64 overflow-hidden mb-4">
-                <Image
-                  src={member.image}
-                  alt={`${member.name}, ${member.role}`}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(to top, rgba(107,66,38,0.5) 0%, transparent 60%)",
-                  }}
-                />
+                {member.image ? (
+                  <>
+                    <Image
+                      src={member.image}
+                      alt={`${member.name}, ${member.role}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background:
+                          "linear-gradient(to top, rgba(107,66,38,0.5) 0%, transparent 60%)",
+                      }}
+                    />
+                  </>
+                ) : (
+                  <div
+                    className="w-full h-full flex items-center justify-center"
+                    style={{ backgroundColor: "rgba(74,144,217,0.06)", border: "2px dashed rgba(74,144,217,0.2)" }}
+                  >
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(74,144,217,0.3)" strokeWidth="1.5" aria-hidden="true">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                )}
               </div>
-              <h3 className="text-white font-bold text-lg mb-0.5">{member.name}</h3>
-              <p className="text-accent text-sm font-medium mb-2">{member.role}</p>
-              <p className="text-[13px] leading-relaxed" style={{ color: "rgba(245,240,234,0.45)" }}>
-                {member.bio}
-              </p>
+              {member.name && (
+                <h3 className="text-white font-bold text-lg mb-0.5">{member.name}</h3>
+              )}
+              {member.role && (
+                <p className="text-accent text-sm font-medium mb-2">{member.role}</p>
+              )}
+              {member.bio && (
+                <p className="text-[13px] leading-relaxed" style={{ color: "rgba(245,240,234,0.45)" }}>
+                  {member.bio}
+                </p>
+              )}
             </motion.div>
           ))}
         </div>

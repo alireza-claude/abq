@@ -57,131 +57,39 @@ export const navLinks = [
 
 // ── Stats ───────────────────────────────────────────────
 export const stats: Stat[] = [
-  { id: 1, value: 500, suffix: "+", label: "Projects Completed" },
+  { id: 1, value: 50, suffix: "+", label: "Projects Completed" },
   { id: 2, value: 3, suffix: "+", label: "Years Experience" },
-  { id: 3, value: 1, suffix: "M+ Tons", label: "Material Moved" },
-  { id: 4, value: 50, suffix: "+", label: "Machines in Fleet" },
+  { id: 3, value: 250, suffix: "K+ Tons", label: "Material Moved" },
+  { id: 4, value: 10, suffix: "+", label: "Machines in Fleet" },
 ];
 
 // ── Projects ────────────────────────────────────────────
-export const projects: Project[] = [
-  {
-    id: 1,
-    title: "Downtown Civic Center Foundation",
-    category: "Excavation",
-    location: "Dubai, UAE",
-    year: 2024,
-    image: "https://picsum.photos/seed/proj1/900/700",
-    description:
-      "Large-scale basement excavation for a 12-story civic center, including rock breaking and dewatering operations.",
-    tags: ["Excavation", "Urban", "Commercial"],
-  },
-  {
-    id: 2,
-    title: "Rio Grande Industrial Park",
-    category: "Earthwork",
-    location: "Dubai Industrial City, UAE",
-    year: 2024,
-    image: "https://picsum.photos/seed/proj2/900/700",
-    description:
-      "50-acre site preparation with precision grading, drainage installation, and compaction testing.",
-    tags: ["Grading", "Industrial", "Large-Scale"],
-  },
-  {
-    id: 3,
-    title: "Mesa Vista Highway Expansion",
-    category: "Transport",
-    location: "Abu Dhabi, UAE",
-    year: 2023,
-    image: "https://picsum.photos/seed/proj3/900/700",
-    description:
-      "Over 80,000 tons of base aggregate transported to support a major highway widening project.",
-    tags: ["Transport", "Infrastructure", "Highway"],
-  },
-  {
-    id: 4,
-    title: "Bosque Ridge Residential Development",
-    category: "Earthwork",
-    location: "Sharjah, UAE",
-    year: 2023,
-    image: "https://picsum.photos/seed/proj4/900/700",
-    description:
-      "Complete site development for 200-lot subdivision including mass grading and utility corridors.",
-    tags: ["Grading", "Residential", "Subdivision"],
-  },
-  {
-    id: 5,
-    title: "Sandia Mines Overburden Removal",
-    category: "Excavation",
-    location: "Ras Al Khaimah, UAE",
-    year: 2023,
-    image: "https://picsum.photos/seed/proj5/900/700",
-    description:
-      "Overburden stripping and precision rock excavation for mineral extraction operation.",
-    tags: ["Excavation", "Mining", "Rock Breaking"],
-  },
-  {
-    id: 6,
-    title: "I-40 Rest Stop Reconstruction",
-    category: "Earthwork",
-    location: "Ajman, UAE",
-    year: 2022,
-    image: "https://picsum.photos/seed/proj6/900/700",
-    description:
-      "Full earthwork package including demolition, grading, drainage, and surface preparation.",
-    tags: ["Grading", "Government", "Infrastructure"],
-  },
-  {
-    id: 7,
-    title: "Cottonwood Mall Parking Structure",
-    category: "Excavation",
-    location: "Dubai, UAE",
-    year: 2022,
-    image: "https://picsum.photos/seed/proj7/900/700",
-    description:
-      "Parking structure excavation with shoring system installation in a tight urban environment.",
-    tags: ["Excavation", "Commercial", "Urban"],
-  },
-  {
-    id: 8,
-    title: "Southern NM Solar Farm",
-    category: "Transport",
-    location: "Dubai South, UAE",
-    year: 2022,
-    image: "https://picsum.photos/seed/proj8/900/700",
-    description:
-      "Material logistics and transport for a 500-acre utility-scale solar installation.",
-    tags: ["Transport", "Energy", "Large-Scale"],
-  },
-];
+export const projects: Project[] = [];
 
 // ── Testimonials ─────────────────────────────────────────
 export const testimonials: Testimonial[] = [
   {
     id: 1,
-    quote:
-      "ABQ ALSYF Project Management Services delivered exceptional results on our downtown project. Their precision and professionalism set them apart from every contractor we've worked with.",
-    author: "Marcus Rivera",
-    role: "Project Manager",
-    company: "Sunstone Developers",
+    quote: "",
+    author: "",
+    role: "",
+    company: "",
     stars: 5,
   },
   {
     id: 2,
-    quote:
-      "When we needed 40,000 tons of aggregate on a tight timeline, ABQ's transport team came through without a single delay. Truly world-class logistics.",
-    author: "Sarah Chen",
-    role: "Senior Engineer",
-    company: "UAE Roads Authority",
+    quote: "",
+    author: "",
+    role: "",
+    company: "",
     stars: 5,
   },
   {
     id: 3,
-    quote:
-      "The grading precision on our 50-acre industrial site was outstanding. GPS accuracy, clean execution, and the project came in under budget.",
-    author: "James Whitfield",
-    role: "Director of Development",
-    company: "Mesa Group LLC",
+    quote: "",
+    author: "",
+    role: "",
+    company: "",
     stars: 5,
   },
 ];
@@ -190,31 +98,31 @@ export const testimonials: Testimonial[] = [
 export const team: TeamMember[] = [
   {
     id: 1,
-    name: "Robert Castillo",
-    role: "Founder & CEO",
-    image: "https://picsum.photos/seed/team1/400/400",
-    bio: "30 years in heavy civil construction with a vision for precision and reliability.",
+    name: "",
+    role: "",
+    image: "",
+    bio: "",
   },
   {
     id: 2,
-    name: "Diana Morales",
-    role: "Operations Director",
-    image: "https://picsum.photos/seed/team2/400/400",
-    bio: "Logistics expert managing 50+ machines and a fleet of heavy transport vehicles.",
+    name: "",
+    role: "",
+    image: "",
+    bio: "",
   },
   {
     id: 3,
-    name: "Kevin Park",
-    role: "Chief Engineer",
-    image: "https://picsum.photos/seed/team3/400/400",
-    bio: "P.E. with specialty in geotechnical engineering and GPS-guided grading systems.",
+    name: "",
+    role: "",
+    image: "",
+    bio: "",
   },
   {
     id: 4,
-    name: "Linda Torres",
-    role: "Safety Manager",
-    image: "https://picsum.photos/seed/team4/400/400",
-    bio: "Maintaining our 10-year perfect safety record across all active job sites.",
+    name: "",
+    role: "",
+    image: "",
+    bio: "",
   },
 ];
 
@@ -225,42 +133,28 @@ export const timeline: TimelineEvent[] = [
     year: "2023",
     title: "Founded in Dubai",
     description:
-      "Robert Castillo founded ABQ ALSYF Project Management Services with two machines and an uncompromising commitment to quality.",
+      "ABQ ALSYF Project Management Services was established in Dubai, UAE, with a commitment to quality excavation, earthwork, and material transport.",
   },
   {
     id: 2,
-    year: "2008",
-    title: "Expanded to Material Transport",
+    year: "2024",
+    title: "Growing Our Fleet",
     description:
-      "Added a full fleet of dump trucks and articulated haulers, becoming a one-stop earthwork solution.",
+      "Expanded operations across Dubai and the UAE, growing our fleet and delivering projects for a wider range of clients.",
   },
   {
     id: 3,
-    year: "2012",
-    title: "GPS Technology Integration",
+    year: "2025",
+    title: "Building the Future",
     description:
-      "Became one of the first contractors in the UAE to adopt GPS-guided grading across the entire fleet.",
+      "Continuing to move the earth and build the UAE's future — one project at a time.",
   },
   {
     id: 4,
-    year: "2017",
-    title: "100th Major Project",
+    year: "2026",
+    title: "Full-Service Operations",
     description:
-      "Celebrated our 100th major project completion — the Paseo del Norte bridge expansion.",
-  },
-  {
-    id: 5,
-    year: "2020",
-    title: "50-Machine Fleet",
-    description:
-      "Grew to 50+ machines, making us the largest independent project management contractor in the UAE.",
-  },
-  {
-    id: 6,
-    year: "2024",
-    title: "500+ Projects Milestone",
-    description:
-      "Celebrating 3 years of moving earth and building the UAE's future.",
+      "Delivering large-scale excavation, site preparation, and material transport projects across Dubai and the UAE — meeting the demands of a fast-growing market.",
   },
 ];
 

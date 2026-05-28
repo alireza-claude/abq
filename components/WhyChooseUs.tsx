@@ -5,8 +5,7 @@ import { motion, useInView } from "framer-motion";
 
 const differentiators = [
   "GPS-guided precision on every excavation and grade",
-  "OSHA-certified operators & rigorous safety protocols",
-  "Modern fleet of 50+ machines, maintained to spec",
+  "Modern fleet of 10+ machines, maintained to spec",
   "99% on-time project completion over 3 years",
   "Licensed, bonded & insured in the UAE",
 ];

@@ -22,8 +22,8 @@ const services = [
       "Dewatering & groundwater management",
     ],
     stats: [{ value: "250+", label: "Excavation projects" }, { value: "15+", label: "Excavators & backhoes" }],
-    image: "https://picsum.photos/seed/excavation-detail/900/700",
-    imageAlt: "Heavy excavator on a large construction site",
+    image: "",
+    imageAlt: "",
   },
   {
     id: "earthwork",
@@ -40,8 +40,8 @@ const services = [
       "Land sculpting, contouring & berming",
     ],
     stats: [{ value: "180+", label: "Grading projects" }, { value: "99%", label: "On-time delivery" }],
-    image: "https://picsum.photos/seed/earthwork-detail/900/700",
-    imageAlt: "Grader on a construction site preparing the ground",
+    image: "",
+    imageAlt: "",
   },
   {
     id: "transport",
@@ -58,8 +58,8 @@ const services = [
       "Emergency same-day haulage services",
     ],
     stats: [{ value: "1M+", label: "Tons transported" }, { value: "30+", label: "Trucks in fleet" }],
-    image: "https://picsum.photos/seed/transport-detail/900/700",
-    imageAlt: "Fleet of dump trucks at a construction site",
+    image: "",
+    imageAlt: "",
   },
 ];
 
@@ -108,31 +108,22 @@ function ServiceSection({
               !isEven ? "lg:col-start-2" : ""
             }`}
           >
-            <Image
-              src={service.image}
-              alt={service.imageAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            {/* Accent border */}
-            <div
-              className="absolute inset-0 border"
-              style={{ borderColor: "rgba(74,144,217,0.2)" }}
-            />
-            {/* Stats badges */}
-            <div className="absolute bottom-5 left-5 flex gap-3">
-              {service.stats.map((stat, si) => (
-                <div
-                  key={si}
-                  className="px-4 py-2 backdrop-blur-md"
-                  style={{ backgroundColor: "rgba(10,22,40,0.85)" }}
-                >
-                  <div className="text-accent font-extrabold text-lg leading-none">{stat.value}</div>
-                  <div className="text-white/50 text-[11px] tracking-wide">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            {service.image ? (
+              <Image
+                src={service.image}
+                alt={service.imageAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            ) : (
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{ backgroundColor: "rgba(74,144,217,0.06)", border: "2px dashed rgba(74,144,217,0.2)" }}
+              >
+                <span className="text-white/20 text-sm tracking-widest uppercase">Photo coming soon</span>
+              </div>
+            )}
           </motion.div>
 
           {/* ── Content ── */}
