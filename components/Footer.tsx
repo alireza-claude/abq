@@ -49,9 +49,14 @@ export default function Footer() {
                   <path d="M2 20L7 6L13 14L19 3L22 20H2Z" fill="white" />
                 </svg>
               </div>
-              <span className="font-bold text-[19px] tracking-tight text-white">
-                ABQ<span className="text-accent">.</span>
-              </span>
+              <div className="flex flex-col leading-none">
+                <span className="font-bold text-[17px] tracking-tight text-white">
+                  ABQ <span className="text-accent">ALSYF</span>
+                </span>
+                <span className="text-[9px] font-medium tracking-[0.12em] uppercase text-white/50 mt-0.5">
+                  Project Management Services
+                </span>
+              </div>
             </Link>
             <p className="text-white/45 text-sm leading-relaxed max-w-xs">
               ABQ ALSYF Project Management Services — Dubai&apos;s premier excavation, earthwork, and material transport company. 3 years of moving the earth.
