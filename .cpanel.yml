@@ -3,3 +3,4 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/abqalsyf/public_html
     - /bin/cp -rf out/. $DEPLOYPATH/
+    - /bin/bash scripts/write-htaccess.sh $DEPLOYPATH
