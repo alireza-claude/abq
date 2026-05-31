@@ -676,9 +676,9 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
 // ─── Main Dashboard ───────────────────────────────────────
 function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string) => void; onLogout: () => void }) {
   const cards = [
-    { id: "files", title: "Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
     { id: "projects", title: "Projects", desc: "Manage active and upcoming projects.", icon: "🏗️", ready: false },
     { id: "inquiries", title: "Inquiries", desc: "Review quote requests from the website.", icon: "📬", ready: true },
+    { id: "files", title: "Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
     { id: "settings", title: "Settings", desc: "Site settings and configuration.", icon: "⚙️", ready: false },
   ];
 
