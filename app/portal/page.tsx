@@ -712,12 +712,32 @@ export default function PortalPage() {
 
   useEffect(() => {
     setAuthed(localStorage.getItem(AUTH_KEY) === "1");
+    // Read section from URL hash
+    const hash = window.location.hash.replace("#", "");
+    if (hash === "files" || hash === "inquiries") setSection(hash);
+
+    // Listen for browser back/forward
+    const onPop = () => {
+      const h = window.location.hash.replace("#", "");
+      setSection(h === "files" || h === "inquiries" ? h : null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  function navigate(s: string | null) {
+    if (s) {
+      window.history.pushState(null, "", `/portal#${s}`);
+    } else {
+      window.history.pushState(null, "", "/portal");
+    }
+    setSection(s);
+  }
 
   function handleLogout() {
     localStorage.removeItem(AUTH_KEY);
     setAuthed(false);
-    setSection(null);
+    navigate(null);
   }
 
   if (authed === null) return (
@@ -732,15 +752,15 @@ export default function PortalPage() {
         </motion.div>
       ) : section === "files" ? (
         <motion.div key="files" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <Dashboard onLogout={handleLogout} onBack={() => setSection(null)} />
+          <Dashboard onLogout={handleLogout} onBack={() => navigate(null)} />
         </motion.div>
       ) : section === "inquiries" ? (
         <motion.div key="inquiries" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <InquiriesSection onLogout={handleLogout} onBack={() => setSection(null)} />
+          <InquiriesSection onLogout={handleLogout} onBack={() => navigate(null)} />
         </motion.div>
       ) : (
         <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <MainDashboard onNavigate={setSection} onLogout={handleLogout} />
+          <MainDashboard onNavigate={(s) => navigate(s)} onLogout={handleLogout} />
         </motion.div>
       )}
     </AnimatePresence>
