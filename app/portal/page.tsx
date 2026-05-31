@@ -323,8 +323,8 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
 
           {/* File list */}
           <div style={{ border: "1px solid rgba(255,255,255,0.07)", backgroundColor: "rgba(255,255,255,0.015)" }}>
-            {/* Table header */}
-            <div className="grid grid-cols-12 px-5 py-3 border-b text-[10px] font-bold tracking-[0.15em] uppercase"
+            {/* Table header — hidden on mobile */}
+            <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b text-[10px] font-bold tracking-[0.15em] uppercase"
               style={{ borderColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.25)" }}>
               <span className="col-span-1" />
               <span className="col-span-6">File Name</span>
@@ -353,11 +353,36 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 10 }}
                     transition={{ duration: 0.25, delay: i * 0.04 }}
-                    className="grid grid-cols-12 items-center px-5 py-3.5 border-b group transition-colors"
-                    style={{ borderColor: "rgba(255,255,255,0.04)", cursor: "default" }}
+                    className="border-b transition-colors"
+                    style={{ borderColor: "rgba(255,255,255,0.04)" }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.025)"}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                   >
+                    {/* Mobile layout */}
+                    <div className="flex sm:hidden items-center gap-3 px-4 py-3">
+                      <span className="text-xl flex-shrink-0">{fileIcon(file.metadata?.mimetype)}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white font-medium truncate">{file.name}</p>
+                        <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>
+                          {formatSize(file.metadata?.size)} · {fileType(file.name, file.metadata?.mimetype)}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 flex-shrink-0">
+                        <button onClick={() => handleDownload(file.name)}
+                          className="px-3 py-1.5 text-xs font-semibold"
+                          style={{ backgroundColor: "rgba(74,144,217,0.15)", color: "#4a90d9" }}>
+                          Open
+                        </button>
+                        <button onClick={() => handleDelete(file.name)} disabled={deleting === file.name}
+                          className="px-3 py-1.5 text-xs font-semibold disabled:opacity-40"
+                          style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "rgba(239,68,68,0.7)" }}>
+                          {deleting === file.name ? "…" : "Del"}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Desktop layout */}
+                    <div className="hidden sm:grid grid-cols-12 items-center px-5 py-3.5">
                     <span className="col-span-1 text-xl">{fileIcon(file.metadata?.mimetype)}</span>
                     <span className="col-span-6 text-sm text-white font-medium truncate pr-4">{file.name}</span>
                     <span className="col-span-2 text-xs" style={{ color: "rgba(255,255,255,0.38)" }}>
@@ -385,6 +410,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                         {deleting === file.name ? "…" : "Delete"}
                       </button>
                     </div>
+                    </div>{/* end desktop */}
                   </motion.div>
                 ))}
               </AnimatePresence>
