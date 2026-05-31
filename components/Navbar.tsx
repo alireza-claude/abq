@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { navLinks } from "@/lib/data";
 
 export default function Navbar() {
@@ -37,11 +38,17 @@ export default function Navbar() {
 
             {/* ── Logo ── */}
             <Link href="/" className="flex items-center gap-3 group" aria-label="ABQ ALSYF Project Management Services home">
-              <div className="w-9 h-9 bg-accent flex items-center justify-center flex-shrink-0">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M2 20L7 6L13 14L19 3L22 20H2Z" fill="white" />
-                </svg>
-              </div>
+              <div
+                className="w-10 h-10 flex-shrink-0"
+                style={{
+                  backgroundImage: "url('/images/logo.jpg')",
+                  backgroundSize: "195px auto",
+                  backgroundPosition: "-77px -8px",
+                  backgroundRepeat: "no-repeat",
+                  mixBlendMode: "multiply",
+                }}
+                aria-label="ABQ ALSYF Logo"
+              />
               <div className="flex flex-col leading-none">
                 <span className="font-bold text-[17px] tracking-tight text-white">
                   ABQ <span className="text-accent">ALSYF</span>

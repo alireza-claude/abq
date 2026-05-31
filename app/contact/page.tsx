@@ -54,12 +54,12 @@ function SuccessState() {
         animate={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
         className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-        style={{ backgroundColor: "rgba(74,144,217,0.15)" }}
+        style={{ backgroundColor: "rgba(232,80,10,0.15)" }}
       >
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <motion.path
             d="M4 12L9 17L20 6"
-            stroke="#4a90d9"
+            stroke="#E8500A"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -171,7 +171,7 @@ export default function ContactPage() {
             className="absolute top-0 right-0 w-[500px] h-[400px]"
             style={{
               background:
-                "radial-gradient(ellipse at top right, rgba(74,144,217,0.1) 0%, transparent 65%)",
+                "radial-gradient(ellipse at top right, rgba(232,80,10,0.1) 0%, transparent 65%)",
             }}
           />
         </div>
@@ -298,16 +298,16 @@ export default function ContactPage() {
                   className="absolute inset-0"
                   style={{
                     backgroundImage:
-                      "repeating-linear-gradient(0deg, rgba(74,144,217,0.05) 0px, rgba(74,144,217,0.05) 1px, transparent 1px, transparent 32px), repeating-linear-gradient(90deg, rgba(74,144,217,0.05) 0px, rgba(74,144,217,0.05) 1px, transparent 1px, transparent 32px)",
+                      "repeating-linear-gradient(0deg, rgba(232,80,10,0.05) 0px, rgba(232,80,10,0.05) 1px, transparent 1px, transparent 32px), repeating-linear-gradient(90deg, rgba(232,80,10,0.05) 0px, rgba(232,80,10,0.05) 1px, transparent 1px, transparent 32px)",
                   }}
                   aria-hidden="true"
                 />
                 <div className="relative text-center">
                   <div
                     className="w-10 h-10 rounded-full mx-auto flex items-center justify-center mb-2"
-                    style={{ backgroundColor: "rgba(74,144,217,0.2)" }}
+                    style={{ backgroundColor: "rgba(232,80,10,0.2)" }}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#4a90d9" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#E8500A" aria-hidden="true">
                       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                   </div>
@@ -517,7 +517,7 @@ export default function ContactPage() {
                         type="submit"
                         disabled={loading}
                         className="w-full py-4 font-bold text-sm tracking-wide text-white transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
-                        style={{ backgroundColor: "#4a90d9" }}
+                        style={{ backgroundColor: "#E8500A" }}
                       >
                         {loading ? (
                           <span className="flex items-center justify-center gap-2">

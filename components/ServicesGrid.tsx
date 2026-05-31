@@ -164,7 +164,7 @@ export default function ServicesGrid() {
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(74,144,217,0.05) 0%, transparent 60%)",
+                    "linear-gradient(135deg, rgba(232,80,10,0.05) 0%, transparent 60%)",
                 }}
               />
 

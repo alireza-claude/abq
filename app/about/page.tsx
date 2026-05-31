@@ -37,7 +37,7 @@ function TimelineSection() {
           {/* Vertical line */}
           <div
             className="absolute left-6 top-0 bottom-0 w-px"
-            style={{ backgroundColor: "rgba(74,144,217,0.2)" }}
+            style={{ backgroundColor: "rgba(232,80,10,0.2)" }}
             aria-hidden="true"
           />
 
@@ -58,9 +58,9 @@ function TimelineSection() {
                 <div
                   className="absolute left-[18px] w-3 h-3 rounded-full border-2 -translate-y-0.5"
                   style={{
-                    backgroundColor: "#4a90d9",
+                    backgroundColor: "#E8500A",
                     borderColor: "#060e1c",
-                    boxShadow: "0 0 0 4px rgba(74,144,217,0.2)",
+                    boxShadow: "0 0 0 4px rgba(232,80,10,0.2)",
                   }}
                   aria-hidden="true"
                 />
@@ -68,7 +68,7 @@ function TimelineSection() {
                 <div>
                   <span
                     className="inline-block px-3 py-1 text-[11px] font-bold tracking-widest mb-3"
-                    style={{ backgroundColor: "rgba(74,144,217,0.15)", color: "#4a90d9" }}
+                    style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}
                   >
                     {event.year}
                   </span>
@@ -142,9 +142,9 @@ function TeamSection() {
                 ) : (
                   <div
                     className="w-full h-full flex items-center justify-center"
-                    style={{ backgroundColor: "rgba(74,144,217,0.06)", border: "2px dashed rgba(74,144,217,0.2)" }}
+                    style={{ backgroundColor: "rgba(232,80,10,0.06)", border: "2px dashed rgba(232,80,10,0.2)" }}
                   >
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(74,144,217,0.3)" strokeWidth="1.5" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(232,80,10,0.3)" strokeWidth="1.5" aria-hidden="true">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                       <circle cx="12" cy="7" r="4" />
                     </svg>
@@ -257,7 +257,7 @@ export default function AboutPage() {
             className="absolute bottom-0 right-0 w-[700px] h-[500px]"
             style={{
               background:
-                "radial-gradient(ellipse at right bottom, rgba(74,144,217,0.1) 0%, transparent 65%)",
+                "radial-gradient(ellipse at right bottom, rgba(232,80,10,0.1) 0%, transparent 65%)",
             }}
           />
         </div>

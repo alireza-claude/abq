@@ -74,7 +74,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
     <div
       className="min-h-screen flex items-center justify-center px-4"
       style={{
-        background: "radial-gradient(ellipse at 60% 20%, rgba(74,144,217,0.08) 0%, transparent 60%), #060e1c",
+        background: "radial-gradient(ellipse at 60% 20%, rgba(232,80,10,0.08) 0%, transparent 60%), #060e1c",
       }}
     >
       <motion.div
@@ -87,9 +87,9 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
         <div className="text-center mb-10">
           <div
             className="inline-flex items-center justify-center w-14 h-14 mb-5"
-            style={{ backgroundColor: "rgba(74,144,217,0.12)", border: "1px solid rgba(74,144,217,0.2)" }}
+            style={{ backgroundColor: "rgba(232,80,10,0.12)", border: "1px solid rgba(232,80,10,0.2)" }}
           >
-            <span className="text-[10px] font-black tracking-widest" style={{ color: "#4a90d9" }}>ABQ</span>
+            <span className="text-[10px] font-black tracking-widest" style={{ color: "#E8500A" }}>ABQ</span>
           </div>
           <h1 className="text-white font-extrabold text-2xl tracking-tight">Portal Login</h1>
           <p className="mt-2 text-sm" style={{ color: "rgba(245,240,234,0.38)" }}>
@@ -112,7 +112,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
                 placeholder="Your username" autoComplete="username" required
                 className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
                 style={{ borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)" }}
-                onFocus={(e) => e.target.style.borderColor = "#4a90d9"}
+                onFocus={(e) => e.target.style.borderColor = "#E8500A"}
                 onBlur={(e) => e.target.style.borderColor = error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)"}
               />
             </div>
@@ -125,7 +125,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
                 placeholder="••••••••" autoComplete="current-password" required
                 className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
                 style={{ borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)" }}
-                onFocus={(e) => e.target.style.borderColor = "#4a90d9"}
+                onFocus={(e) => e.target.style.borderColor = "#E8500A"}
                 onBlur={(e) => e.target.style.borderColor = error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)"}
               />
             </div>
@@ -141,9 +141,9 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
 
             <button type="submit" disabled={loading}
               className="w-full py-3.5 font-bold text-sm text-white tracking-wide transition-all active:scale-[0.98] disabled:opacity-50"
-              style={{ backgroundColor: "#4a90d9" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3a7fc9")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#4a90d9")}
+              style={{ backgroundColor: "#E8500A" }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#C0391A")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#E8500A")}
             >
               {loading ? "Checking..." : "Sign In →"}
             </button>
@@ -225,7 +225,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
     <div
       className="min-h-screen"
       style={{
-        background: "radial-gradient(ellipse at 80% 10%, rgba(74,144,217,0.06) 0%, transparent 55%), #060e1c",
+        background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c",
       }}
     >
       {/* Top bar */}
@@ -236,14 +236,14 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 flex items-center justify-center text-[9px] font-black"
-            style={{ backgroundColor: "rgba(74,144,217,0.15)", color: "#4a90d9" }}
+            style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}
           >
             ABQ
           </div>
           <div>
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
             <span className="mx-2 text-white/20">/</span>
-            <span className="text-sm font-medium" style={{ color: "#4a90d9" }}>Portal</span>
+            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>Portal</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -271,7 +271,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
             {onBack && (
               <button onClick={onBack} className="flex items-center gap-2 text-sm mb-4 transition-colors"
                 style={{ color: "rgba(255,255,255,0.35)" }}
-                onMouseEnter={(e) => e.currentTarget.style.color = "#4a90d9"}
+                onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
                 onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
                 ← Back to Dashboard
               </button>
@@ -290,19 +290,19 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
             onClick={() => !uploading && fileInput.current?.click()}
             className="mb-8 p-8 border-2 border-dashed rounded-none cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-3"
             style={{
-              borderColor: dragOver ? "#4a90d9" : "rgba(74,144,217,0.25)",
-              backgroundColor: dragOver ? "rgba(74,144,217,0.08)" : "rgba(74,144,217,0.03)",
+              borderColor: dragOver ? "#E8500A" : "rgba(232,80,10,0.25)",
+              backgroundColor: dragOver ? "rgba(232,80,10,0.08)" : "rgba(232,80,10,0.03)",
               minHeight: "140px",
             }}
           >
             {uploading ? (
               <>
-                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#4a90d9", borderTopColor: "transparent" }} />
-                <p className="text-sm font-medium" style={{ color: "#4a90d9" }}>Uploading: {uploadProgress}</p>
+                <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
+                <p className="text-sm font-medium" style={{ color: "#E8500A" }}>Uploading: {uploadProgress}</p>
               </>
             ) : (
               <>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(74,144,217,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(232,80,10,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
                   <polyline points="17 8 12 3 7 8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
@@ -343,7 +343,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
 
             {loading ? (
               <div className="py-16 flex flex-col items-center gap-3">
-                <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#4a90d9", borderTopColor: "transparent" }} />
+                <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
                 <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading files…</p>
               </div>
             ) : files.length === 0 ? (
@@ -378,7 +378,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                       <div className="flex gap-2 flex-shrink-0">
                         <button onClick={() => handleDownload(file.name)}
                           className="px-3 py-1.5 text-xs font-semibold"
-                          style={{ backgroundColor: "rgba(74,144,217,0.15)", color: "#4a90d9" }}>
+                          style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}>
                           Open
                         </button>
                         <button onClick={() => handleDelete(file.name)} disabled={deleting === file.name}
@@ -397,15 +397,15 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                       {formatSize(file.metadata?.size)}
                     </span>
                     <span className="col-span-1 text-[10px] font-bold tracking-wider px-1.5 py-0.5 text-center"
-                      style={{ backgroundColor: "rgba(74,144,217,0.1)", color: "rgba(74,144,217,0.7)" }}>
+                      style={{ backgroundColor: "rgba(232,80,10,0.1)", color: "rgba(232,80,10,0.7)" }}>
                       {fileType(file.name, file.metadata?.mimetype)}
                     </span>
                     <div className="col-span-2 flex justify-end gap-2">
                       <button onClick={() => handleDownload(file.name)}
                         className="px-3 py-1.5 text-xs font-semibold transition-all"
-                        style={{ backgroundColor: "rgba(74,144,217,0.12)", color: "#4a90d9", border: "1px solid rgba(74,144,217,0.25)" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(74,144,217,0.2)"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(74,144,217,0.12)"; }}
+                        style={{ backgroundColor: "rgba(232,80,10,0.12)", color: "#E8500A", border: "1px solid rgba(232,80,10,0.25)" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,80,10,0.2)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,80,10,0.12)"; }}
                       >
                         Open
                       </button>
@@ -497,15 +497,15 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(74,144,217,0.06) 0%, transparent 55%), #060e1c" }}>
+    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
       {/* Top bar */}
       <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: "rgba(74,144,217,0.15)", color: "#4a90d9" }}>ABQ</div>
+          <div className="w-8 h-8 flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}>ABQ</div>
           <div>
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
             <span className="mx-2 text-white/20">/</span>
-            <span className="text-sm font-medium" style={{ color: "#4a90d9" }}>Inquiries</span>
+            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>Inquiries</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -523,7 +523,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
             style={{ color: "rgba(255,255,255,0.35)" }}
-            onMouseEnter={(e) => e.currentTarget.style.color = "#4a90d9"}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
             onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
             ← Back to Dashboard
           </button>
@@ -535,10 +535,10 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
             </div>
             <div className="flex items-center gap-3">
               <button onClick={load} className="px-3 py-1.5 text-xs font-semibold border transition-colors"
-                style={{ borderColor: "rgba(74,144,217,0.3)", color: "#4a90d9" }}>
+                style={{ borderColor: "rgba(232,80,10,0.3)", color: "#E8500A" }}>
                 ↻ Refresh
               </button>
-              <span className="text-sm px-3 py-1.5 font-semibold" style={{ backgroundColor: "rgba(74,144,217,0.12)", color: "#4a90d9" }}>
+              <span className="text-sm px-3 py-1.5 font-semibold" style={{ backgroundColor: "rgba(232,80,10,0.12)", color: "#E8500A" }}>
                 {inquiries.length} total
               </span>
             </div>
@@ -563,7 +563,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
 
             {loading ? (
               <div className="py-16 flex flex-col items-center gap-3">
-                <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#4a90d9", borderTopColor: "transparent" }} />
+                <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
                 <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading inquiries…</p>
               </div>
             ) : inquiries.length === 0 ? (
@@ -588,13 +588,13 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
                       <p className="text-sm text-white font-medium">{inq.name}</p>
                       <p className="text-xs truncate mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{inq.email}</p>
                       <div className="flex items-center gap-2 mt-1.5">
-                        <span className="text-[10px] font-semibold px-2 py-0.5" style={{ backgroundColor: "rgba(74,144,217,0.1)", color: "#4a90d9" }}>
+                        <span className="text-[10px] font-semibold px-2 py-0.5" style={{ backgroundColor: "rgba(232,80,10,0.1)", color: "#E8500A" }}>
                           {serviceLabels[inq.service] || inq.service}
                         </span>
                         <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>{formatDate(inq.created_at)}</span>
                       </div>
                     </div>
-                    <span className="text-xs flex-shrink-0" style={{ color: "rgba(74,144,217,0.6)" }}>View →</span>
+                    <span className="text-xs flex-shrink-0" style={{ color: "rgba(232,80,10,0.6)" }}>View →</span>
                   </div>
 
                   {/* Desktop layout */}
@@ -605,12 +605,12 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
                     </div>
                     <span className="col-span-3 text-sm truncate" style={{ color: "rgba(255,255,255,0.55)" }}>{inq.email}</span>
                     <span className="col-span-2">
-                      <span className="text-[10px] font-semibold px-2 py-1" style={{ backgroundColor: "rgba(74,144,217,0.1)", color: "#4a90d9" }}>
+                      <span className="text-[10px] font-semibold px-2 py-1" style={{ backgroundColor: "rgba(232,80,10,0.1)", color: "#E8500A" }}>
                         {serviceLabels[inq.service] || inq.service}
                       </span>
                     </span>
                     <span className="col-span-3 text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{formatDate(inq.created_at)}</span>
-                    <span className="col-span-1 text-right text-xs" style={{ color: "rgba(74,144,217,0.6)" }}>View →</span>
+                    <span className="col-span-1 text-right text-xs" style={{ color: "rgba(232,80,10,0.6)" }}>View →</span>
                   </div>
                 </motion.div>
               ))
@@ -628,7 +628,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
             onClick={() => setSelected(null)}>
             <motion.div initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 16 }}
               className="w-full max-w-lg p-8"
-              style={{ backgroundColor: "#0d1e36", border: "1px solid rgba(74,144,217,0.2)" }}
+              style={{ backgroundColor: "#0d1e36", border: "1px solid rgba(232,80,10,0.2)" }}
               onClick={(e) => e.stopPropagation()}>
               <div className="flex items-start justify-between mb-6">
                 <div>
@@ -657,7 +657,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href={`mailto:${selected.email}`}
                   className="px-4 py-2 text-sm font-semibold text-white transition-all"
-                  style={{ backgroundColor: "#4a90d9" }}>
+                  style={{ backgroundColor: "#E8500A" }}>
                   Reply by Email
                 </a>
                 <button onClick={() => setSelected(null)}
@@ -691,15 +691,15 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(74,144,217,0.06) 0%, transparent 55%), #060e1c" }}>
+    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
       {/* Top bar */}
       <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: "rgba(74,144,217,0.15)", color: "#4a90d9" }}>ABQ</div>
+          <div className="w-8 h-8 flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}>ABQ</div>
           <div>
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
             <span className="mx-2 text-white/20">/</span>
-            <span className="text-sm font-medium" style={{ color: "#4a90d9" }}>Portal</span>
+            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>Portal</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -718,7 +718,7 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
           <div className="flex items-center gap-8 mb-12">
             {/* Photo */}
             <div className="relative flex-shrink-0 w-24 h-24 overflow-hidden"
-              style={{ border: "2px solid rgba(74,144,217,0.3)" }}>
+              style={{ border: "2px solid rgba(232,80,10,0.3)" }}>
               <Image
                 src="/images/alireza.jpeg"
                 alt="Alireza"
@@ -728,12 +728,12 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
               />
               {/* Blue overlay to match site palette */}
               <div className="absolute inset-0" style={{
-                background: "linear-gradient(160deg, rgba(74,144,217,0.12) 0%, rgba(6,14,28,0.25) 100%)"
+                background: "linear-gradient(160deg, rgba(232,80,10,0.12) 0%, rgba(6,14,28,0.25) 100%)"
               }} />
             </div>
             {/* Welcome text */}
             <div>
-              <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-1" style={{ color: "#4a90d9" }}>
+              <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-1" style={{ color: "#E8500A" }}>
                 ABQ ALSYF Portal
               </p>
               <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Welcome, Alireza.</h1>
@@ -753,14 +753,14 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
                     cursor: card.ready ? "pointer" : "default",
                     opacity: card.ready ? 1 : 0.6,
                   }}
-                  onMouseEnter={(e) => { if (card.ready) e.currentTarget.style.borderColor = "rgba(74,144,217,0.4)"; }}
+                  onMouseEnter={(e) => { if (card.ready) e.currentTarget.style.borderColor = "rgba(232,80,10,0.4)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = card.ready ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.05)"; }}
                 >
                   <div className="text-3xl mb-4">{card.icon}</div>
                   <h2 className="text-white font-bold text-lg mb-1">{card.title}</h2>
                   <p className="text-sm mb-3" style={{ color: "rgba(245,240,234,0.45)" }}>{card.desc}</p>
                   {card.ready ? (
-                    <span className="text-xs font-semibold" style={{ color: "#4a90d9" }}>Open →</span>
+                    <span className="text-xs font-semibold" style={{ color: "#E8500A" }}>Open →</span>
                   ) : (
                     <span className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Coming soon</span>
                   )}

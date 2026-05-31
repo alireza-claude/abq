@@ -119,7 +119,7 @@ function ServiceSection({
             ) : (
               <div
                 className="w-full h-full flex items-center justify-center"
-                style={{ backgroundColor: "rgba(74,144,217,0.06)", border: "2px dashed rgba(74,144,217,0.2)" }}
+                style={{ backgroundColor: "rgba(232,80,10,0.06)", border: "2px dashed rgba(232,80,10,0.2)" }}
               >
                 <span className="text-white/20 text-sm tracking-widest uppercase">Photo coming soon</span>
               </div>
@@ -163,7 +163,7 @@ function ServiceSection({
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-accent text-white font-semibold text-sm hover:bg-[#3a7fc9] transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-accent text-white font-semibold text-sm hover:bg-[#C0391A] transition-colors duration-200"
             >
               Request a Quote →
             </Link>
@@ -217,7 +217,7 @@ export default function ServicesPage() {
             className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(74,144,217,0.1) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(232,80,10,0.1) 0%, transparent 70%)",
             }}
           />
         </div>

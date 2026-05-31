@@ -118,7 +118,7 @@ export default function FeaturedProjects() {
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
                   <span
                     className="inline-block px-2 py-1 text-white text-[10px] font-bold tracking-wider uppercase mb-2 self-start"
-                    style={{ backgroundColor: "#4a90d9" }}
+                    style={{ backgroundColor: "#E8500A" }}
                   >
                     {project.category}
                   </span>

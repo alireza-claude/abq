@@ -51,7 +51,7 @@ function TerrainLines() {
     >
       <defs>
         <linearGradient id="terrainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#4a90d9" stopOpacity="0.6" />
+          <stop offset="0%" stopColor="#E8500A" stopOpacity="0.6" />
           <stop offset="100%" stopColor="#1e4d8c" stopOpacity="0.3" />
         </linearGradient>
       </defs>
@@ -78,7 +78,7 @@ function TerrainLines() {
             cx={col * 100 + 30}
             cy={row * 120 + 40}
             r="1.2"
-            fill="#4a90d9"
+            fill="#E8500A"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 0.2, scale: 1 }}
             transition={{ delay: 1.2 + (row + col) * 0.018, duration: 0.3 }}
@@ -111,7 +111,7 @@ export default function Hero() {
           className="absolute top-[18%] left-[8%] w-[700px] h-[700px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(74,144,217,0.14) 0%, transparent 68%)",
+              "radial-gradient(circle, rgba(232,80,10,0.14) 0%, transparent 68%)",
           }}
         />
         <div
@@ -188,7 +188,7 @@ export default function Hero() {
                 {i === headline.length - 1 ? (
                   <>
                     EARTH
-                    <span style={{ color: "#4a90d9" }}>.</span>
+                    <span style={{ color: "#E8500A" }}>.</span>
                   </>
                 ) : (
                   word

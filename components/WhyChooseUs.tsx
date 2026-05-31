@@ -77,12 +77,12 @@ export default function WhyChooseUs() {
                 {/* Animated check */}
                 <div
                   className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
-                  style={{ backgroundColor: "rgba(74,144,217,0.12)" }}
+                  style={{ backgroundColor: "rgba(232,80,10,0.12)" }}
                 >
                   <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <motion.path
                       d="M2.5 7L5.5 10L11.5 4"
-                      stroke="#4a90d9"
+                      stroke="#E8500A"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"

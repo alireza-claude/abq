@@ -81,7 +81,7 @@ export default function Testimonials() {
                   <svg key={s} width="13" height="13" viewBox="0 0 14 14" aria-hidden="true">
                     <path
                       d="M7 1L8.6 5.5H13.5L9.7 8.2L11.3 12.7L7 10L2.7 12.7L4.3 8.2L0.5 5.5H5.4L7 1Z"
-                      fill="#4a90d9"
+                      fill="#E8500A"
                     />
                   </svg>
                 ))}
@@ -99,7 +99,7 @@ export default function Testimonials() {
               <div className="flex items-center gap-3">
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center text-accent font-bold text-sm flex-shrink-0"
-                  style={{ backgroundColor: "rgba(74,144,217,0.18)" }}
+                  style={{ backgroundColor: "rgba(232,80,10,0.18)" }}
                 >
                   {t.author[0]}
                 </div>
@@ -133,7 +133,7 @@ export default function Testimonials() {
               className="h-2 rounded-full transition-all duration-300"
               style={{
                 width: i === active ? "24px" : "8px",
-                backgroundColor: i === active ? "#4a90d9" : "rgba(255,255,255,0.2)",
+                backgroundColor: i === active ? "#E8500A" : "rgba(255,255,255,0.2)",
               }}
             />
           ))}

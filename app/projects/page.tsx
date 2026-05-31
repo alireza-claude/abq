@@ -47,7 +47,7 @@ function ProjectCard({ project, i }: { project: (typeof projects)[0]; i: number 
       <div className="absolute inset-0 p-5 flex flex-col justify-end">
         <span
           className="inline-block px-2 py-0.5 text-white text-[10px] font-bold tracking-widest uppercase mb-2 self-start"
-          style={{ backgroundColor: "#4a90d9" }}
+          style={{ backgroundColor: "#E8500A" }}
         >
           {project.category}
         </span>
@@ -89,7 +89,7 @@ export default function ProjectsPage() {
             className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full"
             style={{
               background:
-                "radial-gradient(circle, rgba(74,144,217,0.09) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(232,80,10,0.09) 0%, transparent 70%)",
             }}
           />
         </div>
@@ -150,12 +150,12 @@ export default function ProjectsPage() {
                 className="px-5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-300"
                 style={{
                   backgroundColor:
-                    activeFilter === filter ? "#4a90d9" : "rgba(255,255,255,0.04)",
+                    activeFilter === filter ? "#E8500A" : "rgba(255,255,255,0.04)",
                   color:
                     activeFilter === filter ? "#ffffff" : "rgba(255,255,255,0.45)",
                   border: `1px solid ${
                     activeFilter === filter
-                      ? "#4a90d9"
+                      ? "#E8500A"
                       : "rgba(255,255,255,0.08)"
                   }`,
                 }}

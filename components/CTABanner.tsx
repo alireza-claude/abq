@@ -27,7 +27,7 @@ export default function CTABanner() {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] rounded-full"
           style={{
             background:
-              "radial-gradient(ellipse, rgba(74,144,217,0.15) 0%, transparent 70%)",
+              "radial-gradient(ellipse, rgba(232,80,10,0.15) 0%, transparent 70%)",
           }}
         />
       </div>
