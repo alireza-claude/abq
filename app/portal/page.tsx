@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
+import Image from "next/image";
 
 const AUTH_KEY = "abq_portal_auth";
 const VALID_USER = "Alireza";
@@ -645,9 +646,30 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
 
       <main className="max-w-5xl mx-auto px-6 py-12">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <div className="mb-10">
-            <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Welcome, Alireza.</h1>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>ABQ ALSYF Management Portal</p>
+          <div className="flex items-center gap-8 mb-12">
+            {/* Photo */}
+            <div className="relative flex-shrink-0 w-24 h-24 overflow-hidden"
+              style={{ border: "2px solid rgba(74,144,217,0.3)" }}>
+              <Image
+                src="/images/alireza.jpeg"
+                alt="Alireza"
+                fill
+                className="object-cover object-top"
+                style={{ filter: "brightness(0.88) contrast(1.05) saturate(0.85)" }}
+              />
+              {/* Blue overlay to match site palette */}
+              <div className="absolute inset-0" style={{
+                background: "linear-gradient(160deg, rgba(74,144,217,0.12) 0%, rgba(6,14,28,0.25) 100%)"
+              }} />
+            </div>
+            {/* Welcome text */}
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-1" style={{ color: "#4a90d9" }}>
+                ABQ ALSYF Portal
+              </p>
+              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Welcome, Alireza.</h1>
+              <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>ABQ ALSYF Management Portal</p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
