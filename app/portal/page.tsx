@@ -204,13 +204,14 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
   function handleDownload(name: string) {
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
     const url = data.publicUrl;
-    const ext = name.split(".").pop()?.toLowerCase();
-    // Office files → Google Docs Viewer
-    if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext || "")) {
-      window.open(`https://docs.google.com/viewer?url=${encodeURIComponent(url)}`, "_blank");
-    } else {
-      window.open(url, "_blank");
-    }
+    // Use anchor with download attribute — triggers save/open dialog on mobile
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   function handleDrop(e: React.DragEvent) {
