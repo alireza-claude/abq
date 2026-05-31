@@ -534,8 +534,8 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
           )}
 
           <div style={{ border: "1px solid rgba(255,255,255,0.07)", backgroundColor: "rgba(255,255,255,0.015)" }}>
-            {/* Header */}
-            <div className="grid grid-cols-12 px-5 py-3 border-b text-[10px] font-bold tracking-[0.15em] uppercase"
+            {/* Header — desktop only */}
+            <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b text-[10px] font-bold tracking-[0.15em] uppercase"
               style={{ borderColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.25)" }}>
               <span className="col-span-3">Name</span>
               <span className="col-span-3">Email</span>
@@ -559,23 +559,42 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
               inquiries.map((inq, i) => (
                 <motion.div key={inq.id}
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.04 }}
-                  className="grid grid-cols-12 items-center px-5 py-4 border-b transition-colors cursor-pointer"
+                  className="border-b transition-colors cursor-pointer"
                   style={{ borderColor: "rgba(255,255,255,0.04)" }}
                   onClick={() => setSelected(inq)}
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.025)"}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}>
-                  <div className="col-span-3">
-                    <p className="text-sm text-white font-medium">{inq.name}</p>
-                    {inq.company && <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{inq.company}</p>}
+
+                  {/* Mobile layout */}
+                  <div className="flex sm:hidden items-center justify-between px-4 py-3.5 gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm text-white font-medium">{inq.name}</p>
+                      <p className="text-xs truncate mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{inq.email}</p>
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <span className="text-[10px] font-semibold px-2 py-0.5" style={{ backgroundColor: "rgba(74,144,217,0.1)", color: "#4a90d9" }}>
+                          {serviceLabels[inq.service] || inq.service}
+                        </span>
+                        <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>{formatDate(inq.created_at)}</span>
+                      </div>
+                    </div>
+                    <span className="text-xs flex-shrink-0" style={{ color: "rgba(74,144,217,0.6)" }}>View →</span>
                   </div>
-                  <span className="col-span-3 text-sm truncate" style={{ color: "rgba(255,255,255,0.55)" }}>{inq.email}</span>
-                  <span className="col-span-2">
-                    <span className="text-[10px] font-semibold px-2 py-1" style={{ backgroundColor: "rgba(74,144,217,0.1)", color: "#4a90d9" }}>
-                      {serviceLabels[inq.service] || inq.service}
+
+                  {/* Desktop layout */}
+                  <div className="hidden sm:grid grid-cols-12 items-center px-5 py-4">
+                    <div className="col-span-3">
+                      <p className="text-sm text-white font-medium">{inq.name}</p>
+                      {inq.company && <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{inq.company}</p>}
+                    </div>
+                    <span className="col-span-3 text-sm truncate" style={{ color: "rgba(255,255,255,0.55)" }}>{inq.email}</span>
+                    <span className="col-span-2">
+                      <span className="text-[10px] font-semibold px-2 py-1" style={{ backgroundColor: "rgba(74,144,217,0.1)", color: "#4a90d9" }}>
+                        {serviceLabels[inq.service] || inq.service}
+                      </span>
                     </span>
-                  </span>
-                  <span className="col-span-3 text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{formatDate(inq.created_at)}</span>
-                  <span className="col-span-1 text-right text-xs" style={{ color: "rgba(74,144,217,0.6)" }}>View →</span>
+                    <span className="col-span-3 text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{formatDate(inq.created_at)}</span>
+                    <span className="col-span-1 text-right text-xs" style={{ color: "rgba(74,144,217,0.6)" }}>View →</span>
+                  </div>
                 </motion.div>
               ))
             )}
