@@ -458,6 +458,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Inquiry | null>(null);
   const [fetchError, setFetchError] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -474,6 +475,14 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
   }
 
   useEffect(() => { load(); }, []);
+
+  async function deleteInquiry(id: string) {
+    setDeletingId(id);
+    await supabase.from("inquiries").delete().eq("id", id);
+    setInquiries((prev) => prev.filter((inq) => inq.id !== id));
+    setSelected(null);
+    setDeletingId(null);
+  }
 
   function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -637,7 +646,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
                   <span className="leading-relaxed" style={{ color: "rgba(255,255,255,0.75)" }}>{selected.message}</span>
                 </div>
               </div>
-              <div className="mt-6 flex gap-3">
+              <div className="mt-6 flex flex-wrap gap-3">
                 <a href={`mailto:${selected.email}`}
                   className="px-4 py-2 text-sm font-semibold text-white transition-all"
                   style={{ backgroundColor: "#4a90d9" }}>
@@ -647,6 +656,13 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
                   className="px-4 py-2 text-sm font-semibold border transition-all"
                   style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }}>
                   Close
+                </button>
+                <button
+                  onClick={() => deleteInquiry(selected.id)}
+                  disabled={deletingId === selected.id}
+                  className="px-4 py-2 text-sm font-semibold border transition-all disabled:opacity-40 ml-auto"
+                  style={{ borderColor: "rgba(239,68,68,0.3)", color: "rgba(239,68,68,0.7)" }}>
+                  {deletingId === selected.id ? "Deleting…" : "🗑 Delete"}
                 </button>
               </div>
             </motion.div>
