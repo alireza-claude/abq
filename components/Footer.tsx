@@ -44,16 +44,12 @@ export default function Footer() {
           {/* ── Brand ── */}
           <div className="md:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-6" aria-label="ABQ ALSYF Project Management Services home">
-              <div
-                className="w-10 h-10 flex-shrink-0"
-                style={{
-                  backgroundImage: "url('/images/logo.jpg')",
-                  backgroundSize: "195px auto",
-                  backgroundPosition: "-77px -8px",
-                  backgroundRepeat: "no-repeat",
-                  mixBlendMode: "multiply",
-                }}
-                aria-label="ABQ ALSYF Logo"
+              <img
+                src="/images/logo.png"
+                alt="ABQ ALSYF Logo"
+                width={40}
+                height={40}
+                className="flex-shrink-0"
               />
               <div className="flex flex-col leading-none">
                 <span className="font-bold text-[17px] tracking-tight text-white">

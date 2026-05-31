@@ -85,13 +85,10 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
       >
         {/* Logo */}
         <div className="text-center mb-10">
-          <div
-            className="inline-flex items-center justify-center w-14 h-14 mb-5"
-            style={{ backgroundColor: "rgba(232,80,10,0.12)", border: "1px solid rgba(232,80,10,0.2)" }}
-          >
-            <span className="text-[10px] font-black tracking-widest" style={{ color: "#E8500A" }}>ABQ</span>
+          <div className="inline-flex items-center justify-center">
+            <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={204} height={204} />
           </div>
-          <h1 className="text-white font-extrabold text-2xl tracking-tight">Portal Login</h1>
+          <h1 className="text-white font-extrabold text-2xl tracking-tight -mt-6">Portal Login</h1>
           <p className="mt-2 text-sm" style={{ color: "rgba(245,240,234,0.38)" }}>
             ABQ ALSYF · Private Access
           </p>
@@ -233,13 +230,8 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
         className="flex items-center justify-between px-8 py-4 border-b"
         style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}
       >
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 flex items-center justify-center text-[9px] font-black"
-            style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}
-          >
-            ABQ
-          </div>
+        <div className="flex items-center gap-1.5">
+          <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48} />
           <div>
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
             <span className="mx-2 text-white/20">/</span>
@@ -500,8 +492,8 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
       {/* Top bar */}
       <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}>ABQ</div>
+        <div className="flex items-center gap-1.5">
+          <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48} />
           <div>
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
             <span className="mx-2 text-white/20">/</span>
@@ -694,8 +686,8 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
       {/* Top bar */}
       <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center text-[9px] font-black" style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}>ABQ</div>
+        <div className="flex items-center gap-1.5">
+          <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48} />
           <div>
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
             <span className="mx-2 text-white/20">/</span>

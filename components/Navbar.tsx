@@ -37,17 +37,13 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-20">
 
             {/* ── Logo ── */}
-            <Link href="/" className="flex items-center gap-3 group" aria-label="ABQ ALSYF Project Management Services home">
-              <div
-                className="w-10 h-10 flex-shrink-0"
-                style={{
-                  backgroundImage: "url('/images/logo.jpg')",
-                  backgroundSize: "195px auto",
-                  backgroundPosition: "-77px -8px",
-                  backgroundRepeat: "no-repeat",
-                  mixBlendMode: "multiply",
-                }}
-                aria-label="ABQ ALSYF Logo"
+            <Link href="/" className="flex items-center gap-1.5 group" aria-label="ABQ ALSYF Project Management Services home">
+              <Image
+                src="/images/logo.png"
+                alt="ABQ ALSYF Logo"
+                width={68}
+                height={68}
+                className="flex-shrink-0"
               />
               <div className="flex flex-col leading-none">
                 <span className="font-bold text-[17px] tracking-tight text-white">
