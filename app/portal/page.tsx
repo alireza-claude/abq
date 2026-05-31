@@ -268,7 +268,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                 ← Back to Dashboard
               </button>
             )}
-            <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Projects & Files</h1>
+            <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Files</h1>
             <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
               Upload and manage your documents, images, and PDFs.
             </p>
@@ -676,8 +676,8 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
 // ─── Main Dashboard ───────────────────────────────────────
 function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string) => void; onLogout: () => void }) {
   const cards = [
-    { id: "files", title: "Projects & Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
-    { id: "team", title: "Team", desc: "View and update team members.", icon: "👥", ready: false },
+    { id: "files", title: "Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
+    { id: "projects", title: "Projects", desc: "Manage active and upcoming projects.", icon: "🏗️", ready: false },
     { id: "inquiries", title: "Inquiries", desc: "Review quote requests from the website.", icon: "📬", ready: true },
     { id: "settings", title: "Settings", desc: "Site settings and configuration.", icon: "⚙️", ready: false },
   ];
