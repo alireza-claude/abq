@@ -203,7 +203,14 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
 
   function handleDownload(name: string) {
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
-    window.open(data.publicUrl, "_blank");
+    const url = data.publicUrl;
+    const ext = name.split(".").pop()?.toLowerCase();
+    // Office files → Google Docs Viewer
+    if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext || "")) {
+      window.open(`https://docs.google.com/viewer?url=${encodeURIComponent(url)}`, "_blank");
+    } else {
+      window.open(url, "_blank");
+    }
   }
 
   function handleDrop(e: React.DragEvent) {
