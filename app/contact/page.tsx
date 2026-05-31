@@ -3,6 +3,12 @@
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://dobakloaicmugeifdhpp.supabase.co",
+  "sb_publishable_rm3aseepmsO7xtzdMaIWKA_A9tow5KM"
+);
 
 type FormData = {
   name: string;
@@ -107,10 +113,45 @@ export default function ContactPage() {
       return;
     }
     setLoading(true);
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      // 1. Send email via Web3Forms
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: "9a031078-ed55-4ff7-ae08-59f461deb19a",
+          subject: `New Quote Request from ${formData.name}`,
+          from_name: "ABQ ALSYF Website",
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          message: formData.description,
+        }),
+      });
+      const data = await response.json();
+
+      // 2. Save to Supabase (regardless of email result)
+      await supabase.from("inquiries").insert({
+        name: formData.name,
+        company: formData.company,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.service,
+        message: formData.description,
+      });
+
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        alert("Something went wrong. Please try again or call us directly.");
+      }
+    } catch {
+      alert("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const inputBase =
