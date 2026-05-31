@@ -100,7 +100,7 @@ export const team: TeamMember[] = [
     id: 1,
     name: "",
     role: "",
-    image: "",
+    image: "/images/alireza.jpeg",
     bio: "",
   },
   {
