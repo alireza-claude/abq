@@ -5,10 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 
-const AUTH_KEY = "abq_portal_auth";
+const AUTH_KEY  = "abq_portal_auth";
 const PASS_KEY  = "abq_portal_pass";
+const ROLE_KEY  = "abq_portal_role";
+const USER_KEY  = "abq_portal_user";
 const VALID_USER = "Alireza";
 const VALID_PASS = "6272140";
+const USERS_FILE = "portal-users.json";
+
+type UserRole = "admin" | "viewer";
+interface PortalUser { username: string; password: string; }
 
 function getStoredPass() {
   if (typeof window === "undefined") return VALID_PASS;
@@ -56,28 +62,98 @@ function fileType(name: string, mime: string): string {
 }
 
 // ─── Shared Portal Header ────────────────────────────────
-function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void }) {
-  const [showModal, setShowModal] = useState(false);
+function PortalHeader({ title, onLogout, role, currentUser }: {
+  title: string; onLogout: () => void; role: UserRole; currentUser: string;
+}) {
+  const [showDropdown, setShowDropdown] = useState(false);
+  // Change Password modal
+  const [showPassModal, setShowPassModal] = useState(false);
   const [cur, setCur]       = useState("");
   const [next, setNext]     = useState("");
   const [confirm, setConfirm] = useState("");
-  const [err, setErr]       = useState("");
-  const [ok, setOk]         = useState(false);
+  const [passErr, setPassErr] = useState("");
+  const [passOk, setPassOk]  = useState(false);
+  // Add User modal (admin only)
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [addErr, setAddErr]   = useState("");
+  const [addOk, setAddOk]     = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  function closeModal() {
-    setShowModal(false);
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function closePassModal() {
+    setShowPassModal(false);
     setCur(""); setNext(""); setConfirm("");
-    setErr(""); setOk(false);
+    setPassErr(""); setPassOk(false);
   }
 
-  function handleChangePass(e: React.FormEvent) {
+  async function handleChangePass(e: React.FormEvent) {
     e.preventDefault();
-    setErr("");
-    if (cur !== getStoredPass()) { setErr("Current password is incorrect."); return; }
-    if (next.length < 4)         { setErr("New password must be at least 4 characters."); return; }
-    if (next !== confirm)        { setErr("Passwords do not match."); return; }
-    localStorage.setItem(PASS_KEY, next);
-    setOk(true);
+    setPassErr("");
+    if (role === "admin") {
+      if (cur !== getStoredPass()) { setPassErr("Current password is incorrect."); return; }
+      if (next.length < 4)         { setPassErr("New password must be at least 4 characters."); return; }
+      if (next !== confirm)        { setPassErr("Passwords do not match."); return; }
+      localStorage.setItem(PASS_KEY, next);
+      setPassOk(true);
+    } else {
+      // Viewer: update in Supabase users file
+      try {
+        const { data } = await supabase.storage.from(BUCKET).download(USERS_FILE);
+        if (!data) { setPassErr("Could not load user data."); return; }
+        const users: PortalUser[] = JSON.parse(await data.text());
+        const idx = users.findIndex(u => u.username === currentUser);
+        if (idx === -1) { setPassErr("User not found."); return; }
+        if (users[idx].password !== cur) { setPassErr("Current password is incorrect."); return; }
+        if (next.length < 4) { setPassErr("New password must be at least 4 characters."); return; }
+        if (next !== confirm) { setPassErr("Passwords do not match."); return; }
+        users[idx].password = next;
+        const blob = new Blob([JSON.stringify(users)], { type: "application/json" });
+        await supabase.storage.from(BUCKET).upload(USERS_FILE, blob, { upsert: true });
+        setPassOk(true);
+      } catch { setPassErr("An error occurred. Please try again."); }
+    }
+  }
+
+  function closeAddUser() {
+    setShowAddUser(false);
+    setNewUsername(""); setNewPassword("");
+    setAddErr(""); setAddOk(false);
+  }
+
+  async function handleAddUser(e: React.FormEvent) {
+    e.preventDefault();
+    setAddErr("");
+    if (!newUsername.trim()) { setAddErr("Username is required."); return; }
+    if (newUsername.trim().toLowerCase() === VALID_USER.toLowerCase()) {
+      setAddErr("That username is reserved."); return;
+    }
+    if (newPassword.length < 4) { setAddErr("Password must be at least 4 characters."); return; }
+    setAddLoading(true);
+    try {
+      let users: PortalUser[] = [];
+      const { data } = await supabase.storage.from(BUCKET).download(USERS_FILE);
+      if (data) { try { users = JSON.parse(await data.text()); } catch { users = []; } }
+      if (users.find(u => u.username.toLowerCase() === newUsername.trim().toLowerCase())) {
+        setAddErr("A user with that username already exists."); setAddLoading(false); return;
+      }
+      users.push({ username: newUsername.trim(), password: newPassword });
+      const blob = new Blob([JSON.stringify(users)], { type: "application/json" });
+      await supabase.storage.from(BUCKET).upload(USERS_FILE, blob, { upsert: true });
+      setAddOk(true);
+    } catch { setAddErr("Failed to save user. Please try again."); }
+    setAddLoading(false);
   }
 
   return (
@@ -103,18 +179,57 @@ function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void
           </div>
         </div>
 
-        {/* Right: username + sign out */}
+        {/* Right: username dropdown + sign out */}
         <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-1 text-xs sm:text-sm transition-colors group"
-            style={{ color: "rgba(255,255,255,0.4)" }}
-            title="Change password"
+          {/* Username dropdown */}
+          <div ref={dropdownRef} className="relative">
+            <button
+              onClick={() => setShowDropdown((v) => !v)}
+              className="flex items-center gap-1 text-xs sm:text-sm transition-colors group"
+              style={{ color: "rgba(255,255,255,0.4)" }}
           >
             <span>👤</span>
-            <span className="group-hover:text-white transition-colors">Alireza</span>
+            <span className="group-hover:text-white transition-colors">{currentUser}</span>
             <span className="text-[9px] ml-0.5" style={{ color: "rgba(255,255,255,0.2)" }}>▾</span>
           </button>
+
+            {/* Dropdown menu */}
+            <AnimatePresence>
+              {showDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.15 }}
+                  className="absolute right-0 top-full mt-2 w-48 py-1 z-40"
+                  style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 24px rgba(0,0,0,0.4)" }}
+                >
+                  <button
+                    onClick={() => { setShowDropdown(false); setShowPassModal(true); }}
+                    className="w-full text-left px-4 py-2.5 text-xs transition-colors"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
+                  >
+                    🔑 Change Password
+                  </button>
+                  {role === "admin" && (
+                    <>
+                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", margin: "4px 0" }} />
+                      <button
+                        onClick={() => { setShowDropdown(false); setShowAddUser(true); }}
+                        className="w-full text-left px-4 py-2.5 text-xs transition-colors"
+                        style={{ color: "rgba(255,255,255,0.6)" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
+                      >
+                        👤 Add User
+                      </button>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <button
             onClick={onLogout}
             className="px-2.5 sm:px-4 py-1.5 text-xs font-semibold border transition-colors"
@@ -129,39 +244,31 @@ function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void
 
       {/* Change Password Modal */}
       <AnimatePresence>
-        {showModal && (
+        {showPassModal && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center px-4"
             style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
-            onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
+            onClick={(e) => { if (e.target === e.currentTarget) closePassModal(); }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 12 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }} transition={{ duration: 0.2 }}
               className="w-full max-w-sm p-8"
               style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}
             >
-              {ok ? (
+              {passOk ? (
                 <div className="text-center py-4">
                   <div className="text-4xl mb-4">✅</div>
                   <h2 className="text-white font-bold text-lg mb-2">Password Updated</h2>
-                  <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
-                    Your new password is saved. Use it next time you log in.
-                  </p>
-                  <button onClick={closeModal}
-                    className="w-full py-2.5 text-sm font-bold text-white"
-                    style={{ backgroundColor: "#E8500A" }}>
-                    Done
-                  </button>
+                  <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>Your new password is saved.</p>
+                  <button onClick={closePassModal} className="w-full py-2.5 text-sm font-bold text-white" style={{ backgroundColor: "#E8500A" }}>Done</button>
                 </div>
               ) : (
                 <>
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-white font-bold text-lg">Change Password</h2>
-                    <button onClick={closeModal} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+                    <button onClick={closePassModal} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
                   </div>
                   <form onSubmit={handleChangePass} className="space-y-4">
                     {[
@@ -170,32 +277,94 @@ function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void
                       { label: "Confirm Password", val: confirm, set: setConfirm },
                     ].map(({ label, val, set }) => (
                       <div key={label}>
-                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2"
-                          style={{ color: "rgba(255,255,255,0.3)" }}>{label}</label>
-                        <input
-                          type="password" value={val} onChange={(e) => set(e.target.value)}
-                          required autoComplete="off"
+                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>{label}</label>
+                        <input type="password" value={val} onChange={(e) => set(e.target.value)} required autoComplete="off"
                           className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
                           style={{ borderColor: "rgba(255,255,255,0.1)" }}
                           onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                          onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
-                        />
+                          onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
                       </div>
                     ))}
                     <AnimatePresence>
-                      {err && (
+                      {passErr && (
                         <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                          className="text-xs text-center" style={{ color: "#f87171" }}>
-                          {err}
-                        </motion.p>
+                          className="text-xs text-center" style={{ color: "#f87171" }}>{passErr}</motion.p>
                       )}
                     </AnimatePresence>
-                    <button type="submit"
-                      className="w-full py-3 text-sm font-bold text-white mt-2 transition-all active:scale-[0.98]"
+                    <button type="submit" className="w-full py-3 text-sm font-bold text-white mt-2 transition-all active:scale-[0.98]"
                       style={{ backgroundColor: "#E8500A" }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#C0391A"}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#E8500A"}>
                       Update Password →
+                    </button>
+                  </form>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Add User Modal (admin only) */}
+      <AnimatePresence>
+        {showAddUser && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
+            onClick={(e) => { if (e.target === e.currentTarget) closeAddUser(); }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }} transition={{ duration: 0.2 }}
+              className="w-full max-w-sm p-8"
+              style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}
+            >
+              {addOk ? (
+                <div className="text-center py-4">
+                  <div className="text-4xl mb-4">✅</div>
+                  <h2 className="text-white font-bold text-lg mb-2">User Created</h2>
+                  <p className="text-sm mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                    <span className="text-white font-semibold">{newUsername}</span> can now log in with read-only access.
+                  </p>
+                  <p className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.25)" }}>They can view all sections but cannot make changes.</p>
+                  <button onClick={closeAddUser} className="w-full py-2.5 text-sm font-bold text-white" style={{ backgroundColor: "#E8500A" }}>Done</button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-white font-bold text-lg">Add User</h2>
+                    <button onClick={closeAddUser} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+                  </div>
+                  <p className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    The new user will have <span style={{ color: "#60a5fa" }}>read-only</span> access to all portal sections.
+                  </p>
+                  <form onSubmit={handleAddUser} className="space-y-4">
+                    {[
+                      { label: "Username", val: newUsername, set: setNewUsername, type: "text" },
+                      { label: "Password", val: newPassword, set: setNewPassword, type: "password" },
+                    ].map(({ label, val, set, type }) => (
+                      <div key={label}>
+                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>{label}</label>
+                        <input type={type} value={val} onChange={(e) => set(e.target.value)} required autoComplete="off"
+                          className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
+                          style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                          onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                          onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                      </div>
+                    ))}
+                    <AnimatePresence>
+                      {addErr && (
+                        <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                          className="text-xs text-center" style={{ color: "#f87171" }}>{addErr}</motion.p>
+                      )}
+                    </AnimatePresence>
+                    <button type="submit" disabled={addLoading}
+                      className="w-full py-3 text-sm font-bold text-white mt-2 transition-all active:scale-[0.98] disabled:opacity-50"
+                      style={{ backgroundColor: "#E8500A" }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#C0391A"}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#E8500A"}>
+                      {addLoading ? "Saving…" : "Create User →"}
                     </button>
                   </form>
                 </>
@@ -209,7 +378,7 @@ function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void
 }
 
 // ─── Login ────────────────────────────────────────────────
-function LoginPage({ onLogin }: { onLogin: () => void }) {
+function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) => void }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -222,8 +391,26 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
     await new Promise((r) => setTimeout(r, 500));
     if (username === VALID_USER && password === getStoredPass()) {
       localStorage.setItem(AUTH_KEY, "1");
-      onLogin();
+      localStorage.setItem(ROLE_KEY, "admin");
+      localStorage.setItem(USER_KEY, username);
+      onLogin("admin", username);
     } else {
+      // Check viewer users from Supabase
+      try {
+        const { data, error: dlErr } = await supabase.storage.from(BUCKET).download(USERS_FILE);
+        if (!dlErr && data) {
+          const users: PortalUser[] = JSON.parse(await data.text());
+          const found = users.find(u => u.username === username && u.password === password);
+          if (found) {
+            localStorage.setItem(AUTH_KEY, "1");
+            localStorage.setItem(ROLE_KEY, "viewer");
+            localStorage.setItem(USER_KEY, username);
+            onLogin("viewer", username);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch { /* no viewer users file yet */ }
       setError("Invalid username or password.");
     }
     setLoading(false);
@@ -315,7 +502,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
 }
 
 // ─── Dashboard ────────────────────────────────────────────
-function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => void }) {
+function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: () => void; role: UserRole }) {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -331,7 +518,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
       sortBy: { column: "updated_at", order: "desc" },
     });
     if (error) setError(error.message);
-    else setFiles(((data as FileItem[]) || []).filter(f => f.name !== LEADS_STATE_FILE));
+    else setFiles(((data as FileItem[]) || []).filter(f => f.name !== LEADS_STATE_FILE && f.name !== USERS_FILE));
     setLoading(false);
   }
 
@@ -376,7 +563,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
         background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c",
       }}
     >
-      <PortalHeader title="Portal" onLogout={onLogout} />
+      <PortalHeader title="Files" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
 
       {/* Main */}
       <main className="max-w-5xl mx-auto px-6 py-10">
@@ -394,11 +581,12 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
             )}
             <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Files</h1>
             <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
-              Upload and manage your documents, images, and PDFs.
+              {role === "admin" ? "Upload and manage your documents, images, and PDFs." : "View and open your documents, images, and PDFs."}
             </p>
           </div>
 
-          {/* Upload zone */}
+          {/* Upload zone — admin only */}
+          {role === "admin" && (<>
           <div
             onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
             onDragLeave={() => setDragOver(false)}
@@ -432,6 +620,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
           </div>
           <input ref={fileInput} type="file" className="hidden" onChange={(e) => e.target.files?.[0] && uploadFile(e.target.files[0])}
             accept="image/*,application/pdf,text/*,.doc,.docx,.xls,.xlsx" />
+          </>)}
 
           {/* Error */}
           <AnimatePresence>
@@ -497,11 +686,13 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                           style={{ backgroundColor: "rgba(232,80,10,0.15)", color: "#E8500A" }}>
                           Open
                         </button>
-                        <button onClick={() => handleDelete(file.name)} disabled={deleting === file.name}
-                          className="px-3 py-1.5 text-xs font-semibold disabled:opacity-40"
-                          style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "rgba(239,68,68,0.7)" }}>
-                          {deleting === file.name ? "…" : "Del"}
-                        </button>
+                        {role === "admin" && (
+                          <button onClick={() => handleDelete(file.name)} disabled={deleting === file.name}
+                            className="px-3 py-1.5 text-xs font-semibold disabled:opacity-40"
+                            style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "rgba(239,68,68,0.7)" }}>
+                            {deleting === file.name ? "…" : "Del"}
+                          </button>
+                        )}
                       </div>
                     </div>
 
@@ -525,14 +716,16 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
                       >
                         Open
                       </button>
-                      <button onClick={() => handleDelete(file.name)} disabled={deleting === file.name}
-                        className="px-3 py-1.5 text-xs font-semibold transition-all disabled:opacity-40"
-                        style={{ backgroundColor: "rgba(239,68,68,0.08)", color: "rgba(239,68,68,0.7)", border: "1px solid rgba(239,68,68,0.2)" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.18)"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.08)"; }}
-                      >
-                        {deleting === file.name ? "…" : "Delete"}
-                      </button>
+                      {role === "admin" && (
+                        <button onClick={() => handleDelete(file.name)} disabled={deleting === file.name}
+                          className="px-3 py-1.5 text-xs font-semibold transition-all disabled:opacity-40"
+                          style={{ backgroundColor: "rgba(239,68,68,0.08)", color: "rgba(239,68,68,0.7)", border: "1px solid rgba(239,68,68,0.2)" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.18)"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.08)"; }}
+                        >
+                          {deleting === file.name ? "…" : "Delete"}
+                        </button>
+                      )}
                     </div>
                     </div>{/* end desktop */}
                   </motion.div>
@@ -577,7 +770,7 @@ const serviceLabels: Record<string, string> = {
   other: "Other",
 };
 
-function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: () => void }) {
+function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLogout: () => void; role: UserRole }) {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Inquiry | null>(null);
@@ -614,7 +807,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
 
   return (
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
-      <PortalHeader title="Inquiries" onLogout={onLogout} />
+      <PortalHeader title="Inquiries" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
 
       <main className="max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -762,13 +955,15 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
                   style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }}>
                   Close
                 </button>
-                <button
-                  onClick={() => deleteInquiry(selected.id)}
-                  disabled={deletingId === selected.id}
-                  className="px-4 py-2 text-sm font-semibold border transition-all disabled:opacity-40 ml-auto"
-                  style={{ borderColor: "rgba(239,68,68,0.3)", color: "rgba(239,68,68,0.7)" }}>
-                  {deletingId === selected.id ? "Deleting…" : "🗑 Delete"}
-                </button>
+                {role === "admin" && (
+                  <button
+                    onClick={() => deleteInquiry(selected.id)}
+                    disabled={deletingId === selected.id}
+                    className="px-4 py-2 text-sm font-semibold border transition-all disabled:opacity-40 ml-auto"
+                    style={{ borderColor: "rgba(239,68,68,0.3)", color: "rgba(239,68,68,0.7)" }}>
+                    {deletingId === selected.id ? "Deleting…" : "🗑 Delete"}
+                  </button>
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -974,7 +1169,7 @@ function defaultLeadState(lead: LeadItem): LeadState {
   return { status: "pending", notes: "", checkedTips: lead.tips.map(() => false) };
 }
 
-function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () => void }) {
+function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout: () => void; role: UserRole }) {
   const [activeDay, setActiveDay] = useState<1 | 2 | 3>(1);
   const [states, setStates] = useState<AllLeadStates>({});
   const [loading, setLoading] = useState(true);
@@ -1045,7 +1240,7 @@ function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () =
 
   return (
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
-      <PortalHeader title="Leads" onLogout={onLogout} />
+      <PortalHeader title="Leads" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
       {saving && (
         <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "rgba(255,255,255,0.3)" }}>
           Saving…
@@ -1187,18 +1382,21 @@ function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () =
                               <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "rgba(255,255,255,0.22)" }}>Status</p>
                               <div className="flex flex-wrap gap-2">
                                 {(Object.entries(STATUS_CONFIG) as [LeadStatus, typeof STATUS_CONFIG[LeadStatus]][]).map(([key, cfg]) => (
-                                  <button key={key} onClick={() => updateStatus(lead.id, key)}
+                                  <button key={key}
+                                    onClick={() => role === "admin" && updateStatus(lead.id, key)}
                                     className="px-3 py-1 text-xs font-semibold transition-all"
                                     style={{
                                       color: cfg.color,
                                       backgroundColor: st.status === key ? cfg.bg : "transparent",
                                       border: `1px solid ${st.status === key ? cfg.color : "rgba(255,255,255,0.08)"}`,
                                       opacity: st.status === key ? 1 : 0.5,
+                                      cursor: role === "viewer" ? "default" : "pointer",
                                     }}>
                                     {cfg.label}
                                   </button>
                                 ))}
                               </div>
+                              {role === "viewer" && <p className="text-[10px] mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>Read-only access</p>}
                             </div>
 
                             {/* Action tips */}
@@ -1206,9 +1404,10 @@ function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () =
                               <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.22)" }}>Action Tips</p>
                               <div className="space-y-2.5">
                                 {lead.tips.map((tip, idx) => (
-                                  <label key={idx} className="flex items-start gap-3 cursor-pointer">
+                                  <label key={idx} className={`flex items-start gap-3 ${role === "admin" ? "cursor-pointer" : "cursor-default"}`}>
                                     <input type="checkbox" checked={st.checkedTips[idx] ?? false}
-                                      onChange={() => toggleTip(lead.id, idx)}
+                                      onChange={() => role === "admin" && toggleTip(lead.id, idx)}
+                                      disabled={role === "viewer"}
                                       className="mt-0.5 shrink-0 accent-orange-500" />
                                     <span className="text-sm leading-relaxed transition-all" style={{
                                       color: st.checkedTips[idx] ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.6)",
@@ -1226,12 +1425,13 @@ function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () =
                               <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "rgba(255,255,255,0.22)" }}>Notes</p>
                               <textarea
                                 value={st.notes}
-                                onChange={(e) => updateNotes(lead.id, e.target.value)}
-                                placeholder="Write your notes here… e.g. spoke with Mr. Ahmed, call back Thursday."
+                                onChange={(e) => role === "admin" && updateNotes(lead.id, e.target.value)}
+                                readOnly={role === "viewer"}
+                                placeholder={role === "admin" ? "Write your notes here… e.g. spoke with Mr. Ahmed, call back Thursday." : "No notes."}
                                 rows={3}
                                 className="w-full bg-transparent border text-sm px-3 py-2 resize-none focus:outline-none transition-colors"
-                                style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)" }}
-                                onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                                style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)", cursor: role === "viewer" ? "default" : "text" }}
+                                onFocus={(e) => { if (role === "admin") e.target.style.borderColor = "#E8500A"; }}
                                 onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.08)"}
                               />
                             </div>
@@ -1251,7 +1451,7 @@ function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () =
 }
 
 // ─── Main Dashboard ───────────────────────────────────────
-function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string) => void; onLogout: () => void }) {
+function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate: (section: string) => void; onLogout: () => void; role: UserRole; currentUser: string }) {
   const cards = [
     { id: "projects", title: "Leads", desc: "Track your May 2026 target companies and outreach progress.", icon: "🎯", ready: true },
     { id: "inquiries", title: "Inquiries", desc: "Review quote requests from the website.", icon: "📬", ready: true },
@@ -1261,12 +1461,13 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
 
   return (
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
-      <PortalHeader title="Portal" onLogout={onLogout} />
+      <PortalHeader title="Portal" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
 
       <main className="max-w-5xl mx-auto px-6 py-12">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div className="flex items-center gap-8 mb-12">
-            {/* Photo */}
+            {/* Photo — admin only */}
+            {role === "admin" && (
             <div className="relative flex-shrink-0 w-24 h-24 overflow-hidden"
               style={{ border: "2px solid rgba(232,80,10,0.3)" }}>
               <Image
@@ -1276,17 +1477,17 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
                 className="object-cover object-top"
                 style={{ filter: "brightness(0.88) contrast(1.05) saturate(0.85)" }}
               />
-              {/* Blue overlay to match site palette */}
               <div className="absolute inset-0" style={{
                 background: "linear-gradient(160deg, rgba(232,80,10,0.12) 0%, rgba(6,14,28,0.25) 100%)"
               }} />
             </div>
+            )}
             {/* Welcome text */}
             <div>
               <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-1" style={{ color: "#E8500A" }}>
                 ABQ ALSYF Portal
               </p>
-              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Welcome, Alireza.</h1>
+              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Welcome, {currentUser}.</h1>
               <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>ABQ ALSYF Management Portal</p>
             </div>
           </div>
@@ -1327,10 +1528,17 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
 // ─── Page ─────────────────────────────────────────────────
 export default function PortalPage() {
   const [authed, setAuthed] = useState<boolean | null>(null);
+  const [role, setRole] = useState<UserRole>("viewer");
   const [section, setSection] = useState<string | null>(null);
 
   useEffect(() => {
-    setAuthed(localStorage.getItem(AUTH_KEY) === "1");
+    const isAuthed = localStorage.getItem(AUTH_KEY) === "1";
+    setAuthed(isAuthed);
+    // If authenticated but no role stored (old session), default to admin
+    const storedRole = localStorage.getItem(ROLE_KEY) as UserRole | null;
+    const resolvedRole: UserRole = storedRole ?? (isAuthed ? "admin" : "viewer");
+    if (isAuthed && !storedRole) localStorage.setItem(ROLE_KEY, "admin");
+    setRole(resolvedRole);
     // Read section from URL hash
     const hash = window.location.hash.replace("#", "");
     if (hash === "files" || hash === "inquiries" || hash === "projects") setSection(hash);
@@ -1355,7 +1563,10 @@ export default function PortalPage() {
 
   function handleLogout() {
     localStorage.removeItem(AUTH_KEY);
+    localStorage.removeItem(ROLE_KEY);
+    localStorage.removeItem(USER_KEY);
     setAuthed(false);
+    setRole("viewer");
     navigate(null);
   }
 
@@ -1367,23 +1578,23 @@ export default function PortalPage() {
     <AnimatePresence mode="wait">
       {!authed ? (
         <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <LoginPage onLogin={() => setAuthed(true)} />
+          <LoginPage onLogin={(r, u) => { localStorage.setItem(AUTH_KEY, "1"); localStorage.setItem(ROLE_KEY, r); localStorage.setItem(USER_KEY, u); setRole(r); setAuthed(true); }} />
         </motion.div>
       ) : section === "files" ? (
         <motion.div key="files" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <Dashboard onLogout={handleLogout} onBack={() => navigate(null)} />
+          <Dashboard onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
         </motion.div>
       ) : section === "inquiries" ? (
         <motion.div key="inquiries" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <InquiriesSection onLogout={handleLogout} onBack={() => navigate(null)} />
+          <InquiriesSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
         </motion.div>
       ) : section === "projects" ? (
         <motion.div key="projects" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <LeadsSection onLogout={handleLogout} onBack={() => navigate(null)} />
+          <LeadsSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
         </motion.div>
       ) : (
         <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-          <MainDashboard onNavigate={(s) => navigate(s)} onLogout={handleLogout} />
+          <MainDashboard onNavigate={(s) => navigate(s)} onLogout={handleLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
         </motion.div>
       )}
     </AnimatePresence>
