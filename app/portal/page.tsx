@@ -122,7 +122,7 @@ function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; e.currentTarget.style.color = "rgba(239,68,68,0.8)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}
           >
-            <span className="hidden sm:inline">Sign </span>Out
+            Sign Out
           </button>
         </div>
       </header>
@@ -331,7 +331,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
       sortBy: { column: "updated_at", order: "desc" },
     });
     if (error) setError(error.message);
-    else setFiles((data as FileItem[]) || []);
+    else setFiles(((data as FileItem[]) || []).filter(f => f.name !== LEADS_STATE_FILE));
     setLoading(false);
   }
 
@@ -359,15 +359,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
 
   function handleDownload(name: string) {
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(name);
-    const url = data.publicUrl;
-    // Use anchor with download attribute — triggers save/open dialog on mobile
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    window.open(data.publicUrl, "_blank", "noopener,noreferrer");
   }
 
   function handleDrop(e: React.DragEvent) {
