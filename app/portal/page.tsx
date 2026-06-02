@@ -6,8 +6,14 @@ import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 
 const AUTH_KEY = "abq_portal_auth";
+const PASS_KEY  = "abq_portal_pass";
 const VALID_USER = "Alireza";
 const VALID_PASS = "6272140";
+
+function getStoredPass() {
+  if (typeof window === "undefined") return VALID_PASS;
+  return localStorage.getItem(PASS_KEY) || VALID_PASS;
+}
 
 const supabase = createClient(
   "https://dobakloaicmugeifdhpp.supabase.co",
@@ -49,6 +55,159 @@ function fileType(name: string, mime: string): string {
   return "FILE";
 }
 
+// ─── Shared Portal Header ────────────────────────────────
+function PortalHeader({ title, onLogout }: { title: string; onLogout: () => void }) {
+  const [showModal, setShowModal] = useState(false);
+  const [cur, setCur]       = useState("");
+  const [next, setNext]     = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [err, setErr]       = useState("");
+  const [ok, setOk]         = useState(false);
+
+  function closeModal() {
+    setShowModal(false);
+    setCur(""); setNext(""); setConfirm("");
+    setErr(""); setOk(false);
+  }
+
+  function handleChangePass(e: React.FormEvent) {
+    e.preventDefault();
+    setErr("");
+    if (cur !== getStoredPass()) { setErr("Current password is incorrect."); return; }
+    if (next.length < 4)         { setErr("New password must be at least 4 characters."); return; }
+    if (next !== confirm)        { setErr("Passwords do not match."); return; }
+    localStorage.setItem(PASS_KEY, next);
+    setOk(true);
+  }
+
+  return (
+    <>
+      <header
+        className="flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 border-b"
+        style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}
+      >
+        {/* Left: logo + title */}
+        <div className="flex items-center gap-1.5 min-w-0">
+          <Image
+            src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48}
+            className="flex-shrink-0"
+            style={{ width: 32, height: 32 }}
+          />
+          <div className="hidden sm:flex items-center">
+            <span className="text-white font-bold text-sm">ABQ ALSYF</span>
+            <span className="mx-2 text-white/20">/</span>
+            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>{title}</span>
+          </div>
+          <div className="flex items-center sm:hidden">
+            <span className="text-sm font-semibold" style={{ color: "#E8500A" }}>{title}</span>
+          </div>
+        </div>
+
+        {/* Right: username + sign out */}
+        <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-1 text-xs sm:text-sm transition-colors group"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+            title="Change password"
+          >
+            <span>👤</span>
+            <span className="group-hover:text-white transition-colors">Alireza</span>
+            <span className="text-[9px] ml-0.5" style={{ color: "rgba(255,255,255,0.2)" }}>▾</span>
+          </button>
+          <button
+            onClick={onLogout}
+            className="px-2.5 sm:px-4 py-1.5 text-xs font-semibold border transition-colors"
+            style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; e.currentTarget.style.color = "rgba(239,68,68,0.8)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}
+          >
+            <span className="hidden sm:inline">Sign </span>Out
+          </button>
+        </div>
+      </header>
+
+      {/* Change Password Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
+            onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-sm p-8"
+              style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}
+            >
+              {ok ? (
+                <div className="text-center py-4">
+                  <div className="text-4xl mb-4">✅</div>
+                  <h2 className="text-white font-bold text-lg mb-2">Password Updated</h2>
+                  <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
+                    Your new password is saved. Use it next time you log in.
+                  </p>
+                  <button onClick={closeModal}
+                    className="w-full py-2.5 text-sm font-bold text-white"
+                    style={{ backgroundColor: "#E8500A" }}>
+                    Done
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-white font-bold text-lg">Change Password</h2>
+                    <button onClick={closeModal} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+                  </div>
+                  <form onSubmit={handleChangePass} className="space-y-4">
+                    {[
+                      { label: "Current Password", val: cur, set: setCur },
+                      { label: "New Password",     val: next, set: setNext },
+                      { label: "Confirm Password", val: confirm, set: setConfirm },
+                    ].map(({ label, val, set }) => (
+                      <div key={label}>
+                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2"
+                          style={{ color: "rgba(255,255,255,0.3)" }}>{label}</label>
+                        <input
+                          type="password" value={val} onChange={(e) => set(e.target.value)}
+                          required autoComplete="off"
+                          className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
+                          style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                          onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                          onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
+                        />
+                      </div>
+                    ))}
+                    <AnimatePresence>
+                      {err && (
+                        <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                          className="text-xs text-center" style={{ color: "#f87171" }}>
+                          {err}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                    <button type="submit"
+                      className="w-full py-3 text-sm font-bold text-white mt-2 transition-all active:scale-[0.98]"
+                      style={{ backgroundColor: "#E8500A" }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#C0391A"}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#E8500A"}>
+                      Update Password →
+                    </button>
+                  </form>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 // ─── Login ────────────────────────────────────────────────
 function LoginPage({ onLogin }: { onLogin: () => void }) {
   const [username, setUsername] = useState("");
@@ -61,7 +220,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
     setError("");
     setLoading(true);
     await new Promise((r) => setTimeout(r, 500));
-    if (username === VALID_USER && password === VALID_PASS) {
+    if (username === VALID_USER && password === getStoredPass()) {
       localStorage.setItem(AUTH_KEY, "1");
       onLogin();
     } else {
@@ -225,34 +384,7 @@ function Dashboard({ onLogout, onBack }: { onLogout: () => void; onBack?: () => 
         background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c",
       }}
     >
-      {/* Top bar */}
-      <header
-        className="flex items-center justify-between px-8 py-4 border-b"
-        style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}
-      >
-        <div className="flex items-center gap-1.5">
-          <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48} />
-          <div>
-            <span className="text-white font-bold text-sm">ABQ ALSYF</span>
-            <span className="mx-2 text-white/20">/</span>
-            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>Portal</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>
-            👤 Alireza
-          </span>
-          <button
-            onClick={onLogout}
-            className="px-4 py-1.5 text-xs font-semibold border transition-colors"
-            style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; e.currentTarget.style.color = "rgba(239,68,68,0.8)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}
-          >
-            Sign Out
-          </button>
-        </div>
-      </header>
+      <PortalHeader title="Portal" onLogout={onLogout} />
 
       {/* Main */}
       <main className="max-w-5xl mx-auto px-6 py-10">
@@ -490,26 +622,7 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
 
   return (
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
-      {/* Top bar */}
-      <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}>
-        <div className="flex items-center gap-1.5">
-          <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48} />
-          <div>
-            <span className="text-white font-bold text-sm">ABQ ALSYF</span>
-            <span className="mx-2 text-white/20">/</span>
-            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>Inquiries</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>👤 Alireza</span>
-          <button onClick={onLogout} className="px-4 py-1.5 text-xs font-semibold border transition-colors"
-            style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; e.currentTarget.style.color = "rgba(239,68,68,0.8)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}>
-            Sign Out
-          </button>
-        </div>
-      </header>
+      <PortalHeader title="Inquiries" onLogout={onLogout} />
 
       <main className="max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -673,10 +786,482 @@ function InquiriesSection({ onBack, onLogout }: { onBack: () => void; onLogout: 
   );
 }
 
+// ─── Leads / Projects ─────────────────────────────────────
+
+type LeadStatus = "pending" | "contacted" | "followup" | "won" | "lost";
+
+interface LeadItem {
+  id: number;
+  day: 1 | 2 | 3;
+  area: string;
+  company: string;
+  type: string;
+  phone: string;
+  email: string;
+  website: string;
+  address: string;
+  projects: string;
+  tips: string[];
+}
+
+interface LeadState {
+  status: LeadStatus;
+  notes: string;
+  checkedTips: boolean[];
+}
+
+type AllLeadStates = Record<number, LeadState>;
+
+const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; bg: string }> = {
+  pending:   { label: "Pending",   color: "rgba(255,255,255,0.5)",  bg: "rgba(255,255,255,0.06)" },
+  contacted: { label: "Contacted", color: "#60a5fa",               bg: "rgba(96,165,250,0.1)"  },
+  followup:  { label: "Follow-up", color: "#E8500A",               bg: "rgba(232,80,10,0.12)"  },
+  won:       { label: "Won ✓",     color: "#4ade80",               bg: "rgba(74,222,128,0.1)"  },
+  lost:      { label: "Lost",      color: "rgba(239,68,68,0.7)",   bg: "rgba(239,68,68,0.08)"  },
+};
+
+const LEADS: LeadItem[] = [
+  // ── Day 1 ──────────────────────────────────────────────
+  {
+    id: 1, day: 1, area: "Umm Ramool + Muhaisnah",
+    company: "Al Sahel Contracting Co. (ASCC) LLC",
+    type: "General Contractor",
+    phone: "+971 4 285 7324", email: "info@alsahelcon.com",
+    website: "alsahelcon.com",
+    address: "25th St, Umm Ramool, Dubai, UAE",
+    projects: "Luxury villas, residential buildings, high-rise towers",
+    tips: [
+      "Ask for the Procurement or Projects Manager — they control subcontractor approvals.",
+      "Lead with villa site mobilisation speed: ASCC runs many concurrent sites.",
+      "Offer a competitive per-m³ rate card for foundation excavation and spoil haulage.",
+      "Reference ISO certification and equipment availability (2 excavators + trailers) upfront.",
+    ],
+  },
+  {
+    id: 2, day: 1, area: "Umm Ramool + Muhaisnah",
+    company: "Al Habtoor Engineering Enterprises",
+    type: "General Contractor",
+    phone: "+971 4 285 7551", email: "habtoorengg@emirates.net.ae",
+    website: "habtoorengg.co.ae",
+    address: "P.O. Box 320, Umm Ramool, Dubai, UAE",
+    projects: "Luxury villas, high-rise towers, large-scale commercial buildings",
+    tips: [
+      "Email habtoorengg@emirates.net.ae with a concise company profile — actively monitored.",
+      "Emphasise clean excavation, careful spoil management, and zero damage to boundary structures.",
+      "Umm Ramool office is same corridor as Al Sahel (#1) — a single visit covers both companies.",
+      "Bring a short portfolio showing any previous villa foundation or basement excavation jobs.",
+    ],
+  },
+  {
+    id: 3, day: 1, area: "Umm Ramool + Muhaisnah",
+    company: "GCC General Construction Company LLC",
+    type: "General Contractor",
+    phone: "+971 4 280 6889", email: "info@gccuae.com",
+    website: "gccuae.com",
+    address: "Al Mezan Building, Muhaisnah 4, P.O. Box 30639, Dubai, UAE",
+    projects: "Industrial buildings, residential complexes, commercial buildings",
+    tips: [
+      "Email info@gccuae.com with a one-page subcontractor profile and rate schedule.",
+      "Highlight industrial site experience — GCC's work involves heavy site prep and bulk excavation.",
+      "Propose a site visit to any active project to demonstrate ABQ Alsyf's equipment capability.",
+      "Follow up by phone within 3 business days of emailing — mid-size firms respond well.",
+    ],
+  },
+  // ── Day 2 ──────────────────────────────────────────────
+  {
+    id: 4, day: 2, area: "Al Quoz + Business Bay + Silicon Oasis",
+    company: "Condor Building Contracting LLC (Condor Group)",
+    type: "General Contractor / Developer",
+    phone: "+971 4 239 9500", email: "marketing@thecondorgroup.com",
+    website: "thecondorgroup.com",
+    address: "Plot No. 365-0743, Al Quoz Industrial Area 2, P.O. Box 5690, Dubai, UAE",
+    projects: "Residential towers (JVC, Dubai Sports City), healthcare buildings, hotels",
+    tips: [
+      "Email marketing@thecondorgroup.com with a short introductory note and company profile PDF.",
+      "Reference their active JVC and Dubai Sports City tower projects specifically.",
+      "Offer aggregate supply alongside excavation — they value a single sub for both.",
+      "Ask to be included in their approved subcontractor register ahead of next mobilisation.",
+    ],
+  },
+  {
+    id: 5, day: 2, area: "Al Quoz + Business Bay + Silicon Oasis",
+    company: "Sierra Turnkey Contracting LLC",
+    type: "General Contractor / Civil",
+    phone: "+971 4 324 7733", email: "info@sierra.ae",
+    website: "sierra.ae",
+    address: "Office 08, 1st Floor, Leaders Building, Al Quoz 1, Sheikh Zayed Road, Dubai, UAE",
+    projects: "Civil works, residential buildings, landscaping, MEP projects",
+    tips: [
+      "Email info@sierra.ae — they are digitally responsive with an active enquiry form.",
+      "Position ABQ Alsyf as complement to their landscaping work: earthworks and fill delivery.",
+      "Multi-emirate operations mean consistent service across Dubai, Abu Dhabi and Sharjah.",
+      "Mention ISO alignment — Sierra holds ISO 9001, 14001 and 45001 and expects safety awareness.",
+    ],
+  },
+  {
+    id: 6, day: 2, area: "Al Quoz + Business Bay + Silicon Oasis",
+    company: "Metac General Contracting Co. (WLL)",
+    type: "General Contractor",
+    phone: "+971 4 277 5992", email: "Via metacuae.com",
+    website: "metacuae.com",
+    address: "Office 606, 6th Floor, Tower A, Empire Heights, Business Bay, Dubai, UAE",
+    projects: "Infrastructure, bridges & roads, residential & mixed-use developments",
+    tips: [
+      "Call +971 4 277 5992 and ask to speak with the Procurement or Subcontracts Manager.",
+      "Lead with infrastructure credentials — Metac's bridge and road projects need serious earthmoving.",
+      "Mention ability to operate in both Dubai and Ajman, matching their multi-emirate footprint.",
+      "Prepare QHSE documents, equipment certificates, and trade licence — rigorous pre-qualification.",
+    ],
+  },
+  {
+    id: 7, day: 2, area: "Al Quoz + Business Bay + Silicon Oasis",
+    company: "Al Shirawi Infrastructure Construction (ASICO)",
+    type: "Infrastructure / Civil",
+    phone: "+971 4 323 2695", email: "info.infrastructure@alshirawi.ae",
+    website: "infrastructure.alshirawi.com",
+    address: "Office 1005 & 1006, Park Avenue Building, Dubai Silicon Oasis, Dubai, UAE",
+    projects: "Underground utility networks, DEWA power distribution, RTA road-side utilities",
+    tips: [
+      "Email info.infrastructure@alshirawi.ae with a focused one-pager on trench excavation capability.",
+      "ASICO works on live DEWA and RTA sites — stress urban trench excavation and safe spoil removal.",
+      "Propose a standing rate agreement rather than one-off pricing — continuous repeat work potential.",
+      "Mention DEWA or RTA site safety compliance experience — ASICO expects sub-contractors to match.",
+    ],
+  },
+  // ── Day 3 ──────────────────────────────────────────────
+  {
+    id: 8, day: 3, area: "Dubai Investment Park + Ras Al Khor + Sharjah",
+    company: "RMB Contracting LLC",
+    type: "Civil / Infrastructure",
+    phone: "+971 4 881 9955", email: "info@rmbcontracting.ae",
+    website: "rmbcontracting.ae",
+    address: "Office 348, 3rd Floor, European Business Centre, Dubai Investment Park 1, Dubai, UAE",
+    projects: "Roads, infrastructure utility networks, coastal structures (Dubai & North Emirates)",
+    tips: [
+      "Email info@rmbcontracting.ae — they have an active procurement culture.",
+      "Highlight North Emirates coverage: RMB operates in Ras Al Khaimah and Fujairah.",
+      "Road and coastal projects generate large spoil volumes; pitch a fixed haul-rate per trip.",
+      "Ask specifically about current active road contracts in Dubai and North Emirates.",
+    ],
+  },
+  {
+    id: 9, day: 3, area: "Dubai Investment Park + Ras Al Khor + Sharjah",
+    company: "Dubai Contracting Company (DCC) LLC",
+    type: "General Contractor",
+    phone: "+971 4 333 7100", email: "dcc@dcc-group.com",
+    website: "dcc-group.com",
+    address: "Building No. 29, St 13, Industrial Area 1, Ras Al Khor, P.O. Box 232, Dubai, UAE",
+    projects: "Infrastructure, industrial, commercial buildings, residential projects",
+    tips: [
+      "Email dcc@dcc-group.com with a formal subcontractor registration request — DCC expects structured outreach.",
+      "Mention local proximity: DCC's Ras Al Khor head office is close to ABQ Alsyf's operational area.",
+      "Focus pitch on bulk excavation and aggregate supply — consistent earthworks demand.",
+      "Ask to be added to their approved subcontractor list — DCC works with a preferred panel.",
+    ],
+  },
+  {
+    id: 10, day: 3, area: "Dubai Investment Park + Ras Al Khor + Sharjah",
+    company: "Diplomat General Contracting",
+    type: "General Contractor",
+    phone: "+971 6 533 1266", email: "diplomat@emirates.net.ae",
+    website: "—",
+    address: "P.O. Box 40469, Al Wahda Building, Al Wahda Street, Sharjah, UAE",
+    projects: "Residential buildings, villas, commercial construction in Sharjah/Ajman",
+    tips: [
+      "Call +971 6 533 1266 directly — no public website, phone and email are the only routes.",
+      "Email diplomat@emirates.net.ae with a brief introduction and rate card; keep it short.",
+      "Proximity pitch: ABQ Alsyf can mobilise quickly to Sharjah and Ajman, reducing downtime.",
+      "Visit the Al Wahda Street office in person — Sharjah contractors prefer face-to-face introductions.",
+    ],
+  },
+];
+
+const LEADS_STATE_FILE = "leads-state.json";
+
+function defaultLeadState(lead: LeadItem): LeadState {
+  return { status: "pending", notes: "", checkedTips: lead.tips.map(() => false) };
+}
+
+function LeadsSection({ onBack, onLogout }: { onBack: () => void; onLogout: () => void }) {
+  const [activeDay, setActiveDay] = useState<1 | 2 | 3>(1);
+  const [states, setStates] = useState<AllLeadStates>({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const { data, error } = await supabase.storage.from(BUCKET).download(LEADS_STATE_FILE);
+      if (!error && data) {
+        try {
+          const text = await data.text();
+          setStates(JSON.parse(text) as AllLeadStates);
+        } catch { /* start fresh */ }
+      }
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  function saveStates(newStates: AllLeadStates) {
+    if (saveTimeout.current) clearTimeout(saveTimeout.current);
+    saveTimeout.current = setTimeout(async () => {
+      setSaving(true);
+      const blob = new Blob([JSON.stringify(newStates)], { type: "application/json" });
+      await supabase.storage.from(BUCKET).upload(LEADS_STATE_FILE, blob, { upsert: true });
+      setSaving(false);
+    }, 1500);
+  }
+
+  function getState(id: number): LeadState {
+    const lead = LEADS.find((l) => l.id === id)!;
+    return states[id] ?? defaultLeadState(lead);
+  }
+
+  function updateStatus(id: number, status: LeadStatus) {
+    const next = { ...states, [id]: { ...getState(id), status } };
+    setStates(next); saveStates(next);
+  }
+
+  function updateNotes(id: number, notes: string) {
+    const next = { ...states, [id]: { ...getState(id), notes } };
+    setStates(next); saveStates(next);
+  }
+
+  function toggleTip(id: number, idx: number) {
+    const cur = getState(id);
+    const checkedTips = [...cur.checkedTips];
+    checkedTips[idx] = !checkedTips[idx];
+    const next = { ...states, [id]: { ...cur, checkedTips } };
+    setStates(next); saveStates(next);
+  }
+
+  const dayLeads = LEADS.filter((l) => l.day === activeDay);
+  const dayAreas: Record<number, string> = {
+    1: "Umm Ramool + Muhaisnah",
+    2: "Al Quoz + Business Bay + Silicon Oasis",
+    3: "DIP + Ras Al Khor + Sharjah",
+  };
+
+  const counts = {
+    won:       LEADS.filter((l) => (states[l.id]?.status ?? "pending") === "won").length,
+    contacted: LEADS.filter((l) => (states[l.id]?.status ?? "pending") === "contacted").length,
+    followup:  LEADS.filter((l) => (states[l.id]?.status ?? "pending") === "followup").length,
+  };
+
+  return (
+    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
+      <PortalHeader title="Leads" onLogout={onLogout} />
+      {saving && (
+        <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "rgba(255,255,255,0.3)" }}>
+          Saving…
+        </div>
+      )}
+
+      <main className="max-w-5xl mx-auto px-6 py-10">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
+            style={{ color: "rgba(255,255,255,0.35)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
+            ← Back to Dashboard
+          </button>
+
+          <div className="mb-8">
+            <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Lead Tracker</h1>
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+              May 2026 · 10 target companies · Dubai &amp; Sharjah
+            </p>
+          </div>
+
+          {/* Summary stats */}
+          <div className="grid grid-cols-3 gap-3 mb-8">
+            {[
+              { label: "Won",       count: counts.won,       color: "#4ade80", bg: "rgba(74,222,128,0.07)"  },
+              { label: "Contacted", count: counts.contacted, color: "#60a5fa", bg: "rgba(96,165,250,0.07)"  },
+              { label: "Follow-up", count: counts.followup,  color: "#E8500A", bg: "rgba(232,80,10,0.07)"   },
+            ].map((s) => (
+              <div key={s.label} className="px-4 py-3 border" style={{ backgroundColor: s.bg, borderColor: "rgba(255,255,255,0.06)" }}>
+                <div className="text-2xl font-extrabold" style={{ color: s.color }}>{s.count}</div>
+                <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Day tabs */}
+          <div className="flex gap-0 mb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+            {([1, 2, 3] as const).map((day) => (
+              <button key={day} onClick={() => setActiveDay(day)}
+                className="px-5 py-3 text-sm font-semibold transition-all border-b-2 -mb-px"
+                style={{
+                  color: activeDay === day ? "#E8500A" : "rgba(255,255,255,0.4)",
+                  borderBottomColor: activeDay === day ? "#E8500A" : "transparent",
+                }}>
+                Day {day}
+                <span className="ml-2 text-xs px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)" }}>
+                  {LEADS.filter((l) => l.day === day).length}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Area label */}
+          <div className="flex items-center gap-2 mb-5">
+            <span>📍</span>
+            <span className="text-[11px] font-semibold tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
+              {dayAreas[activeDay]}
+            </span>
+          </div>
+
+          {loading ? (
+            <div className="py-16 flex flex-col items-center gap-3">
+              <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading leads…</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {dayLeads.map((lead, i) => {
+                const st = getState(lead.id);
+                const sc = STATUS_CONFIG[st.status];
+                const isExpanded = expandedId === lead.id;
+                const doneCount = st.checkedTips.filter(Boolean).length;
+
+                return (
+                  <motion.div key={lead.id}
+                    initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                    style={{ border: "1px solid rgba(255,255,255,0.07)", backgroundColor: "rgba(255,255,255,0.018)" }}>
+
+                    {/* Card header — always visible */}
+                    <div className="flex items-center justify-between px-5 py-4 cursor-pointer select-none"
+                      onClick={() => setExpandedId(isExpanded ? null : lead.id)}>
+                      <div className="flex items-center gap-4 min-w-0">
+                        <span className="text-xs font-bold shrink-0" style={{ color: "rgba(232,80,10,0.55)" }}>#{lead.id}</span>
+                        <div className="min-w-0">
+                          <p className="text-white font-semibold text-sm leading-snug">{lead.company}</p>
+                          <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.32)" }}>{lead.type}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0 ml-4">
+                        <span className="text-[11px] hidden sm:block" style={{ color: "rgba(255,255,255,0.25)" }}>
+                          {doneCount}/{lead.tips.length} tips
+                        </span>
+                        <span className="px-2.5 py-1 text-[11px] font-bold" style={{ color: sc.color, backgroundColor: sc.bg }}>
+                          {sc.label}
+                        </span>
+                        <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>{isExpanded ? "▲" : "▼"}</span>
+                      </div>
+                    </div>
+
+                    {/* Expanded detail */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }}
+                          style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                          <div className="px-5 py-5 space-y-6">
+
+                            {/* Contact info */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                              {[
+                                { icon: "📞", text: lead.phone, href: `tel:${lead.phone}` },
+                                { icon: "✉️", text: lead.email, href: `mailto:${lead.email}` },
+                                { icon: "🌐", text: lead.website, href: lead.website !== "—" ? `https://${lead.website}` : undefined },
+                                { icon: "📍", text: lead.address, href: undefined },
+                              ].map(({ icon, text, href }) => (
+                                href ? (
+                                  <a key={icon} href={href} target={href.startsWith("http") ? "_blank" : undefined}
+                                    rel="noopener noreferrer"
+                                    className="flex items-start gap-2 text-sm transition-colors hover:opacity-80"
+                                    style={{ color: "rgba(255,255,255,0.5)" }}>
+                                    <span className="shrink-0">{icon}</span>
+                                    <span className="truncate">{text}</span>
+                                  </a>
+                                ) : (
+                                  <p key={icon} className="flex items-start gap-2 text-xs leading-relaxed"
+                                    style={{ color: "rgba(255,255,255,0.38)" }}>
+                                    <span className="shrink-0">{icon}</span>
+                                    <span>{text}</span>
+                                  </p>
+                                )
+                              ))}
+                            </div>
+
+                            {/* Status selector */}
+                            <div>
+                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "rgba(255,255,255,0.22)" }}>Status</p>
+                              <div className="flex flex-wrap gap-2">
+                                {(Object.entries(STATUS_CONFIG) as [LeadStatus, typeof STATUS_CONFIG[LeadStatus]][]).map(([key, cfg]) => (
+                                  <button key={key} onClick={() => updateStatus(lead.id, key)}
+                                    className="px-3 py-1 text-xs font-semibold transition-all"
+                                    style={{
+                                      color: cfg.color,
+                                      backgroundColor: st.status === key ? cfg.bg : "transparent",
+                                      border: `1px solid ${st.status === key ? cfg.color : "rgba(255,255,255,0.08)"}`,
+                                      opacity: st.status === key ? 1 : 0.5,
+                                    }}>
+                                    {cfg.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Action tips */}
+                            <div>
+                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.22)" }}>Action Tips</p>
+                              <div className="space-y-2.5">
+                                {lead.tips.map((tip, idx) => (
+                                  <label key={idx} className="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox" checked={st.checkedTips[idx] ?? false}
+                                      onChange={() => toggleTip(lead.id, idx)}
+                                      className="mt-0.5 shrink-0 accent-orange-500" />
+                                    <span className="text-sm leading-relaxed transition-all" style={{
+                                      color: st.checkedTips[idx] ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.6)",
+                                      textDecoration: st.checkedTips[idx] ? "line-through" : "none",
+                                    }}>
+                                      {tip}
+                                    </span>
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Notes */}
+                            <div>
+                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "rgba(255,255,255,0.22)" }}>Notes</p>
+                              <textarea
+                                value={st.notes}
+                                onChange={(e) => updateNotes(lead.id, e.target.value)}
+                                placeholder="Write your notes here… e.g. spoke with Mr. Ahmed, call back Thursday."
+                                rows={3}
+                                className="w-full bg-transparent border text-sm px-3 py-2 resize-none focus:outline-none transition-colors"
+                                style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)" }}
+                                onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                                onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.08)"}
+                              />
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+        </motion.div>
+      </main>
+    </div>
+  );
+}
+
 // ─── Main Dashboard ───────────────────────────────────────
 function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string) => void; onLogout: () => void }) {
   const cards = [
-    { id: "projects", title: "Projects", desc: "Manage active and upcoming projects.", icon: "🏗️", ready: false },
+    { id: "projects", title: "Leads", desc: "Track your May 2026 target companies and outreach progress.", icon: "🎯", ready: true },
     { id: "inquiries", title: "Inquiries", desc: "Review quote requests from the website.", icon: "📬", ready: true },
     { id: "files", title: "Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
     { id: "settings", title: "Settings", desc: "Site settings and configuration.", icon: "⚙️", ready: false },
@@ -684,26 +1269,7 @@ function MainDashboard({ onNavigate, onLogout }: { onNavigate: (section: string)
 
   return (
     <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
-      {/* Top bar */}
-      <header className="flex items-center justify-between px-8 py-4 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}>
-        <div className="flex items-center gap-1.5">
-          <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48} />
-          <div>
-            <span className="text-white font-bold text-sm">ABQ ALSYF</span>
-            <span className="mx-2 text-white/20">/</span>
-            <span className="text-sm font-medium" style={{ color: "#E8500A" }}>Portal</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>👤 Alireza</span>
-          <button onClick={onLogout} className="px-4 py-1.5 text-xs font-semibold border transition-colors"
-            style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; e.currentTarget.style.color = "rgba(239,68,68,0.8)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}>
-            Sign Out
-          </button>
-        </div>
-      </header>
+      <PortalHeader title="Portal" onLogout={onLogout} />
 
       <main className="max-w-5xl mx-auto px-6 py-12">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -775,12 +1341,12 @@ export default function PortalPage() {
     setAuthed(localStorage.getItem(AUTH_KEY) === "1");
     // Read section from URL hash
     const hash = window.location.hash.replace("#", "");
-    if (hash === "files" || hash === "inquiries") setSection(hash);
+    if (hash === "files" || hash === "inquiries" || hash === "projects") setSection(hash);
 
     // Listen for browser back/forward
     const onPop = () => {
       const h = window.location.hash.replace("#", "");
-      setSection(h === "files" || h === "inquiries" ? h : null);
+      setSection(h === "files" || h === "inquiries" || h === "projects" ? h : null);
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -818,6 +1384,10 @@ export default function PortalPage() {
       ) : section === "inquiries" ? (
         <motion.div key="inquiries" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
           <InquiriesSection onLogout={handleLogout} onBack={() => navigate(null)} />
+        </motion.div>
+      ) : section === "projects" ? (
+        <motion.div key="projects" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+          <LeadsSection onLogout={handleLogout} onBack={() => navigate(null)} />
         </motion.div>
       ) : (
         <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
