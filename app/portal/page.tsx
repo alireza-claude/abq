@@ -12,9 +12,22 @@ const USER_KEY  = "abq_portal_user";
 const VALID_USER = "Alireza";
 const VALID_PASS = "6272140";
 const USERS_FILE = "portal-users.json";
+const TASKS_FILE = "tasks-state.json";
 
 type UserRole = "admin" | "viewer";
 interface PortalUser { username: string; password: string; }
+
+type TaskStatus   = "plan" | "in_progress" | "done";
+type TaskPriority = "high" | "medium" | "low";
+interface Task {
+  id: string;
+  title: string;
+  notes: string;
+  priority: TaskPriority;
+  dueDate: string;
+  status: TaskStatus;
+  createdAt: string;
+}
 
 function getStoredPass() {
   if (typeof window === "undefined") return VALID_PASS;
@@ -518,7 +531,7 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
       sortBy: { column: "updated_at", order: "desc" },
     });
     if (error) setError(error.message);
-    else setFiles(((data as FileItem[]) || []).filter(f => f.name !== LEADS_STATE_FILE && f.name !== USERS_FILE));
+    else setFiles(((data as FileItem[]) || []).filter(f => f.name !== LEADS_STATE_FILE && f.name !== USERS_FILE && f.name !== TASKS_FILE));
     setLoading(false);
   }
 
@@ -1450,12 +1463,424 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
   );
 }
 
+// ─── Tasks Config ─────────────────────────────────────────
+const TASK_STATUS_CONFIG: Record<TaskStatus, { label: string; color: string; bg: string }> = {
+  plan:        { label: "Plan",        color: "rgba(255,255,255,0.5)",  bg: "rgba(255,255,255,0.06)" },
+  in_progress: { label: "In Progress", color: "#E8500A",               bg: "rgba(232,80,10,0.12)"   },
+  done:        { label: "Done ✓",      color: "#4ade80",               bg: "rgba(74,222,128,0.1)"   },
+};
+const TASK_PRIORITY_CONFIG: Record<TaskPriority, { label: string; color: string; bg: string }> = {
+  high:   { label: "High", color: "#ef4444", bg: "rgba(239,68,68,0.1)"   },
+  medium: { label: "Med",  color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
+  low:    { label: "Low",  color: "#6b7280", bg: "rgba(107,114,128,0.1)" },
+};
+const TASK_STATUS_CYCLE: TaskStatus[] = ["plan", "in_progress", "done"];
+
+// ─── Tasks Section ─────────────────────────────────────────
+function TasksSection({ onBack, onLogout, role, currentUser }: {
+  onBack: () => void; onLogout: () => void; role: UserRole; currentUser: string;
+}) {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [filter, setFilter] = useState<TaskStatus | "all">("all");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newNotes, setNewNotes] = useState("");
+  const [newPriority, setNewPriority] = useState<TaskPriority>("medium");
+  const [newDueDate, setNewDueDate] = useState("");
+  const [addErr, setAddErr] = useState("");
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const { data, error } = await supabase.storage.from(BUCKET).download(TASKS_FILE);
+      if (!error && data) {
+        try { setTasks(JSON.parse(await data.text()) as Task[]); } catch { /* start fresh */ }
+      }
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  function scheduleSave(updated: Task[]) {
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(async () => {
+      setSaving(true);
+      const blob = new Blob([JSON.stringify(updated)], { type: "application/json" });
+      await supabase.storage.from(BUCKET).upload(TASKS_FILE, blob, { upsert: true });
+      setSaving(false);
+    }, 1500);
+  }
+
+  function isOverdue(task: Task): boolean {
+    if (!task.dueDate || task.status === "done") return false;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    return new Date(task.dueDate) < today;
+  }
+
+  function formatDue(d: string): string {
+    return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  }
+
+  function cycleStatus(id: string) {
+    const updated = tasks.map(t => {
+      if (t.id !== id) return t;
+      const idx = TASK_STATUS_CYCLE.indexOf(t.status);
+      return { ...t, status: TASK_STATUS_CYCLE[(idx + 1) % 3] };
+    });
+    setTasks(updated); scheduleSave(updated);
+  }
+
+  function deleteTask(id: string) {
+    const updated = tasks.filter(t => t.id !== id);
+    setTasks(updated); scheduleSave(updated);
+    if (expandedId === id) setExpandedId(null);
+  }
+
+  function updateTaskNotes(id: string, notes: string) {
+    const updated = tasks.map(t => t.id === id ? { ...t, notes } : t);
+    setTasks(updated); scheduleSave(updated);
+  }
+
+  function closeAddModal() {
+    setShowAddModal(false);
+    setNewTitle(""); setNewNotes(""); setNewPriority("medium"); setNewDueDate(""); setAddErr("");
+  }
+
+  function handleAddTask(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newTitle.trim()) { setAddErr("Title is required."); return; }
+    const task: Task = {
+      id: (typeof crypto !== "undefined" && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(),
+      title: newTitle.trim(), notes: newNotes.trim(),
+      priority: newPriority, dueDate: newDueDate,
+      status: "plan", createdAt: new Date().toISOString(),
+    };
+    const updated = [task, ...tasks];
+    setTasks(updated); scheduleSave(updated); closeAddModal();
+  }
+
+  const filtered = filter === "all" ? tasks : tasks.filter(t => t.status === filter);
+  const counts = {
+    plan:        tasks.filter(t => t.status === "plan").length,
+    in_progress: tasks.filter(t => t.status === "in_progress").length,
+    done:        tasks.filter(t => t.status === "done").length,
+  };
+
+  return (
+    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
+      <PortalHeader title="My Tasks" onLogout={onLogout} role={role} currentUser={currentUser} />
+      {saving && (
+        <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "rgba(255,255,255,0.3)" }}>
+          Saving…
+        </div>
+      )}
+
+      <main className="max-w-3xl mx-auto px-6 py-10">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+
+          {/* Back + header */}
+          <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
+            style={{ color: "rgba(255,255,255,0.35)" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
+            ← Back to Dashboard
+          </button>
+
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">My Tasks</h1>
+              <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+                {tasks.length} task{tasks.length !== 1 ? "s" : ""} · {counts.done} done · {counts.in_progress} in progress
+              </p>
+            </div>
+            <button onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white transition-all active:scale-[0.98]"
+              style={{ backgroundColor: "#E8500A" }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#C0391A"}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#E8500A"}>
+              + New Task
+            </button>
+          </div>
+
+          {/* Filter tabs */}
+          <div className="flex gap-0 mb-6 border-b overflow-x-auto" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+            {([
+              { key: "all" as const,         label: "All",         count: tasks.length       },
+              { key: "plan" as const,         label: "Plan",        count: counts.plan        },
+              { key: "in_progress" as const,  label: "In Progress", count: counts.in_progress },
+              { key: "done" as const,         label: "Done",        count: counts.done        },
+            ]).map(tab => (
+              <button key={tab.key} onClick={() => setFilter(tab.key)}
+                className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap flex-shrink-0"
+                style={{
+                  color: filter === tab.key ? "#E8500A" : "rgba(255,255,255,0.4)",
+                  borderBottomColor: filter === tab.key ? "#E8500A" : "transparent",
+                }}>
+                {tab.label}
+                <span className="ml-1.5 text-[10px] sm:text-xs px-1 sm:px-1.5 py-0.5 rounded-sm"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)" }}>
+                  {tab.count}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Task list */}
+          {loading ? (
+            <div className="py-16 flex flex-col items-center gap-3">
+              <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading tasks…</p>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-4xl mb-4">✅</p>
+              <p className="text-sm font-medium text-white mb-1">
+                {filter === "all" ? "No tasks yet" : `No ${filter === "in_progress" ? "in-progress" : filter} tasks`}
+              </p>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+                {filter === "all" ? "Hit \"+ New Task\" to add your first one." : "Switch to All to see other tasks."}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <AnimatePresence>
+                {filtered.map((task, i) => {
+                  const sc = TASK_STATUS_CONFIG[task.status];
+                  const pc = TASK_PRIORITY_CONFIG[task.priority];
+                  const overdue = isOverdue(task);
+                  const isExpanded = expandedId === task.id;
+                  const isDone = task.status === "done";
+
+                  return (
+                    <motion.div key={task.id}
+                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.22, delay: i * 0.04 }}
+                      style={{
+                        border: "1px solid rgba(255,255,255,0.07)",
+                        backgroundColor: "rgba(255,255,255,0.018)",
+                        opacity: isDone ? 0.6 : 1,
+                      }}>
+
+                      {/* Task row */}
+                      <div className="flex items-center gap-3 px-4 py-3.5 cursor-pointer select-none"
+                        onClick={() => setExpandedId(isExpanded ? null : task.id)}>
+
+                        {/* Status badge — click to cycle */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); cycleStatus(task.id); }}
+                          className="flex-shrink-0 px-2.5 py-1 text-[10px] font-bold transition-all"
+                          style={{ color: sc.color, backgroundColor: sc.bg, minWidth: 76, textAlign: "center" }}
+                          title="Click to advance status">
+                          {sc.label}
+                        </button>
+
+                        {/* Title */}
+                        <span dir="auto" className="flex-1 text-sm font-medium" style={{
+                          color: isDone ? "rgba(255,255,255,0.4)" : "white",
+                          textDecoration: isDone ? "line-through" : "none",
+                          wordBreak: "break-word",
+                        }}>
+                          {task.title}
+                        </span>
+
+                        {/* Right: priority + due + chevron */}
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <span className="hidden sm:inline text-[10px] font-bold px-2 py-0.5"
+                            style={{ color: pc.color, backgroundColor: pc.bg }}>
+                            {pc.label}
+                          </span>
+                          {task.dueDate && (
+                            <span className="hidden sm:inline text-[10px] font-semibold px-2 py-0.5"
+                              style={{
+                                color: overdue ? "#ef4444" : "rgba(255,255,255,0.3)",
+                                backgroundColor: overdue ? "rgba(239,68,68,0.1)" : "transparent",
+                              }}>
+                              {overdue ? "⚠ Overdue" : formatDue(task.dueDate)}
+                            </span>
+                          )}
+                          <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>{isExpanded ? "▲" : "▼"}</span>
+                        </div>
+                      </div>
+
+                      {/* Expanded detail */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }}
+                            style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                            <div className="px-4 py-4 space-y-4">
+
+                              {/* Mobile: priority + due */}
+                              <div className="flex sm:hidden items-center gap-2 flex-wrap">
+                                <span className="text-[10px] font-bold px-2 py-0.5"
+                                  style={{ color: pc.color, backgroundColor: pc.bg }}>{pc.label}</span>
+                                {task.dueDate && (
+                                  <span className="text-[10px] font-semibold px-2 py-0.5"
+                                    style={{
+                                      color: overdue ? "#ef4444" : "rgba(255,255,255,0.3)",
+                                      backgroundColor: overdue ? "rgba(239,68,68,0.1)" : "transparent",
+                                    }}>
+                                    {overdue ? "⚠ Overdue" : "Due " + formatDue(task.dueDate)}
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Notes */}
+                              <div>
+                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.22)" }}>Notes</p>
+                                <textarea
+                                  value={task.notes}
+                                  onChange={(e) => updateTaskNotes(task.id, e.target.value)}
+                                  placeholder="Add notes…" rows={4} dir="auto"
+                                  className="w-full bg-transparent border text-sm px-3 py-2 resize-none focus:outline-none transition-colors"
+                                  style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)" }}
+                                  onClick={(e) => e.stopPropagation()}
+                                  onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.08)"} />
+                              </div>
+
+                              {/* Actions */}
+                              <div className="flex items-center justify-between">
+                                <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>
+                                  Added {new Date(task.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                                </p>
+                                <button onClick={(e) => { e.stopPropagation(); deleteTask(task.id); }}
+                                  className="px-3 py-1 text-xs font-semibold border transition-all"
+                                  style={{ borderColor: "rgba(239,68,68,0.3)", color: "rgba(239,68,68,0.7)" }}
+                                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.1)"; }}
+                                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}>
+                                  🗑 Delete
+                                </button>
+                              </div>
+
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+          )}
+
+        </motion.div>
+      </main>
+
+      {/* Add Task Modal */}
+      <AnimatePresence>
+        {showAddModal && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
+            style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
+            onClick={(e) => { if (e.target === e.currentTarget) closeAddModal(); }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }} transition={{ duration: 0.2 }}
+              className="w-full max-w-sm p-8"
+              style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-white font-bold text-lg">New Task</h2>
+                <button onClick={closeAddModal} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+              </div>
+              <form onSubmit={handleAddTask} className="space-y-4">
+
+                {/* Title */}
+                <div>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Title *</label>
+                  <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
+                    required autoFocus dir="auto" placeholder="What needs to be done?"
+                    className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
+                    style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                </div>
+
+                {/* Notes */}
+                <div>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Notes</label>
+                  <textarea value={newNotes} onChange={(e) => setNewNotes(e.target.value)}
+                    rows={2} dir="auto" placeholder="Optional details…"
+                    className="w-full px-4 py-2 text-sm text-white bg-transparent border focus:outline-none transition-colors resize-none"
+                    style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                    onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                </div>
+
+                {/* Priority */}
+                <div>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Priority</label>
+                  <div className="flex gap-2">
+                    {(["high", "medium", "low"] as TaskPriority[]).map(p => {
+                      const pc = TASK_PRIORITY_CONFIG[p];
+                      return (
+                        <button key={p} type="button" onClick={() => setNewPriority(p)}
+                          className="flex-1 py-2 text-xs font-bold transition-all border"
+                          style={{
+                            color: newPriority === p ? pc.color : "rgba(255,255,255,0.3)",
+                            backgroundColor: newPriority === p ? pc.bg : "transparent",
+                            borderColor: newPriority === p ? pc.color : "rgba(255,255,255,0.1)",
+                          }}>
+                          {pc.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Due Date */}
+                <div>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Due Date (optional)</label>
+                  <input type="date" value={newDueDate} onChange={(e) => setNewDueDate(e.target.value)}
+                    className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
+                    style={{ borderColor: "rgba(255,255,255,0.1)", colorScheme: "dark" }}
+                    onFocus={(e) => e.target.style.borderColor = "#E8500A"}
+                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                </div>
+
+                <AnimatePresence>
+                  {addErr && (
+                    <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                      className="text-xs text-center" style={{ color: "#f87171" }}>{addErr}</motion.p>
+                  )}
+                </AnimatePresence>
+
+                <div className="flex gap-3 pt-1">
+                  <button type="button" onClick={closeAddModal}
+                    className="flex-1 py-3 text-sm font-semibold border transition-all"
+                    style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)" }}>
+                    Cancel
+                  </button>
+                  <button type="submit"
+                    className="flex-1 py-3 text-sm font-bold text-white transition-all active:scale-[0.98]"
+                    style={{ backgroundColor: "#E8500A" }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#C0391A"}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#E8500A"}>
+                    Add Task →
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Main Dashboard ───────────────────────────────────────
 function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate: (section: string) => void; onLogout: () => void; role: UserRole; currentUser: string }) {
   const cards = [
     { id: "projects", title: "Leads", desc: "Track your May 2026 target companies and outreach progress.", icon: "🎯", ready: true },
     { id: "inquiries", title: "Inquiries", desc: "Review quote requests from the website.", icon: "📬", ready: true },
     { id: "files", title: "Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
+    ...(role === "admin" ? [{ id: "tasks", title: "My Tasks", desc: "Personal task manager — plan, track, and complete your work.", icon: "✅", ready: true }] : []),
     { id: "settings", title: "Settings", desc: "Site settings and configuration.", icon: "⚙️", ready: false },
   ];
 
@@ -1541,12 +1966,12 @@ export default function PortalPage() {
     setRole(resolvedRole);
     // Read section from URL hash
     const hash = window.location.hash.replace("#", "");
-    if (hash === "files" || hash === "inquiries" || hash === "projects") setSection(hash);
+    if (hash === "files" || hash === "inquiries" || hash === "projects" || hash === "tasks") setSection(hash);
 
     // Listen for browser back/forward
     const onPop = () => {
       const h = window.location.hash.replace("#", "");
-      setSection(h === "files" || h === "inquiries" || h === "projects" ? h : null);
+      setSection(h === "files" || h === "inquiries" || h === "projects" || h === "tasks" ? h : null);
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -1591,6 +2016,10 @@ export default function PortalPage() {
       ) : section === "projects" ? (
         <motion.div key="projects" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
           <LeadsSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
+        </motion.div>
+      ) : section === "tasks" && role === "admin" ? (
+        <motion.div key="tasks" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+          <TasksSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
         </motion.div>
       ) : (
         <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
