@@ -1685,7 +1685,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                         {/* Status badge — click to cycle */}
                         <button
                           onClick={(e) => { e.stopPropagation(); cycleStatus(task.id); }}
-                          className="flex-shrink-0 px-2.5 py-1 text-[10px] font-bold transition-all"
+                          className={`flex-shrink-0 px-2.5 py-1 text-[10px] font-bold transition-all${overdue ? " animate-pulse" : ""}`}
                           style={{ color: sc.color, backgroundColor: sc.bg, minWidth: 76, textAlign: "center" }}
                           title="Click to advance status">
                           {sc.label}
