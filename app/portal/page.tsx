@@ -180,7 +180,7 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
           <Image
             src="/images/logo.png" alt="ABQ ALSYF Logo" width={48} height={48}
             className="flex-shrink-0"
-            style={{ width: 32, height: 32 }}
+            style={{ width: 32, height: 32, objectFit: "contain" }}
           />
           <div className="hidden sm:flex items-center">
             <span className="text-white font-bold text-sm">ABQ ALSYF</span>
