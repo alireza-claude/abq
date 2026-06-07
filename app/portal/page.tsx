@@ -447,7 +447,7 @@ function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) =>
           <div className="inline-flex items-center justify-center">
             <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={204} height={204} />
           </div>
-          <h1 className="text-white font-extrabold text-2xl tracking-tight -mt-6">Portal Login</h1>
+          <h1 className="text-white font-extrabold text-2xl tracking-tight mt-2">Portal Login</h1>
           <p className="mt-2 text-sm" style={{ color: "rgba(245,240,234,0.38)" }}>
             ABQ ALSYF · Private Access
           </p>
@@ -1694,7 +1694,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                             {pc.label}
                           </span>
                           {task.dueDate && (
-                            <span className="hidden sm:inline text-[10px] font-semibold px-2 py-0.5"
+                            <span className={`hidden sm:inline text-[10px] font-semibold px-2 py-0.5${overdue ? " animate-pulse" : ""}`}
                               style={{
                                 color: overdue ? "#ef4444" : "rgba(255,255,255,0.3)",
                                 backgroundColor: overdue ? "rgba(239,68,68,0.1)" : "transparent",
@@ -1720,7 +1720,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                                 <span className="text-[10px] font-bold px-2 py-0.5"
                                   style={{ color: pc.color, backgroundColor: pc.bg }}>{pc.label}</span>
                                 {task.dueDate && (
-                                  <span className="text-[10px] font-semibold px-2 py-0.5"
+                                  <span className={`text-[10px] font-semibold px-2 py-0.5${overdue ? " animate-pulse" : ""}`}
                                     style={{
                                       color: overdue ? "#ef4444" : "rgba(255,255,255,0.3)",
                                       backgroundColor: overdue ? "rgba(239,68,68,0.1)" : "transparent",
@@ -1736,7 +1736,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                                 <textarea
                                   value={task.notes}
                                   onChange={(e) => updateTaskNotes(task.id, e.target.value)}
-                                  placeholder="Add notes…" rows={4} dir="auto"
+                                  placeholder="Add notes…" rows={6} dir="auto"
                                   className="w-full bg-transparent border text-sm px-3 py-2 resize-none focus:outline-none transition-colors"
                                   style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)" }}
                                   onClick={(e) => e.stopPropagation()}
@@ -1877,10 +1877,10 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
 // ─── Main Dashboard ───────────────────────────────────────
 function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate: (section: string) => void; onLogout: () => void; role: UserRole; currentUser: string }) {
   const cards = [
+    ...(role === "admin" ? [{ id: "tasks", title: "My Tasks", desc: "Personal task manager — plan, track, and complete your work.", icon: "✅", ready: true }] : []),
     { id: "projects", title: "Leads", desc: "Track your May 2026 target companies and outreach progress.", icon: "🎯", ready: true },
     { id: "inquiries", title: "Inquiries", desc: "Review quote requests from the website.", icon: "📬", ready: true },
     { id: "files", title: "Files", desc: "Upload and manage your documents, images, and PDFs.", icon: "📁", ready: true },
-    ...(role === "admin" ? [{ id: "tasks", title: "My Tasks", desc: "Personal task manager — plan, track, and complete your work.", icon: "✅", ready: true }] : []),
     { id: "settings", title: "Settings", desc: "Site settings and configuration.", icon: "⚙️", ready: false },
   ];
 
