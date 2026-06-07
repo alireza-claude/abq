@@ -1497,10 +1497,14 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const { data, error } = await supabase.storage.from(BUCKET).download(TASKS_FILE);
-      if (!error && data) {
-        try { setTasks(JSON.parse(await data.text()) as Task[]); } catch { /* start fresh */ }
-      }
+      try {
+        const { data: { publicUrl } } = supabase.storage.from(BUCKET).getPublicUrl(TASKS_FILE);
+        const res = await fetch(`${publicUrl}?t=${Date.now()}`, { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          setTasks(json as Task[]);
+        }
+      } catch { /* start fresh */ }
       setLoading(false);
     }
     load();
