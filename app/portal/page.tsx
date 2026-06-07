@@ -1483,6 +1483,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [filter, setFilter] = useState<TaskStatus | "all">("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -1509,8 +1510,10 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(async () => {
       setSaving(true);
+      setSaveError("");
       const blob = new Blob([JSON.stringify(updated)], { type: "application/json" });
-      await supabase.storage.from(BUCKET).upload(TASKS_FILE, blob, { upsert: true });
+      const { error } = await supabase.storage.from(BUCKET).upload(TASKS_FILE, blob, { upsert: true });
+      if (error) setSaveError(error.message);
       setSaving(false);
     }, 1500);
   }
@@ -1576,6 +1579,12 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
       {saving && (
         <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "rgba(255,255,255,0.3)" }}>
           Saving…
+        </div>
+      )}
+      {saveError && (
+        <div className="text-center py-1.5 text-[11px] flex items-center justify-center gap-2" style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "#f87171" }}>
+          ⚠ Save failed: {saveError}
+          <button onClick={() => setSaveError("")} className="opacity-60 hover:opacity-100 ml-2">✕</button>
         </div>
       )}
 
