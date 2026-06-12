@@ -173,7 +173,7 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
     <>
       <header
         className="flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 border-b"
-        style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(0,0,0,0.2)" }}
+        style={{ borderColor: "#E2E8F0", backgroundColor: "#FFFFFF" }}
       >
         {/* Left: logo + title */}
         <div className="flex items-center gap-1.5 min-w-0">
@@ -183,8 +183,8 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
             style={{ width: 32, height: 32, objectFit: "contain" }}
           />
           <div className="hidden sm:flex items-center">
-            <span className="text-white font-bold text-sm">ABQ ALSYF</span>
-            <span className="mx-2 text-white/20">/</span>
+            <span className="font-bold text-sm" style={{ color: "#334155" }}>ABQ ALSYF</span>
+            <span className="mx-2" style={{ color: "#CBD5E1" }}>/</span>
             <span className="text-sm font-medium" style={{ color: "#E8500A" }}>{title}</span>
           </div>
           <div className="flex items-center sm:hidden">
@@ -199,11 +199,11 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
             <button
               onClick={() => setShowDropdown((v) => !v)}
               className="flex items-center gap-1 text-xs sm:text-sm transition-colors group"
-              style={{ color: "rgba(255,255,255,0.4)" }}
+              style={{ color: "#64748B" }}
           >
             <span>👤</span>
-            <span className="group-hover:text-white transition-colors">{currentUser}</span>
-            <span className="text-[9px] ml-0.5" style={{ color: "rgba(255,255,255,0.2)" }}>▾</span>
+            <span className="group-hover:text-slate-900 transition-colors">{currentUser}</span>
+            <span className="text-[9px] ml-0.5" style={{ color: "#94A3B8" }}>▾</span>
           </button>
 
             {/* Dropdown menu */}
@@ -213,26 +213,26 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
                   initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.15 }}
                   className="absolute right-0 top-full mt-2 w-48 py-1 z-40"
-                  style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 24px rgba(0,0,0,0.4)" }}
+                  style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0", boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
                 >
                   <button
                     onClick={() => { setShowDropdown(false); setShowPassModal(true); }}
                     className="w-full text-left px-4 py-2.5 text-xs transition-colors"
-                    style={{ color: "rgba(255,255,255,0.6)" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
+                    style={{ color: "#334155" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F1F5F9"; e.currentTarget.style.color = "#0F172A"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#334155"; }}
                   >
                     🔑 Change Password
                   </button>
                   {role === "admin" && (
                     <>
-                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", margin: "4px 0" }} />
+                      <div style={{ borderTop: "1px solid #E2E8F0", margin: "4px 0" }} />
                       <button
                         onClick={() => { setShowDropdown(false); setShowAddUser(true); }}
                         className="w-full text-left px-4 py-2.5 text-xs transition-colors"
-                        style={{ color: "rgba(255,255,255,0.6)" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#fff"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
+                        style={{ color: "#334155" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F1F5F9"; e.currentTarget.style.color = "#0F172A"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#334155"; }}
                       >
                         👤 Add User
                       </button>
@@ -246,9 +246,9 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
           <button
             onClick={onLogout}
             className="px-2.5 sm:px-4 py-1.5 text-xs font-semibold border transition-colors"
-            style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.45)" }}
+            style={{ borderColor: "rgba(203,213,225,1)", color: "#64748B" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; e.currentTarget.style.color = "rgba(239,68,68,0.8)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(203,213,225,1)"; e.currentTarget.style.color = "#64748B"; }}
           >
             Sign Out
           </button>
@@ -261,27 +261,27 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center px-4"
-            style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
+            style={{ backgroundColor: "rgba(15,23,42,0.55)", backdropFilter: "blur(6px)" }}
             onClick={(e) => { if (e.target === e.currentTarget) closePassModal(); }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 12 }} transition={{ duration: 0.2 }}
               className="w-full max-w-sm p-8"
-              style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}
+              style={{ backgroundColor: "#FFFFFF", border: "1px solid rgba(226,232,240,1)" }}
             >
               {passOk ? (
                 <div className="text-center py-4">
                   <div className="text-4xl mb-4">✅</div>
-                  <h2 className="text-white font-bold text-lg mb-2">Password Updated</h2>
-                  <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>Your new password is saved.</p>
+                  <h2 className="font-bold text-lg mb-2" style={{ color: "#0F172A" }}>Password Updated</h2>
+                  <p className="text-sm mb-6" style={{ color: "#64748B" }}>Your new password is saved.</p>
                   <button onClick={closePassModal} className="w-full py-2.5 text-sm font-bold text-white" style={{ backgroundColor: "#E8500A" }}>Done</button>
                 </div>
               ) : (
                 <>
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-white font-bold text-lg">Change Password</h2>
-                    <button onClick={closePassModal} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+                    <h2 className="font-bold text-lg" style={{ color: "#0F172A" }}>Change Password</h2>
+                    <button onClick={closePassModal} className="transition-colors text-lg" style={{ color: "#94A3B8" }} onMouseEnter={(e)=>e.currentTarget.style.color="#0F172A"} onMouseLeave={(e)=>e.currentTarget.style.color="#94A3B8"}>✕</button>
                   </div>
                   <form onSubmit={handleChangePass} className="space-y-4">
                     {[
@@ -290,18 +290,18 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
                       { label: "Confirm Password", val: confirm, set: setConfirm },
                     ].map(({ label, val, set }) => (
                       <div key={label}>
-                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>{label}</label>
+                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>{label}</label>
                         <input type="password" value={val} onChange={(e) => set(e.target.value)} required autoComplete="off"
-                          className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
-                          style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                          className="w-full px-4 py-3 text-sm bg-transparent border focus:outline-none transition-colors"
+                          style={{ borderColor: "rgba(203,213,225,1)", color: "#0F172A" }}
                           onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                          onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                          onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"} />
                       </div>
                     ))}
                     <AnimatePresence>
                       {passErr && (
                         <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                          className="text-xs text-center" style={{ color: "#f87171" }}>{passErr}</motion.p>
+                          className="text-xs text-center" style={{ color: "#DC2626" }}>{passErr}</motion.p>
                       )}
                     </AnimatePresence>
                     <button type="submit" className="w-full py-3 text-sm font-bold text-white mt-2 transition-all active:scale-[0.98]"
@@ -324,33 +324,33 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center px-4"
-            style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
+            style={{ backgroundColor: "rgba(15,23,42,0.55)", backdropFilter: "blur(6px)" }}
             onClick={(e) => { if (e.target === e.currentTarget) closeAddUser(); }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 12 }} transition={{ duration: 0.2 }}
               className="w-full max-w-sm p-8"
-              style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}
+              style={{ backgroundColor: "#FFFFFF", border: "1px solid rgba(226,232,240,1)" }}
             >
               {addOk ? (
                 <div className="text-center py-4">
                   <div className="text-4xl mb-4">✅</div>
-                  <h2 className="text-white font-bold text-lg mb-2">User Created</h2>
-                  <p className="text-sm mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>
-                    <span className="text-white font-semibold">{newUsername}</span> can now log in with read-only access.
+                  <h2 className="font-bold text-lg mb-2" style={{ color: "#0F172A" }}>User Created</h2>
+                  <p className="text-sm mb-1" style={{ color: "#64748B" }}>
+                    <span className="font-semibold" style={{ color: "#0F172A" }}>{newUsername}</span> can now log in with read-only access.
                   </p>
-                  <p className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.25)" }}>They can view all sections but cannot make changes.</p>
+                  <p className="text-xs mb-6" style={{ color: "#94A3B8" }}>They can view all sections but cannot make changes.</p>
                   <button onClick={closeAddUser} className="w-full py-2.5 text-sm font-bold text-white" style={{ backgroundColor: "#E8500A" }}>Done</button>
                 </div>
               ) : (
                 <>
                   <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-white font-bold text-lg">Add User</h2>
-                    <button onClick={closeAddUser} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+                    <h2 className="font-bold text-lg" style={{ color: "#0F172A" }}>Add User</h2>
+                    <button onClick={closeAddUser} className="transition-colors text-lg" style={{ color: "#94A3B8" }} onMouseEnter={(e)=>e.currentTarget.style.color="#0F172A"} onMouseLeave={(e)=>e.currentTarget.style.color="#94A3B8"}>✕</button>
                   </div>
-                  <p className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.3)" }}>
-                    The new user will have <span style={{ color: "#60a5fa" }}>read-only</span> access to all portal sections.
+                  <p className="text-xs mb-6" style={{ color: "#64748B" }}>
+                    The new user will have <span style={{ color: "#3B82F6" }}>read-only</span> access to all portal sections.
                   </p>
                   <form onSubmit={handleAddUser} className="space-y-4">
                     {[
@@ -358,18 +358,18 @@ function PortalHeader({ title, onLogout, role, currentUser }: {
                       { label: "Password", val: newPassword, set: setNewPassword, type: "password" },
                     ].map(({ label, val, set, type }) => (
                       <div key={label}>
-                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>{label}</label>
+                        <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>{label}</label>
                         <input type={type} value={val} onChange={(e) => set(e.target.value)} required autoComplete="off"
-                          className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
-                          style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                          className="w-full px-4 py-3 text-sm bg-transparent border focus:outline-none transition-colors"
+                          style={{ borderColor: "rgba(203,213,225,1)", color: "#0F172A" }}
                           onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                          onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                          onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"} />
                       </div>
                     ))}
                     <AnimatePresence>
                       {addErr && (
                         <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                          className="text-xs text-center" style={{ color: "#f87171" }}>{addErr}</motion.p>
+                          className="text-xs text-center" style={{ color: "#DC2626" }}>{addErr}</motion.p>
                       )}
                     </AnimatePresence>
                     <button type="submit" disabled={addLoading}
@@ -433,7 +433,7 @@ function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) =>
     <div
       className="min-h-screen flex items-center justify-center px-4"
       style={{
-        background: "radial-gradient(ellipse at 60% 20%, rgba(232,80,10,0.08) 0%, transparent 60%), #060e1c",
+        background: "#F5F7FA",
       }}
     >
       <motion.div
@@ -447,8 +447,8 @@ function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) =>
           <div className="inline-flex items-center justify-center">
             <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={204} height={204} />
           </div>
-          <h1 className="text-white font-extrabold text-2xl tracking-tight mt-2">Portal Login</h1>
-          <p className="mt-2 text-sm" style={{ color: "rgba(245,240,234,0.38)" }}>
+          <h1 className="font-extrabold text-2xl tracking-tight mt-2" style={{ color: "#0F172A" }}>Portal Login</h1>
+          <p className="mt-2 text-sm" style={{ color: "#64748B" }}>
             ABQ ALSYF · Private Access
           </p>
         </div>
@@ -456,40 +456,40 @@ function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) =>
         {/* Form */}
         <div
           className="p-8"
-          style={{ backgroundColor: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)" }}
+          style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
         >
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+              <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>
                 Username
               </label>
               <input
                 type="text" value={username} onChange={(e) => setUsername(e.target.value)}
                 placeholder="Your username" autoComplete="username" required
-                className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
-                style={{ borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)" }}
+                className="w-full px-4 py-3 text-sm bg-transparent border focus:outline-none transition-colors"
+                style={{ borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(203,213,225,1)", color: "#0F172A" }}
                 onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                onBlur={(e) => e.target.style.borderColor = error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)"}
+                onBlur={(e) => e.target.style.borderColor = error ? "rgba(239,68,68,0.5)" : "rgba(203,213,225,1)"}
               />
             </div>
             <div>
-              <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+              <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>
                 Password
               </label>
               <input
                 type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••" autoComplete="current-password" required
-                className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
-                style={{ borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)" }}
+                className="w-full px-4 py-3 text-sm bg-transparent border focus:outline-none transition-colors"
+                style={{ borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(203,213,225,1)", color: "#0F172A" }}
                 onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                onBlur={(e) => e.target.style.borderColor = error ? "rgba(239,68,68,0.5)" : "rgba(255,255,255,0.1)"}
+                onBlur={(e) => e.target.style.borderColor = error ? "rgba(239,68,68,0.5)" : "rgba(203,213,225,1)"}
               />
             </div>
 
             <AnimatePresence>
               {error && (
                 <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                  className="text-[12px] text-center" style={{ color: "#f87171" }}>
+                  className="text-[12px] text-center" style={{ color: "#DC2626" }}>
                   {error}
                 </motion.p>
               )}
@@ -506,7 +506,7 @@ function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) =>
           </form>
         </div>
 
-        <p className="text-center mt-6 text-[11px]" style={{ color: "rgba(255,255,255,0.15)" }}>
+        <p className="text-center mt-6 text-[11px]" style={{ color: "#CBD5E1" }}>
           ABQ ALSYF Project Management Services
         </p>
       </motion.div>
@@ -573,7 +573,7 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
     <div
       className="min-h-screen"
       style={{
-        background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c",
+        background: "#F5F7FA",
       }}
     >
       <PortalHeader title="Files" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
@@ -586,14 +586,14 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
           <div className="mb-8">
             {onBack && (
               <button onClick={onBack} className="flex items-center gap-2 text-sm mb-4 transition-colors"
-                style={{ color: "rgba(255,255,255,0.35)" }}
+                style={{ color: "#64748B" }}
                 onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-                onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
+                onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
                 ← Back to Dashboard
               </button>
             )}
-            <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Files</h1>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+            <h1 className="font-extrabold text-4xl tracking-tight mb-1" style={{ color: "#0F172A" }}>Files</h1>
+            <p className="text-sm" style={{ color: "#64748B" }}>
               {role === "admin" ? "Upload and manage your documents, images, and PDFs." : "View and open your documents, images, and PDFs."}
             </p>
           </div>
@@ -625,8 +625,8 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
                   <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
                 <div className="text-center">
-                  <p className="text-sm font-semibold text-white">Drop file here or click to browse</p>
-                  <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>PDF, images, text, Word, Excel — up to 50 MB</p>
+                  <p className="text-sm font-semibold" style={{ color: "#0F172A" }}>Drop file here or click to browse</p>
+                  <p className="text-xs mt-1" style={{ color: "#64748B" }}>PDF, images, text, Word, Excel — up to 50 MB</p>
                 </div>
               </>
             )}
@@ -640,7 +640,7 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
             {error && (
               <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 className="mb-4 px-4 py-3 text-sm flex items-center justify-between"
-                style={{ backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#f87171" }}>
+                style={{ backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#DC2626" }}>
                 <span>{error}</span>
                 <button onClick={() => setError("")} className="ml-4 opacity-60 hover:opacity-100">✕</button>
               </motion.div>
@@ -648,10 +648,10 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
           </AnimatePresence>
 
           {/* File list */}
-          <div style={{ border: "1px solid rgba(255,255,255,0.07)", backgroundColor: "rgba(255,255,255,0.015)" }}>
+          <div style={{ border: "1px solid rgba(226,232,240,1)", backgroundColor: "#FFFFFF" }}>
             {/* Table header — hidden on mobile */}
             <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b text-[10px] font-bold tracking-[0.15em] uppercase"
-              style={{ borderColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.25)" }}>
+              style={{ borderColor: "#E2E8F0", color: "#94A3B8" }}>
               <span className="col-span-1" />
               <span className="col-span-6">File Name</span>
               <span className="col-span-2">Size</span>
@@ -662,13 +662,13 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
             {loading ? (
               <div className="py-16 flex flex-col items-center gap-3">
                 <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
-                <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading files…</p>
+                <p className="text-xs" style={{ color: "#94A3B8" }}>Loading files…</p>
               </div>
             ) : files.length === 0 ? (
               <div className="py-16 text-center">
                 <p className="text-4xl mb-4">📂</p>
-                <p className="text-sm font-medium text-white mb-1">No files yet</p>
-                <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Upload your first file using the area above.</p>
+                <p className="text-sm font-medium mb-1" style={{ color: "#0F172A" }}>No files yet</p>
+                <p className="text-xs" style={{ color: "#64748B" }}>Upload your first file using the area above.</p>
               </div>
             ) : (
               <AnimatePresence>
@@ -680,16 +680,16 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
                     exit={{ opacity: 0, x: 10 }}
                     transition={{ duration: 0.25, delay: i * 0.04 }}
                     className="border-b transition-colors"
-                    style={{ borderColor: "rgba(255,255,255,0.04)" }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.025)"}
+                    style={{ borderColor: "rgba(226,232,240,0.8)" }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(100,116,139,0.06)"}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                   >
                     {/* Mobile layout */}
                     <div className="flex sm:hidden items-center gap-3 px-4 py-3">
                       <span className="text-xl flex-shrink-0">{fileIcon(file.metadata?.mimetype)}</span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-white font-medium truncate">{file.name}</p>
-                        <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>
+                        <p className="text-sm font-medium truncate" style={{ color: "#0F172A" }}>{file.name}</p>
+                        <p className="text-xs mt-0.5" style={{ color: "#64748B" }}>
                           {formatSize(file.metadata?.size)} · {fileType(file.name, file.metadata?.mimetype)}
                         </p>
                       </div>
@@ -712,8 +712,8 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
                     {/* Desktop layout */}
                     <div className="hidden sm:grid grid-cols-12 items-center px-5 py-3.5">
                     <span className="col-span-1 text-xl">{fileIcon(file.metadata?.mimetype)}</span>
-                    <span className="col-span-6 text-sm text-white font-medium truncate pr-4">{file.name}</span>
-                    <span className="col-span-2 text-xs" style={{ color: "rgba(255,255,255,0.38)" }}>
+                    <span className="col-span-6 text-sm font-medium truncate pr-4" style={{ color: "#0F172A" }}>{file.name}</span>
+                    <span className="col-span-2 text-xs" style={{ color: "#64748B" }}>
                       {formatSize(file.metadata?.size)}
                     </span>
                     <span className="col-span-1 text-[10px] font-bold tracking-wider px-1.5 py-0.5 text-center"
@@ -749,10 +749,10 @@ function Dashboard({ onLogout, onBack, role }: { onLogout: () => void; onBack?: 
 
           {/* Footer */}
           <div className="flex items-center justify-between mt-3 px-1">
-            <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.2)" }}>
+            <span className="text-[11px]" style={{ color: "#94A3B8" }}>
               {files.length} file{files.length !== 1 ? "s" : ""} stored
             </span>
-            <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.15)" }}>
+            <span className="text-[11px]" style={{ color: "#CBD5E1" }}>
               Supabase Storage · Free tier
             </span>
           </div>
@@ -819,22 +819,22 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
+    <div className="min-h-screen" style={{ background: "#F5F7FA" }}>
       <PortalHeader title="Inquiries" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
 
       <main className="max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
-            style={{ color: "rgba(255,255,255,0.35)" }}
+            style={{ color: "#64748B" }}
             onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
+            onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
             ← Back to Dashboard
           </button>
 
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Inquiries</h1>
-              <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>Quote requests submitted via the website.</p>
+              <h1 className="font-extrabold text-4xl tracking-tight mb-1" style={{ color: "#0F172A" }}>Inquiries</h1>
+              <p className="text-sm" style={{ color: "#64748B" }}>Quote requests submitted via the website.</p>
             </div>
             <div className="flex items-center gap-3">
               <button onClick={load} className="px-3 py-1.5 text-xs font-semibold border transition-colors"
@@ -848,15 +848,15 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
           </div>
 
           {fetchError && (
-            <div className="mb-4 px-4 py-3 text-sm" style={{ backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#f87171" }}>
+            <div className="mb-4 px-4 py-3 text-sm" style={{ backgroundColor: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#DC2626" }}>
               Error: {fetchError}
             </div>
           )}
 
-          <div style={{ border: "1px solid rgba(255,255,255,0.07)", backgroundColor: "rgba(255,255,255,0.015)" }}>
+          <div style={{ border: "1px solid rgba(226,232,240,1)", backgroundColor: "#FFFFFF" }}>
             {/* Header — desktop only */}
             <div className="hidden sm:grid grid-cols-12 px-5 py-3 border-b text-[10px] font-bold tracking-[0.15em] uppercase"
-              style={{ borderColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.25)" }}>
+              style={{ borderColor: "#E2E8F0", color: "#94A3B8" }}>
               <span className="col-span-3">Name</span>
               <span className="col-span-3">Email</span>
               <span className="col-span-2">Service</span>
@@ -867,34 +867,34 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
             {loading ? (
               <div className="py-16 flex flex-col items-center gap-3">
                 <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
-                <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading inquiries…</p>
+                <p className="text-xs" style={{ color: "#94A3B8" }}>Loading inquiries…</p>
               </div>
             ) : inquiries.length === 0 ? (
               <div className="py-16 text-center">
                 <p className="text-4xl mb-4">📬</p>
-                <p className="text-sm font-medium text-white mb-1">No inquiries yet</p>
-                <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Submissions from the contact form will appear here.</p>
+                <p className="text-sm font-medium mb-1" style={{ color: "#0F172A" }}>No inquiries yet</p>
+                <p className="text-xs" style={{ color: "#64748B" }}>Submissions from the contact form will appear here.</p>
               </div>
             ) : (
               inquiries.map((inq, i) => (
                 <motion.div key={inq.id}
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.04 }}
                   className="border-b transition-colors cursor-pointer"
-                  style={{ borderColor: "rgba(255,255,255,0.04)" }}
+                  style={{ borderColor: "rgba(226,232,240,0.8)" }}
                   onClick={() => setSelected(inq)}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.025)"}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(100,116,139,0.06)"}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}>
 
                   {/* Mobile layout */}
                   <div className="flex sm:hidden items-center justify-between px-4 py-3.5 gap-3">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm text-white font-medium">{inq.name}</p>
-                      <p className="text-xs truncate mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{inq.email}</p>
+                      <p className="text-sm font-medium" style={{ color: "#0F172A" }}>{inq.name}</p>
+                      <p className="text-xs truncate mt-0.5" style={{ color: "#64748B" }}>{inq.email}</p>
                       <div className="flex items-center gap-2 mt-1.5">
                         <span className="text-[10px] font-semibold px-2 py-0.5" style={{ backgroundColor: "rgba(232,80,10,0.1)", color: "#E8500A" }}>
                           {serviceLabels[inq.service] || inq.service}
                         </span>
-                        <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>{formatDate(inq.created_at)}</span>
+                        <span className="text-[10px]" style={{ color: "#64748B" }}>{formatDate(inq.created_at)}</span>
                       </div>
                     </div>
                     <span className="text-xs flex-shrink-0" style={{ color: "rgba(232,80,10,0.6)" }}>View →</span>
@@ -903,16 +903,16 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
                   {/* Desktop layout */}
                   <div className="hidden sm:grid grid-cols-12 items-center px-5 py-4">
                     <div className="col-span-3">
-                      <p className="text-sm text-white font-medium">{inq.name}</p>
-                      {inq.company && <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{inq.company}</p>}
+                      <p className="text-sm font-medium" style={{ color: "#0F172A" }}>{inq.name}</p>
+                      {inq.company && <p className="text-xs" style={{ color: "#64748B" }}>{inq.company}</p>}
                     </div>
-                    <span className="col-span-3 text-sm truncate" style={{ color: "rgba(255,255,255,0.55)" }}>{inq.email}</span>
+                    <span className="col-span-3 text-sm truncate" style={{ color: "#334155" }}>{inq.email}</span>
                     <span className="col-span-2">
                       <span className="text-[10px] font-semibold px-2 py-1" style={{ backgroundColor: "rgba(232,80,10,0.1)", color: "#E8500A" }}>
                         {serviceLabels[inq.service] || inq.service}
                       </span>
                     </span>
-                    <span className="col-span-3 text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{formatDate(inq.created_at)}</span>
+                    <span className="col-span-3 text-xs" style={{ color: "#64748B" }}>{formatDate(inq.created_at)}</span>
                     <span className="col-span-1 text-right text-xs" style={{ color: "rgba(232,80,10,0.6)" }}>View →</span>
                   </div>
                 </motion.div>
@@ -927,18 +927,18 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
         {selected && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 flex items-center justify-center z-50 px-4"
-            style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
+            style={{ backgroundColor: "rgba(15,23,42,0.55)" }}
             onClick={() => setSelected(null)}>
             <motion.div initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 16 }}
               className="w-full max-w-lg p-8"
-              style={{ backgroundColor: "#0d1e36", border: "1px solid rgba(232,80,10,0.2)" }}
+              style={{ backgroundColor: "#FFFFFF", border: "1px solid rgba(232,80,10,0.2)" }}
               onClick={(e) => e.stopPropagation()}>
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <h2 className="text-white font-bold text-xl">{selected.name}</h2>
-                  {selected.company && <p className="text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{selected.company}</p>}
+                  <h2 className="font-bold text-xl" style={{ color: "#0F172A" }}>{selected.name}</h2>
+                  {selected.company && <p className="text-sm mt-0.5" style={{ color: "#64748B" }}>{selected.company}</p>}
                 </div>
-                <button onClick={() => setSelected(null)} className="text-white/30 hover:text-white text-xl leading-none">✕</button>
+                <button onClick={() => setSelected(null)} className="text-xl leading-none transition-colors" style={{ color: "#94A3B8" }}>✕</button>
               </div>
               <div className="space-y-3 text-sm">
                 {[
@@ -948,13 +948,13 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
                   { label: "Date", value: formatDate(selected.created_at) },
                 ].map(row => (
                   <div key={row.label} className="flex gap-4">
-                    <span className="w-16 flex-shrink-0 text-[10px] font-bold tracking-wider uppercase pt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{row.label}</span>
-                    <span style={{ color: "rgba(255,255,255,0.75)" }}>{row.value}</span>
+                    <span className="w-16 flex-shrink-0 text-[10px] font-bold tracking-wider uppercase pt-0.5" style={{ color: "#64748B" }}>{row.label}</span>
+                    <span style={{ color: "#334155" }}>{row.value}</span>
                   </div>
                 ))}
                 <div className="flex gap-4 pt-2">
-                  <span className="w-16 flex-shrink-0 text-[10px] font-bold tracking-wider uppercase pt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>Message</span>
-                  <span className="leading-relaxed" style={{ color: "rgba(255,255,255,0.75)" }}>{selected.message}</span>
+                  <span className="w-16 flex-shrink-0 text-[10px] font-bold tracking-wider uppercase pt-0.5" style={{ color: "#64748B" }}>Message</span>
+                  <span className="leading-relaxed" style={{ color: "#334155" }}>{selected.message}</span>
                 </div>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -965,7 +965,7 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
                 </a>
                 <button onClick={() => setSelected(null)}
                   className="px-4 py-2 text-sm font-semibold border transition-all"
-                  style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }}>
+                  style={{ borderColor: "rgba(203,213,225,1)", color: "#64748B" }}>
                   Close
                 </button>
                 {role === "admin" && (
@@ -1013,11 +1013,11 @@ interface LeadState {
 type AllLeadStates = Record<number, LeadState>;
 
 const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; bg: string }> = {
-  pending:   { label: "Pending",   color: "rgba(255,255,255,0.5)",  bg: "rgba(255,255,255,0.06)" },
-  contacted: { label: "Contacted", color: "#60a5fa",               bg: "rgba(96,165,250,0.1)"  },
-  followup:  { label: "Follow-up", color: "#E8500A",               bg: "rgba(232,80,10,0.12)"  },
-  won:       { label: "Won ✓",     color: "#4ade80",               bg: "rgba(74,222,128,0.1)"  },
-  lost:      { label: "Lost",      color: "rgba(239,68,68,0.7)",   bg: "rgba(239,68,68,0.08)"  },
+  pending:   { label: "Pending",   color: "#64748B", bg: "#F1F5F9"              },
+  contacted: { label: "Contacted", color: "#2563EB", bg: "rgba(37,99,235,0.1)" },
+  followup:  { label: "Follow-up", color: "#EA580C", bg: "rgba(234,88,12,0.12)"},
+  won:       { label: "Won ✓",     color: "#16A34A", bg: "rgba(22,163,74,0.1)" },
+  lost:      { label: "Lost",      color: "#DC2626", bg: "rgba(220,38,38,0.08)"},
 };
 
 const LEADS: LeadItem[] = [
@@ -1252,10 +1252,10 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
+    <div className="min-h-screen" style={{ background: "#F5F7FA" }}>
       <PortalHeader title="Leads" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
       {saving && (
-        <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "rgba(255,255,255,0.3)" }}>
+        <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "#64748B" }}>
           Saving…
         </div>
       )}
@@ -1263,15 +1263,15 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
       <main className="max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
-            style={{ color: "rgba(255,255,255,0.35)" }}
+            style={{ color: "#64748B" }}
             onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
+            onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
             ← Back to Dashboard
           </button>
 
           <div className="mb-8">
-            <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Lead Tracker</h1>
-            <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+            <h1 className="font-extrabold text-4xl tracking-tight mb-1" style={{ color: "#0F172A" }}>Lead Tracker</h1>
+            <p className="text-sm" style={{ color: "#64748B" }}>
               May 2026 · 10 target companies · Dubai &amp; Sharjah
             </p>
           </div>
@@ -1279,28 +1279,28 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
           {/* Summary stats */}
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
-              { label: "Won",       count: counts.won,       color: "#4ade80", bg: "rgba(74,222,128,0.07)"  },
-              { label: "Contacted", count: counts.contacted, color: "#60a5fa", bg: "rgba(96,165,250,0.07)"  },
-              { label: "Follow-up", count: counts.followup,  color: "#E8500A", bg: "rgba(232,80,10,0.07)"   },
+              { label: "Won",       count: counts.won,       color: "#16A34A", bg: "rgba(22,163,74,0.07)"   },
+              { label: "Contacted", count: counts.contacted, color: "#2563EB", bg: "rgba(37,99,235,0.07)"   },
+              { label: "Follow-up", count: counts.followup,  color: "#EA580C", bg: "rgba(234,88,12,0.07)"   },
             ].map((s) => (
-              <div key={s.label} className="px-4 py-3 border" style={{ backgroundColor: s.bg, borderColor: "rgba(255,255,255,0.06)" }}>
+              <div key={s.label} className="px-4 py-3 border" style={{ backgroundColor: s.bg, borderColor: "#E2E8F0" }}>
                 <div className="text-2xl font-extrabold" style={{ color: s.color }}>{s.count}</div>
-                <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>{s.label}</div>
+                <div className="text-xs mt-0.5" style={{ color: "#64748B" }}>{s.label}</div>
               </div>
             ))}
           </div>
 
           {/* Day tabs */}
-          <div className="flex gap-0 mb-6 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+          <div className="flex gap-0 mb-6 border-b" style={{ borderColor: "#E2E8F0" }}>
             {([1, 2, 3] as const).map((day) => (
               <button key={day} onClick={() => setActiveDay(day)}
                 className="px-5 py-3 text-sm font-semibold transition-all border-b-2 -mb-px"
                 style={{
-                  color: activeDay === day ? "#E8500A" : "rgba(255,255,255,0.4)",
+                  color: activeDay === day ? "#E8500A" : "#64748B",
                   borderBottomColor: activeDay === day ? "#E8500A" : "transparent",
                 }}>
                 Day {day}
-                <span className="ml-2 text-xs px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)" }}>
+                <span className="ml-2 text-xs px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: "#F1F5F9", color: "#64748B" }}>
                   {LEADS.filter((l) => l.day === day).length}
                 </span>
               </button>
@@ -1310,7 +1310,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
           {/* Area label */}
           <div className="flex items-center gap-2 mb-5">
             <span>📍</span>
-            <span className="text-[11px] font-semibold tracking-[0.2em] uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <span className="text-[11px] font-semibold tracking-[0.2em] uppercase" style={{ color: "#64748B" }}>
               {dayAreas[activeDay]}
             </span>
           </div>
@@ -1318,7 +1318,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
           {loading ? (
             <div className="py-16 flex flex-col items-center gap-3">
               <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading leads…</p>
+              <p className="text-xs" style={{ color: "#94A3B8" }}>Loading leads…</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -1332,7 +1332,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                   <motion.div key={lead.id}
                     initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.06 }}
-                    style={{ border: "1px solid rgba(255,255,255,0.07)", backgroundColor: "rgba(255,255,255,0.018)" }}>
+                    style={{ border: "1px solid rgba(226,232,240,1)", backgroundColor: "#FFFFFF" }}>
 
                     {/* Card header — always visible */}
                     <div className="flex items-center justify-between px-5 py-4 cursor-pointer select-none"
@@ -1340,18 +1340,18 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                       <div className="flex items-center gap-4 min-w-0">
                         <span className="text-xs font-bold shrink-0" style={{ color: "rgba(232,80,10,0.55)" }}>#{lead.id}</span>
                         <div className="min-w-0">
-                          <p className="text-white font-semibold text-sm leading-snug">{lead.company}</p>
-                          <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.32)" }}>{lead.type}</p>
+                          <p className="font-semibold text-sm leading-snug" style={{ color: "#0F172A" }}>{lead.company}</p>
+                          <p className="text-xs mt-0.5" style={{ color: "#64748B" }}>{lead.type}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 shrink-0 ml-4">
-                        <span className="text-[11px] hidden sm:block" style={{ color: "rgba(255,255,255,0.25)" }}>
+                        <span className="text-[11px] hidden sm:block" style={{ color: "#94A3B8" }}>
                           {doneCount}/{lead.tips.length} tips
                         </span>
                         <span className="px-2.5 py-1 text-[11px] font-bold" style={{ color: sc.color, backgroundColor: sc.bg }}>
                           {sc.label}
                         </span>
-                        <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>{isExpanded ? "▲" : "▼"}</span>
+                        <span className="text-[10px]" style={{ color: "#94A3B8" }}>{isExpanded ? "▲" : "▼"}</span>
                       </div>
                     </div>
 
@@ -1361,7 +1361,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                         <motion.div
                           initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }}
-                          style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                          style={{ overflow: "hidden", borderTop: "1px solid #E2E8F0" }}>
                           <div className="px-5 py-5 space-y-6">
 
                             {/* Contact info */}
@@ -1376,13 +1376,13 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                                   <a key={icon} href={href} target={href.startsWith("http") ? "_blank" : undefined}
                                     rel="noopener noreferrer"
                                     className="flex items-start gap-2 text-sm transition-colors hover:opacity-80"
-                                    style={{ color: "rgba(255,255,255,0.5)" }}>
+                                    style={{ color: "#64748B" }}>
                                     <span className="shrink-0">{icon}</span>
                                     <span className="truncate">{text}</span>
                                   </a>
                                 ) : (
                                   <p key={icon} className="flex items-start gap-2 text-xs leading-relaxed"
-                                    style={{ color: "rgba(255,255,255,0.38)" }}>
+                                    style={{ color: "#64748B" }}>
                                     <span className="shrink-0">{icon}</span>
                                     <span>{text}</span>
                                   </p>
@@ -1392,7 +1392,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
 
                             {/* Status selector */}
                             <div>
-                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "rgba(255,255,255,0.22)" }}>Status</p>
+                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "#94A3B8" }}>Status</p>
                               <div className="flex flex-wrap gap-2">
                                 {(Object.entries(STATUS_CONFIG) as [LeadStatus, typeof STATUS_CONFIG[LeadStatus]][]).map(([key, cfg]) => (
                                   <button key={key}
@@ -1401,7 +1401,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                                     style={{
                                       color: cfg.color,
                                       backgroundColor: st.status === key ? cfg.bg : "transparent",
-                                      border: `1px solid ${st.status === key ? cfg.color : "rgba(255,255,255,0.08)"}`,
+                                      border: `1px solid ${st.status === key ? cfg.color : "rgba(203,213,225,1)"}`,
                                       opacity: st.status === key ? 1 : 0.5,
                                       cursor: role === "viewer" ? "default" : "pointer",
                                     }}>
@@ -1409,12 +1409,12 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                                   </button>
                                 ))}
                               </div>
-                              {role === "viewer" && <p className="text-[10px] mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>Read-only access</p>}
+                              {role === "viewer" && <p className="text-[10px] mt-2" style={{ color: "#94A3B8" }}>Read-only access</p>}
                             </div>
 
                             {/* Action tips */}
                             <div>
-                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "rgba(255,255,255,0.22)" }}>Action Tips</p>
+                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: "#94A3B8" }}>Action Tips</p>
                               <div className="space-y-2.5">
                                 {lead.tips.map((tip, idx) => (
                                   <label key={idx} className={`flex items-start gap-3 ${role === "admin" ? "cursor-pointer" : "cursor-default"}`}>
@@ -1423,7 +1423,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                                       disabled={role === "viewer"}
                                       className="mt-0.5 shrink-0 accent-orange-500" />
                                     <span className="text-sm leading-relaxed transition-all" style={{
-                                      color: st.checkedTips[idx] ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.6)",
+                                      color: st.checkedTips[idx] ? "#94A3B8" : "#334155",
                                       textDecoration: st.checkedTips[idx] ? "line-through" : "none",
                                     }}>
                                       {tip}
@@ -1435,7 +1435,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
 
                             {/* Notes */}
                             <div>
-                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "rgba(255,255,255,0.22)" }}>Notes</p>
+                              <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2.5" style={{ color: "#94A3B8" }}>Notes</p>
                               <textarea
                                 value={st.notes}
                                 onChange={(e) => role === "admin" && updateNotes(lead.id, e.target.value)}
@@ -1443,9 +1443,9 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                                 placeholder={role === "admin" ? "Write your notes here… e.g. spoke with Mr. Ahmed, call back Thursday." : "No notes."}
                                 rows={3}
                                 className="w-full bg-transparent border text-sm px-3 py-2 resize-none focus:outline-none transition-colors"
-                                style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)", cursor: role === "viewer" ? "default" : "text" }}
+                                style={{ borderColor: "rgba(203,213,225,1)", color: "#334155", cursor: role === "viewer" ? "default" : "text" }}
                                 onFocus={(e) => { if (role === "admin") e.target.style.borderColor = "#E8500A"; }}
-                                onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.08)"}
+                                onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"}
                               />
                             </div>
                           </div>
@@ -1465,14 +1465,14 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
 
 // ─── Tasks Config ─────────────────────────────────────────
 const TASK_STATUS_CONFIG: Record<TaskStatus, { label: string; color: string; bg: string }> = {
-  plan:        { label: "Plan",        color: "rgba(255,255,255,0.5)",  bg: "rgba(255,255,255,0.06)" },
-  in_progress: { label: "In Progress", color: "#E8500A",               bg: "rgba(232,80,10,0.12)"   },
-  done:        { label: "Done ✓",      color: "#4ade80",               bg: "rgba(74,222,128,0.1)"   },
+  plan:        { label: "Plan",        color: "#64748B", bg: "#F1F5F9"              },
+  in_progress: { label: "In Progress", color: "#EA580C", bg: "rgba(234,88,12,0.12)"},
+  done:        { label: "Done ✓",      color: "#16A34A", bg: "rgba(22,163,74,0.1)" },
 };
 const TASK_PRIORITY_CONFIG: Record<TaskPriority, { label: string; color: string; bg: string }> = {
-  high:   { label: "High", color: "#ef4444", bg: "rgba(239,68,68,0.1)"   },
-  medium: { label: "Med",  color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
-  low:    { label: "Low",  color: "#6b7280", bg: "rgba(107,114,128,0.1)" },
+  high:   { label: "High", color: "#DC2626", bg: "#FEF2F2"              },
+  medium: { label: "Med",  color: "#D97706", bg: "#FFFBEB"              },
+  low:    { label: "Low",  color: "#94A3B8", bg: "#F8FAFC"              },
 };
 const TASK_STATUS_CYCLE: TaskStatus[] = ["plan", "in_progress", "done"];
 
@@ -1578,15 +1578,15 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
+    <div className="min-h-screen" style={{ background: "#F5F7FA" }}>
       <PortalHeader title="My Tasks" onLogout={onLogout} role={role} currentUser={currentUser} />
       {saving && (
-        <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "rgba(255,255,255,0.3)" }}>
+        <div className="text-center py-1 text-[11px] animate-pulse" style={{ backgroundColor: "rgba(232,80,10,0.07)", color: "#64748B" }}>
           Saving…
         </div>
       )}
       {saveError && (
-        <div className="text-center py-1.5 text-[11px] flex items-center justify-center gap-2" style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "#f87171" }}>
+        <div className="text-center py-1.5 text-[11px] flex items-center justify-center gap-2" style={{ backgroundColor: "rgba(239,68,68,0.1)", color: "#DC2626" }}>
           ⚠ Save failed: {saveError}
           <button onClick={() => setSaveError("")} className="opacity-60 hover:opacity-100 ml-2">✕</button>
         </div>
@@ -1597,16 +1597,16 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
 
           {/* Back + header */}
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
-            style={{ color: "rgba(255,255,255,0.35)" }}
+            style={{ color: "#64748B" }}
             onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.35)"}>
+            onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
             ← Back to Dashboard
           </button>
 
           <div className="flex items-end justify-between mb-6">
             <div>
-              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">My Tasks</h1>
-              <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+              <h1 className="font-extrabold text-4xl tracking-tight mb-1" style={{ color: "#0F172A" }}>My Tasks</h1>
+              <p className="text-sm" style={{ color: "#64748B" }}>
                 {tasks.length} task{tasks.length !== 1 ? "s" : ""} · {counts.done} done · {counts.in_progress} in progress
               </p>
             </div>
@@ -1620,7 +1620,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
           </div>
 
           {/* Filter tabs */}
-          <div className="flex gap-0 mb-6 border-b overflow-x-auto" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+          <div className="flex gap-0 mb-6 border-b overflow-x-auto" style={{ borderColor: "#E2E8F0" }}>
             {([
               { key: "all" as const,         label: "All",         count: tasks.length       },
               { key: "plan" as const,         label: "Plan",        count: counts.plan        },
@@ -1630,12 +1630,12 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
               <button key={tab.key} onClick={() => setFilter(tab.key)}
                 className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap flex-shrink-0"
                 style={{
-                  color: filter === tab.key ? "#E8500A" : "rgba(255,255,255,0.4)",
+                  color: filter === tab.key ? "#E8500A" : "#64748B",
                   borderBottomColor: filter === tab.key ? "#E8500A" : "transparent",
                 }}>
                 {tab.label}
                 <span className="ml-1.5 text-[10px] sm:text-xs px-1 sm:px-1.5 py-0.5 rounded-sm"
-                  style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)" }}>
+                  style={{ backgroundColor: "#F1F5F9", color: "#64748B" }}>
                   {tab.count}
                 </span>
               </button>
@@ -1646,15 +1646,15 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
           {loading ? (
             <div className="py-16 flex flex-col items-center gap-3">
               <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: "#E8500A", borderTopColor: "transparent" }} />
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Loading tasks…</p>
+              <p className="text-xs" style={{ color: "#94A3B8" }}>Loading tasks…</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="py-16 text-center">
               <p className="text-4xl mb-4">✅</p>
-              <p className="text-sm font-medium text-white mb-1">
+              <p className="text-sm font-medium mb-1" style={{ color: "#0F172A" }}>
                 {filter === "all" ? "No tasks yet" : `No ${filter === "in_progress" ? "in-progress" : filter} tasks`}
               </p>
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+              <p className="text-xs" style={{ color: "#64748B" }}>
                 {filter === "all" ? "Hit \"+ New Task\" to add your first one." : "Switch to All to see other tasks."}
               </p>
             </div>
@@ -1673,8 +1673,8 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                       initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.22, delay: i * 0.04 }}
                       style={{
-                        border: "1px solid rgba(255,255,255,0.07)",
-                        backgroundColor: "rgba(255,255,255,0.018)",
+                        border: "1px solid rgba(226,232,240,1)",
+                        backgroundColor: "#FFFFFF",
                         opacity: isDone ? 0.6 : 1,
                       }}>
 
@@ -1693,7 +1693,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
 
                         {/* Title */}
                         <span dir="auto" className="flex-1 text-sm font-medium" style={{
-                          color: isDone ? "rgba(255,255,255,0.4)" : "white",
+                          color: isDone ? "#64748B" : "white",
                           textDecoration: isDone ? "line-through" : "none",
                           wordBreak: "break-word",
                         }}>
@@ -1709,13 +1709,13 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                           {task.dueDate && (
                             <span className={`hidden sm:inline text-[10px] font-semibold px-2 py-0.5${overdue ? " animate-pulse" : ""}`}
                               style={{
-                                color: overdue ? "#ef4444" : "rgba(255,255,255,0.3)",
+                                color: overdue ? "#ef4444" : "#64748B",
                                 backgroundColor: overdue ? "rgba(239,68,68,0.1)" : "transparent",
                               }}>
                               {overdue ? "⚠ Overdue" : formatDue(task.dueDate)}
                             </span>
                           )}
-                          <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>{isExpanded ? "▲" : "▼"}</span>
+                          <span className="text-[10px]" style={{ color: "#94A3B8" }}>{isExpanded ? "▲" : "▼"}</span>
                         </div>
                       </div>
 
@@ -1725,7 +1725,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                           <motion.div
                             initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }}
-                            style={{ overflow: "hidden", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                            style={{ overflow: "hidden", borderTop: "1px solid #E2E8F0" }}>
                             <div className="px-4 py-4 space-y-4">
 
                               {/* Mobile: priority + due */}
@@ -1735,7 +1735,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                                 {task.dueDate && (
                                   <span className={`text-[10px] font-semibold px-2 py-0.5${overdue ? " animate-pulse" : ""}`}
                                     style={{
-                                      color: overdue ? "#ef4444" : "rgba(255,255,255,0.3)",
+                                      color: overdue ? "#ef4444" : "#64748B",
                                       backgroundColor: overdue ? "rgba(239,68,68,0.1)" : "transparent",
                                     }}>
                                     {overdue ? "⚠ Overdue" : "Due " + formatDue(task.dueDate)}
@@ -1745,21 +1745,21 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
 
                               {/* Notes */}
                               <div>
-                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.22)" }}>Notes</p>
+                                <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#94A3B8" }}>Notes</p>
                                 <textarea
                                   value={task.notes}
                                   onChange={(e) => updateTaskNotes(task.id, e.target.value)}
                                   placeholder="Add notes…" rows={6} dir="auto"
                                   className="w-full bg-transparent border text-sm px-3 py-2 resize-none focus:outline-none transition-colors"
-                                  style={{ borderColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)" }}
+                                  style={{ borderColor: "rgba(203,213,225,1)", color: "#334155" }}
                                   onClick={(e) => e.stopPropagation()}
                                   onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                                  onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.08)"} />
+                                  onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"} />
                               </div>
 
                               {/* Actions */}
                               <div className="flex items-center justify-between">
-                                <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>
+                                <p className="text-[10px]" style={{ color: "#94A3B8" }}>
                                   Added {new Date(task.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
                                 </p>
                                 <button onClick={(e) => { e.stopPropagation(); deleteTask(task.id); }}
@@ -1791,44 +1791,44 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center px-4"
-            style={{ backgroundColor: "rgba(6,14,28,0.85)", backdropFilter: "blur(6px)" }}
+            style={{ backgroundColor: "rgba(15,23,42,0.55)", backdropFilter: "blur(6px)" }}
             onClick={(e) => { if (e.target === e.currentTarget) closeAddModal(); }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 12 }} animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 12 }} transition={{ duration: 0.2 }}
               className="w-full max-w-sm p-8"
-              style={{ backgroundColor: "#0d1f38", border: "1px solid rgba(255,255,255,0.09)" }}>
+              style={{ backgroundColor: "#FFFFFF", border: "1px solid rgba(226,232,240,1)" }}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-white font-bold text-lg">New Task</h2>
-                <button onClick={closeAddModal} className="text-white/30 hover:text-white transition-colors text-lg">✕</button>
+                <h2 className="font-bold text-lg" style={{ color: "#0F172A" }}>New Task</h2>
+                <button onClick={closeAddModal} className="transition-colors text-lg" style={{ color: "#94A3B8" }} onMouseEnter={(e)=>e.currentTarget.style.color="#0F172A"} onMouseLeave={(e)=>e.currentTarget.style.color="#94A3B8"}>✕</button>
               </div>
               <form onSubmit={handleAddTask} className="space-y-4">
 
                 {/* Title */}
                 <div>
-                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Title *</label>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>Title *</label>
                   <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
                     required autoFocus dir="auto" placeholder="What needs to be done?"
-                    className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
-                    style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                    className="w-full px-4 py-3 text-sm bg-transparent border focus:outline-none transition-colors"
+                    style={{ borderColor: "rgba(203,213,225,1)", color: "#0F172A" }}
                     onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                    onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"} />
                 </div>
 
                 {/* Notes */}
                 <div>
-                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Notes</label>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>Notes</label>
                   <textarea value={newNotes} onChange={(e) => setNewNotes(e.target.value)}
                     rows={2} dir="auto" placeholder="Optional details…"
-                    className="w-full px-4 py-2 text-sm text-white bg-transparent border focus:outline-none transition-colors resize-none"
-                    style={{ borderColor: "rgba(255,255,255,0.1)" }}
+                    className="w-full px-4 py-2 text-sm bg-transparent border focus:outline-none transition-colors resize-none"
+                    style={{ borderColor: "rgba(203,213,225,1)", color: "#0F172A" }}
                     onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                    onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"} />
                 </div>
 
                 {/* Priority */}
                 <div>
-                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Priority</label>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>Priority</label>
                   <div className="flex gap-2">
                     {(["high", "medium", "low"] as TaskPriority[]).map(p => {
                       const pc = TASK_PRIORITY_CONFIG[p];
@@ -1836,9 +1836,9 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                         <button key={p} type="button" onClick={() => setNewPriority(p)}
                           className="flex-1 py-2 text-xs font-bold transition-all border"
                           style={{
-                            color: newPriority === p ? pc.color : "rgba(255,255,255,0.3)",
+                            color: newPriority === p ? pc.color : "#64748B",
                             backgroundColor: newPriority === p ? pc.bg : "transparent",
-                            borderColor: newPriority === p ? pc.color : "rgba(255,255,255,0.1)",
+                            borderColor: newPriority === p ? pc.color : "rgba(203,213,225,1)",
                           }}>
                           {pc.label}
                         </button>
@@ -1849,25 +1849,25 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
 
                 {/* Due Date */}
                 <div>
-                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>Due Date (optional)</label>
+                  <label className="block text-[10px] font-bold tracking-[0.2em] uppercase mb-2" style={{ color: "#64748B" }}>Due Date (optional)</label>
                   <input type="date" value={newDueDate} onChange={(e) => setNewDueDate(e.target.value)}
-                    className="w-full px-4 py-3 text-sm text-white bg-transparent border focus:outline-none transition-colors"
-                    style={{ borderColor: "rgba(255,255,255,0.1)", colorScheme: "dark" }}
+                    className="w-full px-4 py-3 text-sm bg-transparent border focus:outline-none transition-colors"
+                    style={{ borderColor: "rgba(203,213,225,1)", colorScheme: "light", color: "#0F172A" }}
                     onFocus={(e) => e.target.style.borderColor = "#E8500A"}
-                    onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.1)"} />
+                    onBlur={(e) => e.target.style.borderColor = "rgba(203,213,225,1)"} />
                 </div>
 
                 <AnimatePresence>
                   {addErr && (
                     <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                      className="text-xs text-center" style={{ color: "#f87171" }}>{addErr}</motion.p>
+                      className="text-xs text-center" style={{ color: "#DC2626" }}>{addErr}</motion.p>
                   )}
                 </AnimatePresence>
 
                 <div className="flex gap-3 pt-1">
                   <button type="button" onClick={closeAddModal}
                     className="flex-1 py-3 text-sm font-semibold border transition-all"
-                    style={{ borderColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)" }}>
+                    style={{ borderColor: "rgba(203,213,225,1)", color: "#64748B" }}>
                     Cancel
                   </button>
                   <button type="submit"
@@ -1898,7 +1898,7 @@ function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: "radial-gradient(ellipse at 80% 10%, rgba(232,80,10,0.06) 0%, transparent 55%), #060e1c" }}>
+    <div className="min-h-screen" style={{ background: "#F5F7FA" }}>
       <PortalHeader title="Portal" onLogout={onLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
 
       <main className="max-w-5xl mx-auto px-6 py-12">
@@ -1916,7 +1916,7 @@ function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate
                 style={{ filter: "brightness(0.88) contrast(1.05) saturate(0.85)" }}
               />
               <div className="absolute inset-0" style={{
-                background: "linear-gradient(160deg, rgba(232,80,10,0.12) 0%, rgba(6,14,28,0.25) 100%)"
+                background: "linear-gradient(160deg, rgba(232,80,10,0.1) 0%, rgba(241,245,249,0.2) 100%)"
               }} />
             </div>
             )}
@@ -1925,8 +1925,8 @@ function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate
               <p className="text-[11px] font-semibold tracking-[0.25em] uppercase mb-1" style={{ color: "#E8500A" }}>
                 ABQ ALSYF Portal
               </p>
-              <h1 className="text-white font-extrabold text-4xl tracking-tight mb-1">Welcome, {currentUser}.</h1>
-              <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>ABQ ALSYF Management Portal</p>
+              <h1 className="font-extrabold text-4xl tracking-tight mb-1" style={{ color: "#0F172A" }}>Welcome, {currentUser}.</h1>
+              <p className="text-sm" style={{ color: "#64748B" }}>ABQ ALSYF Management Portal</p>
             </div>
           </div>
 
@@ -1937,21 +1937,21 @@ function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate
                   onClick={() => card.ready && onNavigate(card.id)}
                   className="w-full text-left p-6 border transition-all duration-200"
                   style={{
-                    backgroundColor: "rgba(255,255,255,0.02)",
-                    borderColor: card.ready ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.05)",
+                    backgroundColor: "#FFFFFF",
+                    borderColor: card.ready ? "#E2E8F0" : "#E2E8F0",
                     cursor: card.ready ? "pointer" : "default",
                     opacity: card.ready ? 1 : 0.6,
                   }}
                   onMouseEnter={(e) => { if (card.ready) e.currentTarget.style.borderColor = "rgba(232,80,10,0.4)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = card.ready ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.05)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E2E8F0"; }}
                 >
                   <div className="text-3xl mb-4">{card.icon}</div>
-                  <h2 className="text-white font-bold text-lg mb-1">{card.title}</h2>
-                  <p className="text-sm mb-3" style={{ color: "rgba(245,240,234,0.45)" }}>{card.desc}</p>
+                  <h2 className="font-bold text-lg mb-1" style={{ color: "#0F172A" }}>{card.title}</h2>
+                  <p className="text-sm mb-3" style={{ color: "#64748B" }}>{card.desc}</p>
                   {card.ready ? (
                     <span className="text-xs font-semibold" style={{ color: "#E8500A" }}>Open →</span>
                   ) : (
-                    <span className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>Coming soon</span>
+                    <span className="text-xs" style={{ color: "#94A3B8" }}>Coming soon</span>
                   )}
                 </button>
               </motion.div>
@@ -2009,7 +2009,7 @@ export default function PortalPage() {
   }
 
   if (authed === null) return (
-    <div className="min-h-screen" style={{ backgroundColor: "#060e1c" }} />
+    <div className="min-h-screen" style={{ backgroundColor: "#F5F7FA" }} />
   );
 
   return (
