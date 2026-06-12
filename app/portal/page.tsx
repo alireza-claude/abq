@@ -837,7 +837,7 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
               <p className="text-sm" style={{ color: "#64748B" }}>Quote requests submitted via the website.</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm px-3 py-1.5 font-bold" style={{ backgroundColor: "rgba(232,80,10,0.10)", color: "#E8500A", border: "1.5px solid rgba(232,80,10,0.25)" }}>
+              <span className="text-xs px-3 py-1.5 font-bold whitespace-nowrap" style={{ backgroundColor: "rgba(232,80,10,0.10)", color: "#E8500A", border: "1.5px solid rgba(232,80,10,0.25)" }}>
                 {inquiries.length} total
               </span>
               <button onClick={load} className="px-3 py-1.5 text-xs font-bold border transition-colors flex items-center gap-1.5"
@@ -1646,7 +1646,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
               </p>
             </div>
             <button onClick={() => setShowAddModal(true)}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white transition-all active:scale-[0.98]"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white transition-all active:scale-[0.98]"
               style={{ backgroundColor: "#E8500A" }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#C0391A"}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#E8500A"}>
@@ -1729,28 +1729,21 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                         </motion.button>
 
                         {/* Title */}
-                        <div dir="auto" className="flex-1 text-sm font-medium relative" style={{
-                          color: isDone ? "#94A3B8" : "#0F172A",
-                          wordBreak: "break-word",
-                        }}>
+                        <motion.div
+                          dir="auto"
+                          className="flex-1 text-sm font-medium"
+                          animate={{
+                            color: isDone ? "#94A3B8" : "#0F172A",
+                            textDecorationColor: isDone ? "rgba(148,163,184,1)" : "rgba(148,163,184,0)",
+                          }}
+                          transition={{ duration: 0.35, ease: "easeOut" }}
+                          style={{
+                            wordBreak: "break-word",
+                            textDecorationLine: "line-through",
+                          }}
+                        >
                           {task.title}
-                          <AnimatePresence>
-                            {isDone && (
-                              <motion.span
-                                key="strike"
-                                initial={{ scaleX: 0 }}
-                                animate={{ scaleX: 1 }}
-                                exit={{ scaleX: 0 }}
-                                transition={{ duration: 0.3, ease: "easeOut" }}
-                                style={{
-                                  position: "absolute", left: 0, right: 0, top: "50%",
-                                  height: 1.5, backgroundColor: "#94A3B8",
-                                  transformOrigin: "left", display: "block",
-                                }}
-                              />
-                            )}
-                          </AnimatePresence>
-                        </div>
+                        </motion.div>
 
                         {/* Right: priority + due + chevron */}
                         <div className="flex items-center gap-2 flex-shrink-0">
