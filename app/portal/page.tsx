@@ -443,19 +443,19 @@ function LoginPage({ onLogin }: { onLogin: (role: UserRole, username: string) =>
         className="w-full max-w-[380px]"
       >
         {/* Logo */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center">
-            <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={204} height={204} />
+            <Image src="/images/logo.png" alt="ABQ ALSYF Logo" width={140} height={140} className="w-28 h-28 sm:w-[140px] sm:h-[140px]" />
           </div>
-          <h1 className="font-extrabold text-2xl tracking-tight mt-2" style={{ color: "#0F172A" }}>Portal Login</h1>
-          <p className="mt-2 text-sm" style={{ color: "#64748B" }}>
+          <h1 className="font-extrabold text-xl sm:text-2xl tracking-tight mt-2" style={{ color: "#0F172A" }}>Portal Login</h1>
+          <p className="mt-1 text-sm" style={{ color: "#64748B" }}>
             ABQ ALSYF · Private Access
           </p>
         </div>
 
         {/* Form */}
         <div
-          className="p-8"
+          className="p-5 sm:p-8"
           style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2E8F0" }}
         >
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -825,9 +825,9 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
       <main className="max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
-            style={{ color: "#64748B" }}
+            style={{ color: "#334155", fontWeight: 700 }}
             onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
+            onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}>
             ← Back to Dashboard
           </button>
 
@@ -836,14 +836,22 @@ function InquiriesSection({ onBack, onLogout, role }: { onBack: () => void; onLo
               <h1 className="font-extrabold text-4xl tracking-tight mb-1" style={{ color: "#0F172A" }}>Inquiries</h1>
               <p className="text-sm" style={{ color: "#64748B" }}>Quote requests submitted via the website.</p>
             </div>
-            <div className="flex items-center gap-3">
-              <button onClick={load} className="px-3 py-1.5 text-xs font-semibold border transition-colors"
-                style={{ borderColor: "rgba(232,80,10,0.3)", color: "#E8500A" }}>
-                ↻ Refresh
-              </button>
-              <span className="text-sm px-3 py-1.5 font-semibold" style={{ backgroundColor: "rgba(232,80,10,0.12)", color: "#E8500A" }}>
+            <div className="flex items-center gap-2">
+              <span className="text-sm px-3 py-1.5 font-bold" style={{ backgroundColor: "rgba(232,80,10,0.10)", color: "#E8500A", border: "1.5px solid rgba(232,80,10,0.25)" }}>
                 {inquiries.length} total
               </span>
+              <button onClick={load} className="px-3 py-1.5 text-xs font-bold border transition-colors flex items-center gap-1.5"
+                style={{ borderColor: "#E8500A", color: "#E8500A", backgroundColor: "transparent" }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,80,10,0.08)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}>
+                <motion.span
+                  animate={loading ? { rotate: 360 } : { rotate: 0 }}
+                  transition={loading ? { duration: 0.9, repeat: Infinity, ease: "linear" } : { duration: 0.2 }}
+                  style={{ display: "inline-block", lineHeight: 1 }}>
+                  ↻
+                </motion.span>
+                Refresh
+              </button>
             </div>
           </div>
 
@@ -1188,6 +1196,7 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [wonFlash, setWonFlash] = useState<number | null>(null);
   const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -1221,6 +1230,10 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
   }
 
   function updateStatus(id: number, status: LeadStatus) {
+    if (status === "won") {
+      setWonFlash(id);
+      setTimeout(() => setWonFlash(null), 900);
+    }
     const next = { ...states, [id]: { ...getState(id), status } };
     setStates(next); saveStates(next);
   }
@@ -1263,9 +1276,9 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
       <main className="max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
-            style={{ color: "#64748B" }}
+            style={{ color: "#334155", fontWeight: 700 }}
             onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
+            onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}>
             ← Back to Dashboard
           </button>
 
@@ -1348,9 +1361,28 @@ function LeadsSection({ onBack, onLogout, role }: { onBack: () => void; onLogout
                         <span className="text-[11px] hidden sm:block" style={{ color: "#94A3B8" }}>
                           {doneCount}/{lead.tips.length} tips
                         </span>
-                        <span className="px-2.5 py-1 text-[11px] font-bold" style={{ color: sc.color, backgroundColor: sc.bg }}>
-                          {sc.label}
-                        </span>
+                        <div className="relative">
+                          <span className="px-2.5 py-1 text-[11px] font-bold" style={{ color: sc.color, backgroundColor: sc.bg }}>
+                            {sc.label}
+                          </span>
+                          <AnimatePresence>
+                            {wonFlash === lead.id && (
+                              <motion.span
+                                key="won-ring"
+                                initial={{ scale: 0.8, opacity: 0.7 }}
+                                animate={{ scale: 2.8, opacity: 0 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.7, ease: "easeOut" }}
+                                style={{
+                                  position: "absolute", inset: 0,
+                                  backgroundColor: "rgba(22,163,74,0.35)",
+                                  borderRadius: 2,
+                                  pointerEvents: "none",
+                                }}
+                              />
+                            )}
+                          </AnimatePresence>
+                        </div>
                         <span className="text-[10px]" style={{ color: "#94A3B8" }}>{isExpanded ? "▲" : "▼"}</span>
                       </div>
                     </div>
@@ -1492,6 +1524,7 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
   const [newPriority, setNewPriority] = useState<TaskPriority>("medium");
   const [newDueDate, setNewDueDate] = useState("");
   const [addErr, setAddErr] = useState("");
+  const [flashId, setFlashId] = useState<string | null>(null);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -1533,6 +1566,8 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
   }
 
   function cycleStatus(id: string) {
+    setFlashId(id);
+    setTimeout(() => setFlashId(null), 500);
     const updated = tasks.map(t => {
       if (t.id !== id) return t;
       const idx = TASK_STATUS_CYCLE.indexOf(t.status);
@@ -1597,9 +1632,9 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
 
           {/* Back + header */}
           <button onClick={onBack} className="flex items-center gap-2 text-sm mb-6 transition-colors"
-            style={{ color: "#64748B" }}
+            style={{ color: "#334155", fontWeight: 700 }}
             onMouseEnter={(e) => e.currentTarget.style.color = "#E8500A"}
-            onMouseLeave={(e) => e.currentTarget.style.color = "#64748B"}>
+            onMouseLeave={(e) => e.currentTarget.style.color = "#334155"}>
             ← Back to Dashboard
           </button>
 
@@ -1683,22 +1718,39 @@ function TasksSection({ onBack, onLogout, role, currentUser }: {
                         onClick={() => setExpandedId(isExpanded ? null : task.id)}>
 
                         {/* Status badge — click to cycle */}
-                        <button
+                        <motion.button
                           onClick={(e) => { e.stopPropagation(); cycleStatus(task.id); }}
-                          className={`flex-shrink-0 px-2.5 py-1 text-[10px] font-bold transition-all${overdue ? " animate-pulse" : ""}`}
+                          className={`flex-shrink-0 px-2.5 py-1 text-[10px] font-bold${overdue ? " animate-pulse" : ""}`}
                           style={{ color: sc.color, backgroundColor: sc.bg, minWidth: 76, textAlign: "center" }}
+                          animate={flashId === task.id ? { scale: [1, 1.22, 0.95, 1] } : { scale: 1 }}
+                          transition={{ duration: 0.35, ease: "easeOut" }}
                           title="Click to advance status">
                           {sc.label}
-                        </button>
+                        </motion.button>
 
                         {/* Title */}
-                        <span dir="auto" className="flex-1 text-sm font-medium" style={{
-                          color: isDone ? "#64748B" : "white",
-                          textDecoration: isDone ? "line-through" : "none",
+                        <div dir="auto" className="flex-1 text-sm font-medium relative" style={{
+                          color: isDone ? "#94A3B8" : "#0F172A",
                           wordBreak: "break-word",
                         }}>
                           {task.title}
-                        </span>
+                          <AnimatePresence>
+                            {isDone && (
+                              <motion.span
+                                key="strike"
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                exit={{ scaleX: 0 }}
+                                transition={{ duration: 0.3, ease: "easeOut" }}
+                                style={{
+                                  position: "absolute", left: 0, right: 0, top: "50%",
+                                  height: 1.5, backgroundColor: "#94A3B8",
+                                  transformOrigin: "left", display: "block",
+                                }}
+                              />
+                            )}
+                          </AnimatePresence>
+                        </div>
 
                         {/* Right: priority + due + chevron */}
                         <div className="flex items-center gap-2 flex-shrink-0">
@@ -1933,27 +1985,41 @@ function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {cards.map((card, i) => (
               <motion.div key={card.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.08 }}>
-                <button
+                <motion.button
                   onClick={() => card.ready && onNavigate(card.id)}
-                  className="w-full text-left p-6 border transition-all duration-200"
+                  className="w-full text-left p-6 border"
                   style={{
                     backgroundColor: "#FFFFFF",
-                    borderColor: card.ready ? "#E2E8F0" : "#E2E8F0",
+                    borderColor: "#E2E8F0",
                     cursor: card.ready ? "pointer" : "default",
                     opacity: card.ready ? 1 : 0.6,
+                    transition: "border-color 0.25s",
                   }}
-                  onMouseEnter={(e) => { if (card.ready) e.currentTarget.style.borderColor = "rgba(232,80,10,0.4)"; }}
+                  onMouseEnter={(e) => { if (card.ready) e.currentTarget.style.borderColor = "rgba(232,80,10,0.5)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E2E8F0"; }}
+                  whileHover={card.ready ? "hovered" : undefined}
+                  initial="rest"
+                  animate="rest"
+                  whileTap={card.ready ? { scale: 0.98 } : undefined}
                 >
-                  <div className="text-3xl mb-4">{card.icon}</div>
+                  <motion.div
+                    className="text-3xl mb-4"
+                    variants={{
+                      rest:    { scale: 1, y: 0, rotate: 0 },
+                      hovered: { scale: 1.28, y: -5, rotate: 6 },
+                    }}
+                    transition={{ type: "spring", stiffness: 380, damping: 14 }}
+                  >
+                    {card.icon}
+                  </motion.div>
                   <h2 className="font-bold text-lg mb-1" style={{ color: "#0F172A" }}>{card.title}</h2>
                   <p className="text-sm mb-3" style={{ color: "#64748B" }}>{card.desc}</p>
                   {card.ready ? (
-                    <span className="text-xs font-semibold" style={{ color: "#E8500A" }}>Open →</span>
+                    <span className="text-xs font-bold px-3 py-1" style={{ color: "#E8500A", border: "1.5px solid #E8500A", display: "inline-block" }}>Open</span>
                   ) : (
                     <span className="text-xs" style={{ color: "#94A3B8" }}>Coming soon</span>
                   )}
-                </button>
+                </motion.button>
               </motion.div>
             ))}
           </div>
@@ -1964,10 +2030,18 @@ function MainDashboard({ onNavigate, onLogout, role, currentUser }: { onNavigate
 }
 
 // ─── Page ─────────────────────────────────────────────────
+const slideVariants = {
+  enter: (dir: "forward" | "back") => ({ opacity: 0, x: dir === "forward" ? 48 : -48 }),
+  center: { opacity: 1, x: 0 },
+  exit:  (dir: "forward" | "back") => ({ opacity: 0, x: dir === "forward" ? -48 : 48 }),
+};
+const slideTrans = { duration: 0.28, ease: [0.4, 0, 0.2, 1] as [number,number,number,number] };
+
 export default function PortalPage() {
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [role, setRole] = useState<UserRole>("viewer");
   const [section, setSection] = useState<string | null>(null);
+  const [navDir, setNavDir] = useState<"forward" | "back">("forward");
 
   useEffect(() => {
     const isAuthed = localStorage.getItem(AUTH_KEY) === "1";
@@ -1991,6 +2065,7 @@ export default function PortalPage() {
   }, []);
 
   function navigate(s: string | null) {
+    setNavDir(s ? "forward" : "back");
     if (s) {
       window.history.pushState(null, "", `/portal#${s}`);
     } else {
@@ -2013,29 +2088,29 @@ export default function PortalPage() {
   );
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" custom={navDir}>
       {!authed ? (
-        <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+        <motion.div key="login" custom={navDir} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={slideTrans}>
           <LoginPage onLogin={(r, u) => { localStorage.setItem(AUTH_KEY, "1"); localStorage.setItem(ROLE_KEY, r); localStorage.setItem(USER_KEY, u); setRole(r); setAuthed(true); }} />
         </motion.div>
       ) : section === "files" ? (
-        <motion.div key="files" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+        <motion.div key="files" custom={navDir} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={slideTrans}>
           <Dashboard onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
         </motion.div>
       ) : section === "inquiries" ? (
-        <motion.div key="inquiries" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+        <motion.div key="inquiries" custom={navDir} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={slideTrans}>
           <InquiriesSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
         </motion.div>
       ) : section === "projects" ? (
-        <motion.div key="projects" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+        <motion.div key="projects" custom={navDir} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={slideTrans}>
           <LeadsSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} />
         </motion.div>
       ) : section === "tasks" && role === "admin" ? (
-        <motion.div key="tasks" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+        <motion.div key="tasks" custom={navDir} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={slideTrans}>
           <TasksSection onLogout={handleLogout} onBack={() => navigate(null)} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
         </motion.div>
       ) : (
-        <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+        <motion.div key="dashboard" custom={navDir} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={slideTrans}>
           <MainDashboard onNavigate={(s) => navigate(s)} onLogout={handleLogout} role={role} currentUser={localStorage.getItem(USER_KEY) || VALID_USER} />
         </motion.div>
       )}
